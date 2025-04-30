@@ -21,17 +21,83 @@
       <!-- Thêm các option khác -->
     </select>
 
-    <input type="text" class="search-input" placeholder="Nhập địa điểm hoặc từ khóa (Ví dụ: Vinhomes)">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Nhập địa điểm hoặc từ khóa (Ví dụ: Vinhomes)"
+    />
 
     <button class="search-btn">
       <i class="fas fa-search"></i>
       Tìm kiếm
     </button>
 
-    <button class="more-btn">
+    <button class="more-btn" (click)="toggleAdvancedSearch()">
       <i class="fas fa-sliders-h"></i>
-      Thêm
+      {{ isAdvancedSearch ? "Thu gọn" : "Thêm" }}
     </button>
+  </div>
+
+  <div class="advanced-search" [class.active]="isAdvancedSearch">
+    <div class="advanced-search-content">
+      <div class="search-row">
+        <div class="search-group">
+          <label>Tỉnh/Thành phố</label>
+          <select class="search-select" (change)="onProvinceChange($event)">
+            <option value="">Chọn Tỉnh/Thành phố</option>
+            <option *ngFor="let province of provinces" [value]="province.code">
+              {{ province.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="search-group">
+          <label>Quận/Huyện</label>
+          <select
+            class="search-select"
+            [disabled]="!searchForm.province"
+            (change)="onDistrictChange($event)"
+          >
+            <option value="">Chọn Quận/Huyện</option>
+            <option *ngFor="let district of districts" [value]="district.code">
+              {{ district.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <div class="search-group">
+          <label>Diện tích</label>
+          <div class="range-inputs">
+            <div class="input-with-unit">
+              <input type="number" placeholder="Từ" class="number-input" />
+              <span class="unit">m²</span>
+            </div>
+            <span class="separator">-</span>
+            <div class="input-with-unit">
+              <input type="number" placeholder="Đến" class="number-input" />
+              <span class="unit">m²</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-group">
+          <label>Mức giá</label>
+          <div class="range-inputs">
+            <div class="input-with-unit">
+              <input type="number" placeholder="Từ" class="number-input" />
+              <span class="unit">tỷ</span>
+            </div>
+            <span class="separator">-</span>
+            <div class="input-with-unit">
+              <input type="number" placeholder="Đến" class="number-input" />
+              <span class="unit">tỷ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="property-types">
