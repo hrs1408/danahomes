@@ -1,0 +1,84 @@
+<header class="main-header">
+  <div class="header-content container">
+    <div class="logo">
+      <a routerLink="/">
+        <img
+          src="../../../assets/photos/logo-landscape-1.png"
+          alt="Logo"
+        />
+      </a>
+    </div>
+    <div class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <div class="right-group">
+      <nav class="nav-links">
+        <ul>
+          <li><a routerLink="/">Trang chủ</a></li>
+          <li><a routerLink="/about">Giới thiệu</a></li>
+          <li>
+            <a href="#">Sản phẩm</a>
+            <div class="dropdown-menu">
+              <ul>
+                <li><a href="#">Căn hộ chung cư</a></li>
+                <li><a href="#">Nhà riêng</a></li>
+                <li><a href="#">Biệt thự liền kề</a></li>
+                <li><a href="#">Nhà mặt phố</a></li>
+                <li><a href="#">Đất nền dự án</a></li>
+                <li><a href="#">Trang trại, khu nghỉ dưỡng</a></li>
+                <li><a href="#">Kho, nhà xưởng</a></li>
+              </ul>
+            </div>
+          </li>
+          <li><a routerLink="/news">Tin tức</a></li>
+          <li><a routerLink="/contact">Liên hệ</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="contact-buttons">
+        <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
+      </a>
+    </div>
+  </div>
+  <div class="mobile-menu" [class.active]="isMobileMenuOpen">
+    <div class="mobile-menu-header">
+      <div class="logo">
+        <a routerLink="/" (click)="toggleMobileMenu()">
+          <img
+            src="../../../assets/photos/logo-landscape-1.png"
+            alt="Logo"
+          />
+        </a>
+      </div>
+      <div class="close-menu" (click)="toggleMobileMenu()">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+    </div>
+    <nav class="mobile-nav">
+      <ul>
+        <li><a routerLink="/" (click)="toggleMobileMenu()">Trang chủ</a></li>
+        <li><a routerLink="/about" (click)="toggleMobileMenu()">Giới thiệu</a></li>
+        <li class="mobile-dropdown" [class.active]="activeDropdown === 'products'">
+          <a href="javascript:void(0)" (click)="toggleDropdown('products')">
+            Sản phẩm <i class="fa-solid fa-chevron-down"></i>
+          </a>
+          <div class="mobile-dropdown-menu" [class.active]="activeDropdown === 'products'">
+            <ul>
+              <li><a href="#" (click)="toggleMobileMenu()">Căn hộ chung cư</a></li>
+              <li><a href="#" (click)="toggleMobileMenu()">Nhà riêng</a></li>
+              <li><a href="#" (click)="toggleMobileMenu()">Biệt thự liền kề</a></li>
+              <li><a href="#" (click)="toggleMobileMenu()">Nhà mặt phố</a></li>
+              <li><a href="#" (click)="toggleMobileMenu()">Đất nền dự án</a></li>
+              <li><a href="#" (click)="toggleMobileMenu()">Trang trại, khu nghỉ dưỡng</a></li>
+              <li><a href="#" (click)="toggleMobileMenu()">Kho, nhà xưởng</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a routerLink="/news" (click)="toggleMobileMenu()">Tin tức</a></li>
+        <li><a routerLink="/contact" (click)="toggleMobileMenu()">Liên hệ</a></li>
+      </ul>
+    </nav>
+    <a href="#" class="mobile-contact-button" (click)="toggleMobileMenu()">
+      <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
+    </a>
+  </div>
+</header>
