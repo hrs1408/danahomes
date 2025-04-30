@@ -1,0 +1,63 @@
+<div class="filter-container">
+  <h1 class="title">CÁCH TIẾP CẬN BẤT ĐỘNG SẢN NHANH NHẤT</h1>
+
+  <div class="filter-tabs">
+    <div class="tabs-wrapper">
+      <button class="tab active" (click)="switchTab('sale')">
+        <i class="fas fa-home"></i>
+        Nhà đất bán
+      </button>
+      <button class="tab" (click)="switchTab('rent')">
+        <i class="fas fa-key"></i>
+        Nhà đất cho thuê
+      </button>
+      <div class="tab-indicator"></div>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <select class="property-type">
+      <option value="">Loại nhà đất</option>
+      <!-- Thêm các option khác -->
+    </select>
+
+    <input type="text" class="search-input" placeholder="Nhập địa điểm hoặc từ khóa (Ví dụ: Vinhomes)">
+
+    <button class="search-btn">
+      <i class="fas fa-search"></i>
+      Tìm kiếm
+    </button>
+
+    <button class="more-btn">
+      <i class="fas fa-sliders-h"></i>
+      Thêm
+    </button>
+  </div>
+
+  <div class="property-types">
+    <div class="type-item">
+      <i class="fas fa-building"></i>
+      <span>Căn hộ</span>
+    </div>
+    <div class="type-item">
+      <i class="fas fa-home"></i>
+      <span>Biệt thự</span>
+    </div>
+    <div class="type-item">
+      <i class="fas fa-city"></i>
+      <span>Chung cư</span>
+    </div>
+    <div class="type-item">
+      <i class="fas fa-house-user"></i>
+      <span>Nhà phố</span>
+    </div>
+    <div class="type-item">
+      <i class="fas fa-building"></i>
+      <span>Văn phòng</span>
+    </div>
+    <div class="type-item">
+      <i class="fas fa-store"></i>
+      <span>Cửa hàng</span>
+    </div>
+  </div>
+</div>
