@@ -33,7 +33,7 @@
 
 .footer-newsletter {
   position: relative;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto 50px;
   padding: 40px;
   background: rgba(255, 255, 255, 0.03);
@@ -158,7 +158,7 @@ hr {
 }
 
 .footer-links {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px;
   display: grid;
@@ -230,7 +230,7 @@ hr {
 }
 
 .footer-bottom .footer-brand {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -334,7 +334,7 @@ hr {
 }
 
 .footer-copyright .copyright-content {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;

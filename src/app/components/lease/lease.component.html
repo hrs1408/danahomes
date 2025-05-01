@@ -1,0 +1,39 @@
+<div class="lease-container">
+    <h1 class="title">Bất động sản <span class="blue-text">cho thuê</span></h1>
+    <div class="location-icon">
+        <i class="fas fa-map-marker-alt"></i>
+    </div>
+    <div class="property-grid">
+        <a class="property-card" *ngFor="let property of leaseProperties">
+            <div class="property-image">
+                <img [src]="property.imageUrl" [alt]="property.title">
+                <span class="rent-tag">{{ property.type }}</span>
+                <span class="hot-tag" *ngIf="property.isHot">HOT</span>
+                <span class="price-tag">{{ formatPrice(property.price) }}</span>
+                <div class="rent-now-overlay">
+                    <button class="rent-now-btn">
+                        <i class="fas fa-home"></i>
+                        Thuê ngay
+                    </button>
+                </div>
+            </div>
+            <div class="property-info">
+                <h2 class="property-title">{{ property.title }}</h2>
+                <div class="property-details">
+                    <div class="detail-item">
+                        <img src="https://bizweb.dktcdn.net/100/393/384/themes/894826/assets/bed.png?1730695187968" alt="Phòng ngủ">
+                        <span>Phòng ngủ: {{ property.bedrooms.toString().padStart(2, '0') }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <img src="https://bizweb.dktcdn.net/100/393/384/themes/894826/assets/bath.png?1730695187968" alt="Phòng tắm">
+                        <span>Phòng tắm: {{ property.bathrooms.toString().padStart(2, '0') }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <img src="https://bizweb.dktcdn.net/100/393/384/themes/894826/assets/square.png?1730695187968" alt="Diện tích">
+                        <span>Diện tích: trên {{ property.area }}m2</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

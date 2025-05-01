@@ -1,0 +1,270 @@
+.lease-container {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.lease-container .title {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.lease-container .title .blue-text {
+  color: #4285f4;
+  position: relative;
+}
+
+.lease-container .title .blue-text::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #4285f4;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.lease-container .title .blue-text:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.lease-container .location-icon {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #4285f4;
+  font-size: 1.5rem;
+  animation: bounce 2s infinite;
+}
+
+.lease-container .property-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  padding: 0;
+}
+
+.lease-container .property-card {
+  display: flex;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.lease-container .property-card .property-image {
+  position: relative;
+  width: 40%;
+  min-width: 40%;
+  overflow: hidden;
+}
+
+.lease-container .property-card .property-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lease-container .property-card .property-image::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  z-index: 1;
+}
+
+.lease-container .property-card .property-image .rent-tag {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  background: #4285f4;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.lease-container .property-card .property-image .hot-tag {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: #ff4444;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.lease-container .property-card .property-image .price-tag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.lease-container .property-card .property-image .rent-now-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.lease-container .property-card .property-image .rent-now-btn {
+  padding: 12px 24px;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.lease-container .property-card .property-image .rent-now-btn i {
+  font-size: 16px;
+}
+
+.lease-container .property-card .property-image .rent-now-btn:hover {
+  background: #3367d6;
+  transform: scale(1.05);
+}
+
+.lease-container .property-card:hover {
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+  transform: translateY(-5px);
+}
+
+.lease-container .property-card:hover .property-image img {
+  transform: scale(1.05);
+}
+
+.lease-container .property-card:hover .property-image .rent-now-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lease-container .property-card:hover .property-image .rent-now-btn {
+  transform: translateY(0);
+}
+
+.lease-container .property-card:hover .property-title {
+  color: #4285f4;
+}
+
+.lease-container .property-card:hover .detail-item img {
+  transform: scale(1.1);
+}
+
+.lease-container .property-card:hover .detail-item span {
+  color: #333;
+}
+
+.lease-container .property-card .property-info {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(to right, #fff, #f8f9fa);
+}
+
+.lease-container .property-card .property-info .property-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.lease-container .property-card .property-info .property-details {
+  display: grid;
+  gap: 12px;
+}
+
+.lease-container .property-card .property-info .property-details .detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.lease-container .property-card .property-info .property-details .detail-item img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.lease-container .property-card .property-info .property-details .detail-item span {
+  color: #666;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .lease-container .property-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .lease-container {
+    padding: 1rem;
+  }
+  .lease-container .property-card {
+    flex-direction: column;
+  }
+  .lease-container .property-card .property-image {
+    width: 100%;
+    height: 200px;
+  }
+  .lease-container .property-card .property-info {
+    padding: 16px;
+  }
+}

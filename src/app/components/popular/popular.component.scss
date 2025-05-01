@@ -1,0 +1,420 @@
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/effect-fade';
+
+.popular-projects {
+  padding: 60px 0;
+  background-color: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, rgba(26, 115, 232, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 15px;
+    position: relative;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    color: #333;
+    font-weight: 600;
+    position: relative;
+
+    .highlight {
+      color: #1a73e8;
+      position: relative;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #1a73e8;
+      border-radius: 2px;
+    }
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+    padding: 20px 0 50px;
+    position: relative;
+  }
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.95);
+    transition: transform 0.3s;
+    opacity: 0.8;
+
+    &.swiper-slide-active {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .project-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 500px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 30px rgba(26, 115, 232, 0.15);
+      transform: translateY(-5px);
+    }
+  }
+
+  .project-image {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%);
+      z-index: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+
+    .project-type {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      z-index: 2;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+      &.sale {
+        background-color: rgba(76, 175, 80, 0.9);
+        color: white;
+      }
+
+      &.rent {
+        background-color: rgba(33, 150, 243, 0.9);
+        color: white;
+      }
+    }
+
+    .hot-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, #ff4444, #ff6b6b);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      z-index: 2;
+      box-shadow: 0 2px 10px rgba(255,68,68,0.3);
+    }
+  }
+
+  .project-info {
+    padding: 35px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  }
+
+  .project-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+  }
+
+  .project-location {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+
+    i {
+      margin-right: 10px;
+      color: #1a73e8;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+  }
+
+  .project-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(26, 115, 232, 0.03);
+    border-radius: 10px;
+
+    span {
+      display: flex;
+      align-items: center;
+      color: #666;
+      font-size: 1rem;
+
+      i {
+        margin-right: 12px;
+        color: #1a73e8;
+        width: 20px;
+        flex-shrink: 0;
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .project-description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 6.8em;
+  }
+
+  .project-price {
+    font-size: 1.8rem;
+    color: #1a73e8;
+    font-weight: 600;
+    margin-bottom: 25px;
+    margin-top: auto;
+    text-shadow: 0 2px 4px rgba(26, 115, 232, 0.1);
+  }
+
+  .view-details {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, #1a73e8, #1557b0);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: 0.5s;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+
+      &::before {
+        left: 100%;
+      }
+    }
+  }
+
+  // Swiper navigation styles
+  :host ::ng-deep {
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all 0.3s ease;
+
+      &:after {
+        font-size: 16px;
+        color: #1a73e8;
+        font-weight: bold;
+      }
+
+      &:hover {
+        background: #1a73e8;
+        transform: translateY(-50%) scale(1.1);
+
+        &:after {
+          color: white;
+        }
+      }
+    }
+
+    .swiper-button-prev {
+      left: -20px;
+    }
+
+    .swiper-button-next {
+      right: -20px;
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+
+      .swiper-pagination-bullet {
+        width: 30px;
+        height: 4px;
+        background: #ddd;
+        opacity: 1;
+        margin: 0 4px;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+
+        &-active {
+          background: #1a73e8;
+          width: 50px;
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 992px) {
+  .popular-projects {
+    .project-card {
+      flex-direction: column;
+      height: 700px;
+    }
+
+    .project-image,
+    .project-info {
+      width: 100%;
+    }
+
+    .project-image {
+      height: 300px;
+    }
+
+    .project-info {
+      height: calc(100% - 300px);
+    }
+
+    .project-description {
+      -webkit-line-clamp: 3;
+      max-height: 5.1em;
+    }
+
+    .project-details {
+      padding: 15px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .popular-projects {
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .project-card {
+      height: 650px;
+    }
+
+    .project-image {
+      height: 250px;
+    }
+
+    .project-info {
+      height: calc(100% - 250px);
+      padding: 25px;
+    }
+
+    .project-title {
+      font-size: 1.4rem;
+    }
+
+    .project-price {
+      font-size: 1.6rem;
+    }
+
+    :host ::ng-deep {
+      .swiper-button-next,
+      .swiper-button-prev {
+        display: none;
+      }
+
+      .swiper-pagination-bullet {
+        width: 20px;
+        height: 3px;
+
+        &-active {
+          width: 35px;
+        }
+      }
+    }
+  }
+}

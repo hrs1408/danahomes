@@ -1,0 +1,18 @@
+<div class="project-by-city">
+  <div class="container">
+    <h2 class="title">
+      Các dự án <span class="highlight">đã triển khai tại một số thành phố</span>
+    </h2>
+
+    <div class="cities-grid">
+      <div class="city-card" *ngFor="let city of cities">
+        <div class="city-image">
+          <img [src]="city.image" [alt]="city.name">
+          <div class="city-overlay">
+            <h3 class="city-name">{{city.name}}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

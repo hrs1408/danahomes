@@ -1,0 +1,53 @@
+<div class="popular-projects">
+  <div class="container">
+    <h2 class="section-title">Dự án nhà đất <span class="highlight">nổi bật</span></h2>
+
+    <!-- Swiper -->
+    <div class="swiper" #swiperContainer>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let project of popularProjects">
+          <div class="project-card">
+            <div class="project-image">
+              <img [src]="project.imageUrl" [alt]="project.title">
+              <span class="project-type" [class.sale]="project.type === 'sale'" [class.rent]="project.type === 'rent'">
+                {{project.type === 'sale' ? 'Bán' : 'Cho thuê'}}
+              </span>
+              <span class="hot-badge" *ngIf="project.isHot">HOT</span>
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">{{project.title}}</h3>
+              <p class="project-location">
+                <i class="fas fa-map-marker-alt"></i>
+                {{project.location}}
+              </p>
+              <div class="project-details">
+                <span>
+                  <i class="fas fa-bed"></i>
+                  Phòng ngủ: {{project.bedrooms}}
+                </span>
+                <span>
+                  <i class="fas fa-bath"></i>
+                  Phòng tắm: {{project.bathrooms}}
+                </span>
+                <span>
+                  <i class="fas fa-vector-square"></i>
+                  Diện tích: {{project.area}}m²
+                </span>
+              </div>
+              <p class="project-description">{{project.description}}</p>
+              <div class="project-price">
+                {{formatPrice(project.price)}}
+              </div>
+              <button class="view-details">Mua theo lô</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+      <!-- Add Navigation -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+</div>
