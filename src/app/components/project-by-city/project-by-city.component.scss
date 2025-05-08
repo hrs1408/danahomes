@@ -14,7 +14,19 @@
     margin-bottom: 40px;
     color: #333;
     font-weight: 500;
+    position: relative;
 
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #1a73e8;
+      border-radius: 2px;
+    }
     .highlight {
       color: #007bff;
     }
@@ -31,14 +43,25 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
       height: 300px;
+      position: relative;
+      cursor: pointer;
+      display: block;
 
       &:hover {
-        transform: translateY(-5px);
+        .city-image {
+          .city-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
 
-        .city-overlay {
-          background-color: rgba(0, 0, 0, 0.4);
+            .hover-content {
+              opacity: 1;
+              transform: translate(-50%, -50%);
+            }
+
+            .default-content {
+              opacity: 0;
+            }
+          }
         }
       }
 
@@ -56,9 +79,6 @@
         height: 100%;
 
         img {
-          position: absolute;
-          top: 0;
-          left: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
@@ -66,21 +86,53 @@
 
         .city-overlay {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
+          inset: 0;
           background-color: rgba(0, 0, 0, 0.3);
-          display: flex;
-          align-items: flex-end;
-          padding: 20px;
-          transition: background-color 0.3s ease;
+          transition: all 0.3s ease;
 
-          .city-name {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+          .hover-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, calc(-50% + 20px));
+            opacity: 0;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            z-index: 2;
+
+            .project-count {
+              display: block;
+              color: #ff3b30;
+              font-size: 48px;
+              font-weight: bold;
+              line-height: 1;
+              margin-bottom: 8px;
+            }
+
+            .project-label {
+              display: block;
+              color: white;
+              font-size: 18px;
+              text-transform: uppercase;
+              font-weight: 500;
+            }
+          }
+
+          .default-content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            transition: all 0.3s ease;
+            z-index: 1;
+
+            .city-name {
+              color: white;
+              font-size: 24px;
+              font-weight: bold;
+              margin: 0;
+              text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
           }
         }
       }
@@ -98,6 +150,18 @@
 
         &:nth-child(n+4) {
           height: 240px;
+        }
+
+        .city-overlay {
+          .hover-content {
+            .project-count {
+              font-size: 42px;
+            }
+
+            .project-label {
+              font-size: 16px;
+            }
+          }
         }
       }
     }
@@ -122,10 +186,23 @@
         }
 
         .city-overlay {
-          padding: 16px;
+          .hover-content {
+            .project-count {
+              font-size: 36px;
+            }
 
-          .city-name {
-            font-size: 20px;
+            .project-label {
+              font-size: 15px;
+            }
+          }
+
+          .default-content {
+            bottom: 16px;
+            left: 16px;
+
+            .city-name {
+              font-size: 20px;
+            }
           }
         }
       }
@@ -145,22 +222,34 @@
         &:nth-child(n+4) {
           height: 200px;
         }
+
+        .city-overlay {
+          .hover-content {
+            .project-count {
+              font-size: 32px;
+              margin-bottom: 4px;
+            }
+
+            .project-label {
+              font-size: 14px;
+            }
+          }
+
+          .default-content {
+            bottom: 12px;
+            left: 12px;
+
+            .city-name {
+              font-size: 18px;
+            }
+          }
+        }
       }
     }
 
     .title {
       font-size: 24px;
       margin-bottom: 24px;
-    }
-
-    .city-card {
-      .city-overlay {
-        padding: 12px;
-
-        .city-name {
-          font-size: 18px;
-        }
-      }
     }
   }
 }

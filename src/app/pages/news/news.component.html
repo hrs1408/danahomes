@@ -1,0 +1,77 @@
+<div class="news-page">
+  <div class="container">
+    <div class="news-header">
+      <h1>Tin tức</h1>
+    </div>
+    <div class="row" style="display: flex; gap: 40px;">
+      <!-- Main Content -->
+      <div class="col-md-8">
+        <div class="news-content-wrapper">
+          <div *ngIf="loading" class="loading-container">
+            <div class="loading">
+              <div class="spinner"></div>
+              <p>Đang tải tin tức...</p>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="error-message">
+            {{ error }}
+          </div>
+
+          <div *ngIf="!loading && !error" class="news-grid">
+            <article *ngFor="let post of posts" class="news-card">
+              <div class="news-image">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title">
+                <div class="post-date">
+                  <span class="day">{{ getPostDate(post) | date:'dd' }}</span>
+                  <span class="month">{{ getPostDate(post) | date:'MM' }}</span>
+                  <span class="year">{{ getPostDate(post) | date:'yyyy' }}</span>
+                </div>
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">{{ post.title }}</h2>
+                <p class="news-excerpt">{{ getExcerpt(post.content) }}</p>
+                <div class="news-meta">
+                  <span class="post-type" [class]="post.post_type">{{ post.post_type }}</span>
+                  <a [routerLink]="['/news', post.id]" class="read-more">Xem thêm</a>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div *ngIf="!loading && !error && posts.length === 0" class="no-posts">
+            <p>Chưa có tin tức nào.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-md-4">
+        <div class="sidebar">
+          <div class="sidebar-section">
+            <h3>Danh mục</h3>
+            <ul class="menu-list">
+              <li><a routerLink="/">Trang chủ</a></li>
+              <li><a routerLink="/about">Giới thiệu</a></li>
+              <li><a routerLink="/products">Sản phẩm</a></li>
+              <li><a routerLink="/news" class="active">Tin tức</a></li>
+              <li><a routerLink="/contact">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div class="sidebar-section">
+            <h3>Tin nổi bật</h3>
+            <div class="featured-posts">
+              <div *ngFor="let post of posts.slice(0, 3)" class="featured-post">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title">
+                <div class="featured-content">
+                  <h4>{{ post.title }}</h4>
+                  <span class="post-date">{{ getPostDate(post) | date:'dd/MM/yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -13,6 +14,9 @@ import { PopularComponent } from './components/popular/popular.component';
 import { register } from 'swiper/element/bundle';
 import { LeaseComponent } from './components/lease/lease.component';
 import { ProjectByCityComponent } from './components/project-by-city/project-by-city.component';
+import { AboutComponent } from './pages/about/about.component';
+import { NewsComponent } from './pages/news/news.component';
+import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 
 // Register Swiper custom elements
 register();
@@ -28,10 +32,14 @@ register();
     FilterHomeComponent,
     PopularComponent,
     LeaseComponent,
-    ProjectByCityComponent
+    ProjectByCityComponent,
+    AboutComponent,
+    NewsComponent,
+    PostDetailComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     HttpClientModule,
   ],

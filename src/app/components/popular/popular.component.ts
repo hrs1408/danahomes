@@ -22,7 +22,7 @@ export class PopularComponent implements AfterViewInit {
       bathrooms: 1,
       area: 50,
       price: 15450000000,
-      imageUrl: 'https://bizweb.dktcdn.net/100/393/384/products/pd-36.jpg?v=1592542130197',
+      imageUrl: 'https://bizweb.dktcdn.net/100/393/384/products/pd-34.jpg?v=1592542128423',
       isHot: true,
       type: 'rent'
     },
@@ -48,7 +48,7 @@ export class PopularComponent implements AfterViewInit {
       bathrooms: 2,
       area: 110,
       price: 8500000000,
-      imageUrl: 'https://bizweb.dktcdn.net/100/393/384/products/pd-36.jpg?v=1592542130197',
+      imageUrl: 'https://bizweb.dktcdn.net/100/393/384/products/pd-35.jpg?v=1592542129693',
       isHot: true,
       type: 'rent'
     }

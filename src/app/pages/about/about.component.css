@@ -1,0 +1,318 @@
+@charset "UTF-8";
+.about-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.about-container ::ng-deep .loading {
+  text-align: center;
+  padding: 2rem;
+}
+
+.about-container ::ng-deep .loading .spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #002250;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.about-container ::ng-deep .error-message {
+  text-align: center;
+  color: #dc3545;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.about-container ::ng-deep .about-content .about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-container ::ng-deep .about-content .about-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.about-container ::ng-deep .about-content .about-header .about-image {
+  margin: 0 auto 2rem;
+  width: 100%;
+}
+
+.about-container ::ng-deep .about-content .about-header .about-image img {
+  width: 100vw;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-container ::ng-deep .about-content .introduction-content {
+  line-height: 1.6;
+  color: #333;
+  font-size: 16px;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h1, .about-container ::ng-deep .about-content .introduction-content h2, .about-container ::ng-deep .about-content .introduction-content h3, .about-container ::ng-deep .about-content .introduction-content h4, .about-container ::ng-deep .about-content .introduction-content h5, .about-container ::ng-deep .about-content .introduction-content h6 {
+  color: #002250;
+  margin: 1.5rem 0 1rem;
+  font-weight: bold !important;
+  line-height: 1.2;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h1 {
+  font-size: 2rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h2 {
+  font-size: 1.75rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h3 {
+  font-size: 1.5rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h4 {
+  font-size: 1.25rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h5 {
+  font-size: 1.1rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content h6 {
+  font-size: 1rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content p {
+  margin: 1rem 0 !important;
+  line-height: 1.6 !important;
+  font-size: 16px !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content strong, .about-container ::ng-deep .about-content .introduction-content b {
+  font-weight: bold !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content em, .about-container ::ng-deep .about-content .introduction-content i {
+  font-style: italic !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 8px !important;
+  margin: 1rem auto !important;
+  display: block !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content ul, .about-container ::ng-deep .about-content .introduction-content ol {
+  margin: 1rem 0 !important;
+  padding-left: 2rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content ul li, .about-container ::ng-deep .about-content .introduction-content ol li {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.6 !important;
+  font-size: 16px !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content ul {
+  list-style-type: disc !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content ol {
+  list-style-type: decimal !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content a {
+  color: #e67e22 !important;
+  text-decoration: none !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content a:hover {
+  text-decoration: underline !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content blockquote {
+  margin: 1.5rem 0 !important;
+  padding: 1rem 1.5rem !important;
+  border-left: 4px solid #002250 !important;
+  background-color: #f8f9fa !important;
+  font-style: italic !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content blockquote p {
+  margin: 0 !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content figure {
+  margin: 2rem auto !important;
+  text-align: center !important;
+  max-width: 100% !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content figure img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content figure figcaption {
+  margin-top: 0.5rem !important;
+  font-style: italic !important;
+  color: #666 !important;
+  font-size: 0.9rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content table th, .about-container ::ng-deep .about-content .introduction-content table td {
+  padding: 0.75rem !important;
+  border: 1px solid #dee2e6 !important;
+  text-align: left !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content table th {
+  background-color: #f8f9fa !important;
+  font-weight: bold !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content table tr:nth-child(even) {
+  background-color: #f8f9fa !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content ul ul, .about-container ::ng-deep .about-content .introduction-content ul ol, .about-container ::ng-deep .about-content .introduction-content ol ul, .about-container ::ng-deep .about-content .introduction-content ol ol {
+  margin: 0.5rem 0 !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content dl {
+  margin: 1rem 0 !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content dl dt {
+  font-weight: bold !important;
+  margin-top: 1rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content dl dd {
+  margin-left: 2rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content pre, .about-container ::ng-deep .about-content .introduction-content code {
+  background-color: #f8f9fa !important;
+  border-radius: 4px !important;
+  padding: 0.2rem 0.4rem !important;
+  font-family: monospace !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content pre {
+  padding: 1rem !important;
+  margin: 1rem 0 !important;
+  overflow-x: auto !important;
+}
+
+.about-container ::ng-deep .about-content .introduction-content pre code {
+  padding: 0 !important;
+  background-color: transparent !important;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.value-item {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.value-item h3 {
+  color: #e67e22;
+  margin-bottom: 1rem;
+}
+
+.value-item p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.services-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.services-section ul li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.services-section ul li:before {
+  content: "•";
+  color: #e67e22;
+  position: absolute;
+  left: 0;
+}
+
+.contact-section {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.contact-section .contact-info p {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 1rem;
+  }
+  .about-container ::ng-deep .about-content .about-header h1 {
+    font-size: 2rem !important;
+  }
+  .about-container ::ng-deep .about-content .introduction-content h1 {
+    font-size: 1.75rem !important;
+  }
+  .about-container ::ng-deep .about-content .introduction-content h2 {
+    font-size: 1.5rem !important;
+  }
+  .about-container ::ng-deep .about-content .introduction-content h3 {
+    font-size: 1.25rem !important;
+  }
+  .about-container ::ng-deep .about-content .introduction-content h4 {
+    font-size: 1.1rem !important;
+  }
+  .about-container ::ng-deep .about-content .introduction-content h5, .about-container ::ng-deep .about-content .introduction-content h6 {
+    font-size: 1rem !important;
+  }
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}

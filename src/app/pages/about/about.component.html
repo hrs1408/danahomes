@@ -1,0 +1,21 @@
+<div class="about-container">
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Đang tải thông tin...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && introduction" class="about-content">
+    <div class="about-header">
+      <h1>{{ introduction.title }}</h1>
+      <div *ngIf="introduction.image" class="about-image">
+        <img [src]="'https://lh3.googleusercontent.com/d/' + introduction.image.drive_id" [alt]="introduction.title">
+      </div>
+    </div>
+
+    <div class="introduction-content" [innerHTML]="safeContent"></div>
+  </div>
+</div>
