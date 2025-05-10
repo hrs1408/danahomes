@@ -118,7 +118,7 @@ export class DetailComponent implements OnInit, AfterViewInit {
       }
 
       // Khởi tạo map mới
-      this.map = L.map('map').setView([lat, lng], 16);
+      this.map = L.map('map', ).setView([lat, lng], 16);
 
       // Thêm OpenStreetMap tile layer
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
