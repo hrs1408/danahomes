@@ -1,0 +1,69 @@
+<div class="sale-container">
+    <div class="title-section">
+        <h1 class="title">Bất động sản <span class="blue-text">cho bán</span></h1>
+        <div class="navigation-buttons">
+            <button class="nav-btn prev" (click)="previousPage()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn next" (click)="nextPage()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Property Grid -->
+    <div class="property-grid" *ngIf="!loading && !error && saleProducts.length > 0">
+        <div class="property-card" *ngFor="let product of displayedProducts">
+            <div class="property-image">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)"
+                     [alt]="product.name"
+                     onerror="this.src='assets/images/default_property.jpeg'">
+                <span class="sale-tag">Cho bán</span>
+                <span class="hot-tag" *ngIf="product.tag && product.tag.length > 0">HOT</span>
+            </div>
+            <div class="property-info">
+                <h2 class="property-title">{{ product.name }}</h2>
+                <div class="property-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ product.address_detail?.address }}</span>
+                </div>
+                <div class="property-details">
+                    <div class="detail-item">
+                        <i class="fas fa-bed"></i>
+                        <span>Phòng ngủ: {{ product.product_detail.bedroom.toString().padStart(2, '0') }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-bath"></i>
+                        <span>Phòng tắm: {{ product.product_detail.bathroom.toString().padStart(2, '0') }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-vector-square"></i>
+                        <span>Diện tích: {{ product.product_detail.area }}m²</span>
+                    </div>
+                </div>
+                <div class="property-footer">
+                    <div class="price">{{ formatPrice(product.product_detail.price) }}</div>
+                    <button class="view-more-btn" (click)="viewProductDetail(product.id)">
+                      <i class="fas fa-eye"></i>
+                      Xem chi tiết
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Đang tải danh sách bất động sản bán...</p>
+        </div>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="!loading && !error && saleProducts.length === 0" class="no-results">
+        <i class="fas fa-search"></i>
+        <h2>Không có bất động sản bán</h2>
+        <p>Vui lòng quay lại sau</p>
+    </div>
+</div>

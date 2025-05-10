@@ -1,0 +1,33 @@
+<div class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Sứ mệnh của chúng tôi là giúp mọi người</h2>
+      <h3>tìm & tạo nên 1 không gian sống tốt hơn!</h3>
+      <div class="description">
+        <p>
+          Thành lập Công ty TNHH Dịch vụ và Xây dựng batdongsan.vn với vốn điều lệ ban đầu là 0.8 tỷ đồng và 10 nhân viên. Khi mới hoạt động, batdongsan.vn chuyên về môi giới các dự án bất động sản. Hiện tại, đã tăng vốn điều lệ lên 3.500 tỷ đồng với trên 3500 nhân viên.
+        </p>
+        <p>
+          Trải qua chặng đường 17 năm phát triển, Tập đoàn batdongsan.vn đã trở thành một trong những chủ đầu tư mang lại đầu án với sản phẩm đa dạng đáp ứng nhu cầu của thị trường.
+        </p>
+        <p>
+          Tầm nhìn đến 2025: "Trở thành 1 trong 10 Tập đoàn kinh tế tư nhân lớn nhất Việt Nam" Tầm nhìn đến 2030: "Trở thành 1 trong 10 công ty phát triển Bất động sản tốt nhất Đông Nam Á"
+        </p>
+      </div>
+      <button class="contact-btn">
+        <i class="fas fa-phone"></i>
+        Liên hệ tư vấn
+      </button>
+    </div>
+
+    <div class="features-grid">
+      <div *ngFor="let feature of features" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-{{feature.icon}}"></i>
+        </div>
+        <h3 class="feature-title">{{feature.title}}</h3>
+        <p class="feature-description">{{feature.description}}</p>
+      </div>
+    </div>
+  </div>
+</div>

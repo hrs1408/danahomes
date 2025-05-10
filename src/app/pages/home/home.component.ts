@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  isLoading = true;
 
+  ngOnInit() {
+    // Giả lập thời gian tải trang
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  }
 }

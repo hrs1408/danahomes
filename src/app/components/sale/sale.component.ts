@@ -3,15 +3,17 @@ import { ProductService, Product } from '../../services/product.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-lease',
-  templateUrl: './lease.component.html',
-  styleUrl: './lease.component.scss'
+  selector: 'app-sale',
+  templateUrl: './sale.component.html',
+  styleUrl: './sale.component.scss'
 })
-export class LeaseComponent implements OnInit {
-  leaseProducts: Product[] = [];
+export class SaleComponent implements OnInit {
+  saleProducts: Product[] = [];
+  displayedProducts: Product[] = [];
   loading = false;
   error: string | null = null;
   readonly MAX_PRODUCTS = 6;
+  currentPage = 0;
 
   constructor(
     private productService: ProductService,
@@ -19,23 +21,43 @@ export class LeaseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadLeaseProducts();
+    this.loadSaleProducts();
   }
 
-  loadLeaseProducts() {
+  loadSaleProducts() {
     this.loading = true;
     this.error = null;
 
-    this.productService.search({ product_type: 'rent' }).subscribe({
+    this.productService.search({ product_type: 'sale' }).subscribe({
       next: (response) => {
-        this.leaseProducts = response.data.slice(0, this.MAX_PRODUCTS);
+        this.saleProducts = response.data;
+        this.updateDisplayedProducts();
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Không thể tải danh sách bất động sản cho thuê. Vui lòng thử lại sau.';
+        this.error = 'Không thể tải danh sách bất động sản bán. Vui lòng thử lại sau.';
         this.loading = false;
       }
     });
+  }
+
+  updateDisplayedProducts() {
+    const start = this.currentPage * 3;
+    this.displayedProducts = this.saleProducts.slice(start, start + 3);
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.updateDisplayedProducts();
+    }
+  }
+
+  nextPage() {
+    if ((this.currentPage + 1) * 3 < this.saleProducts.length) {
+      this.currentPage++;
+      this.updateDisplayedProducts();
+    }
   }
 
   formatPrice(price: number): string {

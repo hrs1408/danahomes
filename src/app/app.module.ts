@@ -25,7 +25,11 @@ import { LoanCalculatorComponent } from './components/loan-calculator/loan-calcu
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
-
+import { SaleComponent } from './components/sale/sale.component';
+import { CompanyInfoComponent } from './components/company-info/company-info.component';
+import { FeaturedNewsComponent } from './components/featured-news/featured-news.component';
+import { FeaturesComponent } from './components/features/features.component';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 // Register Swiper custom elements
 register();
 
@@ -50,7 +54,12 @@ const routes: Routes = [
     PostDetailComponent,
     ProductsComponent,
     LoanCalculatorComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    SaleComponent,
+    CompanyInfoComponent,
+    FeaturedNewsComponent,
+    FeaturesComponent,
+    LoadingOverlayComponent
   ],
   imports: [
     BrowserModule,
