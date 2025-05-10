@@ -39,6 +39,7 @@
 }
 
 .lease-container .property-card {
+  max-height: 250px;
   display: flex;
   background: white;
   border-radius: 4px;
@@ -197,7 +198,7 @@
   color: #333;
   margin-bottom: 20px;
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: 700;
   transition: color 0.3s ease;
 }
 
@@ -209,8 +210,13 @@
 .lease-container .property-card .property-info .property-details .detail-item {
   display: flex;
   align-items: center;
+  line-height: 1.4;
   gap: 8px;
   transition: all 0.3s ease;
+}
+
+.lease-container .property-card .property-info .property-details .detail-item i {
+  color: #4285f4;
 }
 
 .lease-container .property-card .property-info .property-details .detail-item img {
