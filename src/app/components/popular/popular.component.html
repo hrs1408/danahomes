@@ -2,43 +2,112 @@
   <div class="container">
     <h2 class="section-title">Dự án nhà đất <span class="highlight">nổi bật</span></h2>
 
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Đang tải dự án nổi bật...</p>
+      </div>
+    </div>
+
     <!-- Swiper -->
-    <div class="swiper" #swiperContainer>
+    <div class="swiper" #swiperContainer *ngIf="!loading && !error && popularProducts.length > 0">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let project of popularProjects">
+        <div class="swiper-slide" *ngFor="let product of popularProducts">
           <div class="project-card">
             <div class="project-image">
-              <img [src]="project.imageUrl" [alt]="project.title">
-              <span class="project-type" [class.sale]="project.type === 'sale'" [class.rent]="project.type === 'rent'">
-                {{project.type === 'sale' ? 'Bán' : 'Cho thuê'}}
+              <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)"
+                   [alt]="product.name"
+                   onerror="this.src='assets/images/default_property.jpeg'">
+              <span class="project-type" [class.sale]="product.product_detail.type_product === 'sale'" [class.rent]="product.product_detail.type_product === 'rent'">
+                {{product.product_detail.type_product === 'sale' ? 'Bán' : 'Cho thuê'}}
               </span>
-              <span class="hot-badge" *ngIf="project.isHot">HOT</span>
+              <span class="hot-badge">HOT</span>
             </div>
             <div class="project-info">
-              <h3 class="project-title">{{project.title}}</h3>
-              <p class="project-location">
+              <!-- Tiêu đề và trạng thái -->
+              <div class="project-header">
+                <h3 class="project-title">{{product.name}}</h3>
+                <div class="project-status" *ngIf="product.product_detail.project_status">
+                  <span class="status-badge">{{product.product_detail.project_status}}</span>
+                </div>
+              </div>
+
+              <!-- Địa chỉ -->
+              <div class="location-info">
                 <i class="fas fa-map-marker-alt"></i>
-                {{project.location}}
-              </p>
-              <div class="project-details">
-                <span>
+                <div class="address-details">
+                  <p class="main-address">{{product.address_detail.address}}</p>
+                  <p class="sub-address">
+                    {{product.address_detail.ward}}, {{product.address_detail.district}}, {{product.address_detail.province}}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Thông tin cơ bản -->
+              <div class="basic-info">
+                <div class="info-item">
                   <i class="fas fa-bed"></i>
-                  Phòng ngủ: {{project.bedrooms}}
-                </span>
-                <span>
+                  <div class="info-content">
+                    <span class="info-label">Phòng ngủ</span>
+                    <span class="info-value">{{product.product_detail.bedroom}}</span>
+                  </div>
+                </div>
+                <div class="info-item">
                   <i class="fas fa-bath"></i>
-                  Phòng tắm: {{project.bathrooms}}
-                </span>
-                <span>
+                  <div class="info-content">
+                    <span class="info-label">Phòng tắm</span>
+                    <span class="info-value">{{product.product_detail.bathroom}}</span>
+                  </div>
+                </div>
+                <div class="info-item">
                   <i class="fas fa-vector-square"></i>
-                  Diện tích: {{project.area}}m²
-                </span>
+                  <div class="info-content">
+                    <span class="info-label">Diện tích</span>
+                    <span class="info-value">{{product.product_detail.area}}m²</span>
+                  </div>
+                </div>
               </div>
-              <p class="project-description">{{project.description}}</p>
-              <div class="project-price">
-                {{formatPrice(project.price)}}
+
+              <!-- Tiện ích và nội thất -->
+              <div class="features" *ngIf="product.product_detail.utilities || product.product_detail.interiol">
+                <div class="feature-item" *ngIf="product.product_detail.utilities">
+                  <i class="fas fa-star"></i>
+                  <span>{{product.product_detail.utilities}}</span>
+                </div>
+                <div class="feature-item" *ngIf="product.product_detail.interiol">
+                  <i class="fas fa-home"></i>
+                  <span>{{product.product_detail.interiol}}</span>
+                </div>
               </div>
-              <button class="view-details">Mua theo lô</button>
+
+              <!-- Chủ đầu tư -->
+              <div class="investor-info" *ngIf="product.product_detail.investor">
+                <i class="fas fa-building"></i>
+                <div class="investor-content">
+                  <span class="investor-label">Chủ đầu tư</span>
+                  <span class="investor-name">{{product.product_detail.investor}}</span>
+                </div>
+              </div>
+
+              <!-- Giá và nút xem chi tiết -->
+              <div class="price-action">
+                <div class="price-info">
+                  <span class="price-label">Giá bán</span>
+                  <div class="price-value">
+                    <ng-container *ngIf="product.product_detail.price_to; else singlePrice">
+                      {{formatPrice(product.product_detail.price)}} - {{formatPrice(product.product_detail.price_to)}}
+                    </ng-container>
+                    <ng-template #singlePrice>
+                      {{formatPrice(product.product_detail.price)}}
+                    </ng-template>
+                  </div>
+                </div>
+                <button class="view-details" (click)="viewDetails(product.id)">
+                  <span>Xem chi tiết</span>
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -48,6 +117,13 @@
       <!-- Add Navigation -->
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="!loading && !error && popularProducts.length === 0" class="no-results">
+      <i class="fas fa-search"></i>
+      <h2>Không có dự án nổi bật</h2>
+      <p>Vui lòng quay lại sau</p>
     </div>
   </div>
 </div>

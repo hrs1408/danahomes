@@ -40,7 +40,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/swiper/swiper-bundle.css"
+              "node_modules/swiper/swiper-bundle.css",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",

@@ -13,6 +13,12 @@ export class NewsComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
+  // Thêm các biến phân trang
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 0;
+  paginatedPosts: Post[] = [];
+
   constructor(
     private postService: PostService,
     private sanitizer: DomSanitizer,
@@ -27,6 +33,8 @@ export class NewsComponent implements OnInit {
     this.postService.getAllPosts().subscribe({
       next: (response) => {
         this.posts = response.data;
+        this.totalPages = Math.ceil(this.posts.length / this.pageSize);
+        this.updatePaginatedPosts();
         this.loading = false;
       },
       error: (error) => {
@@ -35,6 +43,37 @@ export class NewsComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  updatePaginatedPosts(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedPosts = this.posts.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedPosts();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedPosts();
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedPosts();
+    }
+  }
+
+  getPageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   getSafeHtml(content: string): SafeHtml {

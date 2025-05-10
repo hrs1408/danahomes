@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FilterHomeService, Province, District } from './filter-home.service';
 
 @Component({
@@ -18,17 +19,19 @@ export class FilterHomeComponent implements OnInit {
 
   // Data cho form search
   searchForm = {
-    propertyType: '',
-    keyword: '',
-    province: '',
-    district: '',
-    areaFrom: null as number | null,
-    areaTo: null as number | null,
-    priceFrom: null as number | null,
-    priceTo: null as number | null
+    product_type: '',
+    name: '',
+    area: '',
+    category_id: null as number | null,
+    address: '',
+    price: null as number | null,
+    price_to: null as number | null
   };
 
-  constructor(private readonly locationService: FilterHomeService) {}
+  constructor(
+    private readonly locationService: FilterHomeService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadProvinces();
@@ -47,11 +50,18 @@ export class FilterHomeComponent implements OnInit {
 
   onProvinceChange(event: any) {
     const provinceCode = event.target.value;
-    this.searchForm.province = provinceCode;
-    this.searchForm.district = ''; // Reset district when province changes
-    this.districts = []; // Clear districts
+    const selectedProvince = this.provinces.find(p => p.code.toString() === provinceCode);
 
-    if (provinceCode) {
+    // Reset các giá trị liên quan
+    this.selectedProvince = provinceCode;
+    this.selectedDistrict = '';
+    this.districts = [];
+    this.searchForm.address = '';
+
+    if (selectedProvince) {
+      // Lưu tên tỉnh/thành phố
+      this.searchForm.address = selectedProvince.name;
+      // Load danh sách quận/huyện
       this.loadDistricts(Number(provinceCode));
     }
   }
@@ -68,12 +78,56 @@ export class FilterHomeComponent implements OnInit {
   }
 
   onDistrictChange(event: any) {
-    this.searchForm.district = event.target.value;
+    const districtCode = event.target.value;
+    const selectedDistrict = this.districts.find(d => d.code.toString() === districtCode);
+
+    if (selectedDistrict) {
+      // Kết hợp tên quận/huyện với tên tỉnh/thành phố
+      const provinceName = this.provinces.find(p => p.code.toString() === this.selectedProvince)?.name || '';
+      this.searchForm.address = `${selectedDistrict.name}, ${provinceName}`;
+    }
   }
 
   onSearch() {
-    console.log('Search with params:', this.searchForm);
-    // Implement your search logic here
+    // Xử lý dữ liệu tìm kiếm
+    const searchParams: Partial<typeof this.searchForm> = {};
+
+    // Chỉ thêm các tham số có giá trị
+    if (this.searchForm.product_type) {
+      searchParams.product_type = this.searchForm.product_type;
+    }
+
+    if (this.searchForm.name?.trim()) {
+      searchParams.name = this.searchForm.name.trim();
+    }
+
+    if (this.searchForm.area) {
+      searchParams.area = this.searchForm.area;
+    }
+
+    if (this.searchForm.category_id) {
+      searchParams.category_id = this.searchForm.category_id;
+    }
+
+    if (this.searchForm.address?.trim()) {
+      searchParams.address = this.searchForm.address.trim();
+    }
+
+    if (this.searchForm.price) {
+      searchParams.price = this.searchForm.price;
+    }
+
+    if (this.searchForm.price_to) {
+      searchParams.price_to = this.searchForm.price_to;
+    }
+
+    // Thêm loại sản phẩm dựa trên tab active
+    searchParams.product_type = this.activeTab === 'sale' ? 'sale' : 'rent';
+
+    // Chuyển hướng đến trang kết quả tìm kiếm với params
+    this.router.navigate(['/search'], {
+      queryParams: searchParams
+    });
   }
 
   switchTab(tab: 'sale' | 'rent') {

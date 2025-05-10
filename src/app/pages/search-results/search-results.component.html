@@ -1,0 +1,145 @@
+<div class="search-results-page">
+  <div class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <h1>Kết quả tìm kiếm</h1>
+      <div class="search-summary">
+        <ng-container *ngIf="!loading && !error">
+          <span class="total-results">{{ totalResults }} kết quả được tìm thấy</span>
+          <div class="search-filters">
+            <span class="filter-tag" *ngIf="searchParams.product_type">
+              {{ searchParams.product_type }}
+              <i class="fas fa-times"></i>
+            </span>
+            <span class="filter-tag" *ngIf="searchParams.area">
+              {{ searchParams.area }} m²
+              <i class="fas fa-times"></i>
+            </span>
+            <span class="filter-tag" *ngIf="searchParams.price">
+              {{ formatPrice(searchParams.price) }}
+              <i class="fas fa-times"></i>
+            </span>
+            <span class="filter-tag" *ngIf="searchParams.address">
+              {{ searchParams.address }}
+              <i class="fas fa-times"></i>
+            </span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Đang tìm kiếm...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Results Grid -->
+    <div *ngIf="!loading && !error" class="results-grid">
+      <div *ngFor="let product of products" class="product-card" (click)="viewProductDetail(product.id)">
+        <div class="product-image">
+          <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+          <div class="product-overlay">
+            <div class="product-badges">
+              <span class="badge type-badge" *ngIf="product.product_detail.type_product === 'project'">
+                <i class="fas fa-building"></i> Dự án
+              </span>
+              <span class="badge status-badge" *ngIf="product.product_detail.project_status">
+                {{ product.product_detail.project_status }}
+              </span>
+            </div>
+            <div class="quick-info">
+              <div class="info-row">
+                <span><i class="fas fa-ruler-combined"></i> {{ product.product_detail.area }} m²</span>
+                <span><i class="fas fa-bed"></i> {{ product.product_detail.bedroom }} PN</span>
+                <span><i class="fas fa-bath"></i> {{ product.product_detail.bathroom }} PT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-content">
+          <div class="product-header">
+            <h3 class="product-title" [title]="product.name">{{ product.name }}</h3>
+            <div class="product-price" [class.negotiable]="!product.product_detail.price_to">
+              <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+              <span *ngIf="product.product_detail.price_to">
+                {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+              </span>
+              <span class="price-per-m2" *ngIf="product.product_detail.price && product.product_detail.area">
+                {{ calculatePricePerM2(product.product_detail.price, product.product_detail.area) }}/m²
+              </span>
+            </div>
+          </div>
+
+          <div class="location-info">
+            <i class="fas fa-map-marker-alt"></i>
+            <div class="address-details">
+              <p class="main-address">{{ product.address_detail.address }}</p>
+              <!-- <p class="sub-address">{{ product.address_detail.ward }}, {{ product.address_detail.district }}, {{ product.address_detail.province }}</p> -->
+            </div>
+          </div>
+
+          <div class="product-features" *ngIf="product.product_detail.utilities || product.product_detail.interiol">
+            <div class="feature" *ngIf="product.product_detail.utilities">
+              <i class="fas fa-star"></i>
+              <span>{{ product.product_detail.utilities }}</span>
+            </div>
+            <div class="feature" *ngIf="product.product_detail.interiol">
+              <i class="fas fa-home"></i>
+              <span>{{ product.product_detail.interiol }}</span>
+            </div>
+          </div>
+
+          <div class="product-tags">
+            <span *ngFor="let tag of product.tag" class="tag"
+                  [style.background-color]="tag.color + '15'"
+                  [style.color]="tag.color"
+                  [style.border-color]="tag.color + '30'">
+              {{ tag.name }}
+            </span>
+          </div>
+
+          <div class="card-footer">
+            <div class="investor" *ngIf="product.product_detail.investor">
+              <i class="fas fa-building"></i>
+              <span>{{ product.product_detail.investor }}</span>
+            </div>
+            <button class="view-detail">
+              Xem chi tiết <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="!loading && !error && products.length === 0" class="no-results">
+      <i class="fas fa-search"></i>
+      <h2>Không tìm thấy kết quả nào</h2>
+      <p>Vui lòng thử lại với các tiêu chí tìm kiếm khác</p>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="!loading && !error && totalPages > 1" class="pagination">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="page-btn" *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === i + 1"
+              (click)="onPageChange(i + 1)">
+        {{ i + 1 }}
+      </button>
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

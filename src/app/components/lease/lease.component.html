@@ -1,36 +1,59 @@
 <div class="lease-container">
     <h1 class="title">Bất động sản <span class="blue-text">cho thuê</span></h1>
-    <div class="property-grid">
-        <a class="property-card" *ngFor="let property of leaseProperties">
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Đang tải danh sách bất động sản cho thuê...</p>
+        </div>
+    </div>
+
+    <!-- Property Grid -->
+    <div class="property-grid" *ngIf="!loading && !error && leaseProducts.length > 0">
+        <a class="property-card" *ngFor="let product of leaseProducts" (click)="viewProductDetail(product.id)">
             <div class="property-image">
-                <img [src]="property.imageUrl" [alt]="property.title">
-                <span class="rent-tag">{{ property.type }}</span>
-                <span class="hot-tag" *ngIf="property.isHot">HOT</span>
-                <span class="price-tag">{{ formatPrice(property.price) }}</span>
+                <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)"
+                     [alt]="product.name"
+                     onerror="this.src='assets/images/default_property.jpeg'">
+                <span class="rent-tag">Cho thuê</span>
+                <span class="hot-tag" *ngIf="product.tag && product.tag.length > 0">HOT</span>
+                <span class="price-tag">{{ formatPrice(product.product_detail.price) }}</span>
                 <div class="rent-now-overlay">
                     <button class="rent-now-btn">
                         <i class="fas fa-home"></i>
-                        Thuê ngay
+                        Xem chi tiết
                     </button>
                 </div>
             </div>
             <div class="property-info">
-                <h2 class="property-title">{{ property.title }}</h2>
+                <h2 class="property-title">{{ product.name }}</h2>
                 <div class="property-details">
                     <div class="detail-item">
                         <img src="https://bizweb.dktcdn.net/100/393/384/themes/894826/assets/bed.png?1730695187968" alt="Phòng ngủ">
-                        <span>Phòng ngủ: {{ property.bedrooms.toString().padStart(2, '0') }}</span>
+                        <span>Phòng ngủ: {{ product.product_detail.bedroom.toString().padStart(2, '0') }}</span>
                     </div>
                     <div class="detail-item">
                         <img src="https://bizweb.dktcdn.net/100/393/384/themes/894826/assets/bath.png?1730695187968" alt="Phòng tắm">
-                        <span>Phòng tắm: {{ property.bathrooms.toString().padStart(2, '0') }}</span>
+                        <span>Phòng tắm: {{ product.product_detail.bathroom.toString().padStart(2, '0') }}</span>
                     </div>
                     <div class="detail-item">
                         <img src="https://bizweb.dktcdn.net/100/393/384/themes/894826/assets/square.png?1730695187968" alt="Diện tích">
-                        <span>Diện tích: trên {{ property.area }}m2</span>
+                        <span>Diện tích: {{ product.product_detail.area }}m²</span>
+                    </div>
+                    <div class="detail-item" *ngIf="product.address_detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ product.address_detail.address }}</span>
                     </div>
                 </div>
             </div>
         </a>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="!loading && !error && leaseProducts.length === 0" class="no-results">
+        <i class="fas fa-search"></i>
+        <h2>Không có bất động sản cho thuê</h2>
+        <p>Vui lòng quay lại sau</p>
     </div>
 </div>

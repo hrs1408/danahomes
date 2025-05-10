@@ -1,1 +1,327 @@
-<p>detail works!</p>
+<div class="detail-page">
+  <div class="container">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Đang tải thông tin sản phẩm...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Product Detail -->
+    <div *ngIf="!loading && !error && product" class="product-detail">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a routerLink="/">Trang chủ</a> <span>/</span>
+        <a routerLink="/products">Sản phẩm</a> <span>/</span>
+        <span>{{ product.name }}</span>
+      </div>
+
+      <!-- Product Header -->
+      <div class="product-header">
+        <h1>{{isProject ? 'Dự án:' : 'Sản phẩm:'}} {{ product.name }}</h1>
+        <div class="product-tags">
+          <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+            {{ tag.name }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Product Gallery -->
+      <div class="product-gallery">
+        <div class="main-image">
+          <button class="nav-btn prev" (click)="prevImage()" *ngIf="product.images.length > 1">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <img [src]="'https://lh3.googleusercontent.com/d/' + getCurrentImage()" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+          <button class="nav-btn next" (click)="nextImage()" *ngIf="product.images.length > 1">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="thumbnail-list" *ngIf="product.images.length > 1">
+          <div *ngFor="let image of product.images; let i = index"
+               class="thumbnail"
+               [class.active]="i === currentImageIndex"
+               (click)="selectImage(i)">
+            <img [src]="'https://lh3.googleusercontent.com/d/' + image.drive_id" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <div class="info-section">
+          <h2>Thông tin cơ bản</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">
+                <i class="fas fa-tag"></i>
+                Giá:
+              </span>
+              <span class="value" *ngIf="!product.product_detail.price_to">
+                {{ formatPrice(product.product_detail.price) }}
+              </span>
+              <span class="value" *ngIf="product.product_detail.price_to">
+                {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">
+                <i class="fas fa-vector-square"></i>
+                Diện tích:
+              </span>
+              <span class="value">{{ product.product_detail.area }} m²</span>
+            </div>
+            <div class="info-item">
+              <span class="label">
+                <i class="fas fa-bed"></i>
+                Số phòng ngủ:
+              </span>
+              <span class="value">{{ product.product_detail.bedroom }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">
+                <i class="fas fa-bath"></i>
+                Số phòng tắm:
+              </span>
+              <span class="value">{{ product.product_detail.bathroom }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">
+                <i class="fas fa-home"></i>
+                Loại hình:
+              </span>
+              <span class="value">{{ product.product_detail.type_product }}</span>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.investor">
+              <span class="label">
+                <i class="fas fa-building"></i>
+                Chủ đầu tư:
+              </span>
+              <span class="value">{{ product.product_detail.investor }}</span>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.project_type">
+              <span class="label">
+                <i class="fas fa-city"></i>
+                Loại dự án:
+              </span>
+              <span class="value">{{ product.product_detail.project_type }}</span>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.project_status">
+              <span class="label">
+                <i class="fas fa-info-circle"></i>
+                Trạng thái:
+              </span>
+              <span class="value">{{ product.product_detail.project_status }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Địa chỉ -->
+        <div class="info-section">
+          <h2>Địa chỉ</h2>
+          <p class="address">
+            {{ product.address_detail.address }}, {{ product.address_detail.ward }},
+            {{ product.address_detail.district }}, {{ product.address_detail.province }}
+          </p>
+          <div class="map-container">
+            <div id="map"></div>
+          </div>
+          <a [href]="product.address_detail.google_address_link" target="_blank" class="map-link">
+            <i class="fas fa-map-marker-alt"></i> Xem trên bản đồ
+          </a>
+        </div>
+
+        <!-- Chi phí -->
+        <div class="info-section" *ngIf="product.product_detail.eletric_price || product.product_detail.water_price || product.product_detail.internet_price">
+          <h2>Chi phí dịch vụ</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="product.product_detail.eletric_price">
+              <span class="label">Giá điện:</span>
+              <span class="value">{{ formatPrice(product.product_detail.eletric_price) }}/kWh</span>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.water_price">
+              <span class="label">Giá nước:</span>
+              <span class="value">{{ formatPrice(product.product_detail.water_price) }}/m³</span>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.internet_price">
+              <span class="label">Giá Internet:</span>
+              <span class="value">{{ formatPrice(product.product_detail.internet_price) }}/tháng</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nội dung chi tiết -->
+        <div class="info-section">
+          <h2>Thông tin chi tiết</h2>
+          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.content)"></div>
+        </div>
+
+        <!-- Tiện ích -->
+        <div class="info-section" *ngIf="product.product_detail.utilities">
+          <h2>Tiện ích</h2>
+          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.utilities)"></div>
+        </div>
+
+        <!-- Nội thất -->
+        <div class="info-section" *ngIf="product.product_detail.interiol">
+          <h2>Nội thất</h2>
+          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.interiol)"></div>
+        </div>
+
+        <!-- Công cụ tính lãi suất -->
+        <div class="info-section">
+          <h2>
+            <i class="fas fa-calculator"></i>
+            Công cụ tính lãi suất vay
+          </h2>
+          <app-loan-calculator></app-loan-calculator>
+        </div>
+
+        <!-- Social Share -->
+        <div class="info-section">
+          <h2>Chia sẻ</h2>
+          <div class="social-share">
+            <button class="share-btn facebook" (click)="shareOnFacebook()">
+              <i class="fab fa-facebook-f"></i>
+              Facebook
+            </button>
+            <button class="share-btn twitter" (click)="shareOnTwitter()">
+              <i class="fab fa-twitter"></i>
+              Twitter
+            </button>
+            <button class="share-btn zalo" (click)="shareOnZalo()">
+              <img src="https://deliverbit.com/images/7982070.png" alt="Zalo">
+              Zalo
+            </button>
+            <button class="share-btn copy" (click)="copyLink()">
+              <i class="fas fa-link"></i>
+              Sao chép liên kết
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Contact Form -->
+        <div class="info-section">
+          <h2>Liên hệ tư vấn</h2>
+          <form class="contact-form" (ngSubmit)="onSubmitContact()" [formGroup]="contactForm">
+            <div class="form-group">
+              <input type="text" formControlName="name" placeholder="Họ và tên *">
+              <div class="error-message" *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+                Vui lòng nhập họ tên
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="tel" formControlName="phone" placeholder="Số điện thoại *">
+              <div class="error-message" *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+                Vui lòng nhập số điện thoại hợp lệ
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="email" formControlName="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <textarea formControlName="message" placeholder="Nội dung tin nhắn" rows="4"></textarea>
+            </div>
+            <button type="submit" [disabled]="contactForm.invalid || submitting">
+              <i class="fas fa-paper-plane"></i>
+              {{ submitting ? 'Đang gửi...' : 'Gửi tin nhắn' }}
+            </button>
+          </form>
+        </div>
+
+        <!-- Danh sách sản phẩm trong dự án -->
+        <div class="info-section" *ngIf="isProject && projectProducts.length > 0">
+          <h2>
+            <i class="fas fa-building"></i>
+            Danh sách căn hộ trong dự án
+          </h2>
+          <div class="project-products">
+            <div class="project-product-card" *ngFor="let item of projectProducts">
+              <div class="product-image">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + item.images[0].drive_id" [alt]="item.name" onerror="this.src='assets/images/default_property.jpeg'">
+                <div class="product-overlay">
+                  <div class="product-status" [ngClass]="item.product_detail.project_status">
+                    {{ item.product_detail.project_status }}
+                  </div>
+                </div>
+              </div>
+              <div class="product-content">
+                <h3 class="product-title">{{ item.name }}</h3>
+                <div class="product-info">
+                  <div class="info-row">
+                    <div class="info-item">
+                      <i class="fas fa-vector-square"></i>
+                      <span>{{ item.product_detail.area }} m²</span>
+                    </div>
+                    <div class="info-item">
+                      <i class="fas fa-bed"></i>
+                      <span>{{ item.product_detail.bedroom }} phòng ngủ</span>
+                    </div>
+                  </div>
+                  <div class="info-row">
+                    <div class="info-item">
+                      <i class="fas fa-bath"></i>
+                      <span>{{ item.product_detail.bathroom }} phòng tắm</span>
+                    </div>
+                    <div class="info-item">
+                      <i class="fas fa-compass"></i>
+                      <span>{{ item.product_detail.type_of_investment }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-price">
+                  <span *ngIf="!item.product_detail.price_to">{{ formatPrice(item.product_detail.price) }}</span>
+                  <span *ngIf="item.product_detail.price_to">
+                    {{ formatPrice(item.product_detail.price) }} - {{ formatPrice(item.product_detail.price_to) }}
+                  </span>
+                </div>
+                <div class="product-tags">
+                  <span *ngFor="let tag of item.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+                    {{ tag.name }}
+                  </span>
+                </div>
+                <a [routerLink]="['/detail', item.id]" class="view-detail-btn">
+                  <span>Xem chi tiết</span>
+                  <i class="fas fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sản phẩm tương tự -->
+        <div class="info-section" *ngIf="!isProject">
+          <h2>Sản phẩm tương tự</h2>
+          <div class="related-products">
+            <div class="product-card" *ngFor="let relatedProduct of relatedProducts">
+              <div class="product-image">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + relatedProduct.images[0].drive_id" [alt]="relatedProduct.name" onerror="this.src='assets/images/default_property.jpeg'">
+                <div class="product-badge" *ngIf="relatedProduct.product_detail.type_product === 'project'">Dự án</div>
+              </div>
+              <div class="product-content">
+                <h3>{{ relatedProduct.name }}</h3>
+                <p class="address">
+                  <i class="fas fa-map-marker-alt"></i>
+                  {{ relatedProduct.address_detail.address }}
+                </p>
+                <div class="details">
+                  <span><i class="fas fa-bed"></i> {{ relatedProduct.product_detail.bedroom }}</span>
+                  <span><i class="fas fa-bath"></i> {{ relatedProduct.product_detail.bathroom }}</span>
+                  <span><i class="fas fa-vector-square"></i> {{ relatedProduct.product_detail.area }}m²</span>
+                </div>
+                <div class="price">{{ formatPrice(relatedProduct.product_detail.price) }}</div>
+                <a [routerLink]="['/detail', relatedProduct.id]" class="view-more">Xem chi tiết</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

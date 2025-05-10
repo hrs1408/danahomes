@@ -5,13 +5,12 @@
     </h2>
 
     <div class="cities-grid">
-      <div class="city-card" *ngFor="let city of cities">
+      <div class="city-card" *ngFor="let city of cities" (click)="searchByCity(city.name)">
         <div class="city-image">
           <img [src]="city.image" [alt]="city.name">
           <div class="city-overlay">
             <div class="hover-content">
-              <div class="project-count">{{city.projectCount}}</div>
-              <div class="project-label">Dự án</div>
+              <div class="project-label">Xem dự án tại {{city.name}}</div>
             </div>
             <div class="default-content">
               <h3 class="city-name">{{city.name}}</h3>

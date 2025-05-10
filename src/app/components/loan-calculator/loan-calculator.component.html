@@ -1,0 +1,105 @@
+<div class="loan-calculator">
+  <form [formGroup]="loanForm" (ngSubmit)="calculateLoan()">
+    <div class="form-group">
+      <label>
+        <i class="fas fa-money-bill-wave"></i>
+        Số tiền vay
+      </label>
+      <input
+        type="number"
+        formControlName="loanAmount"
+        placeholder="Nhập số tiền vay"
+        (input)="calculateLoan()"
+      >
+      <div class="error-message" *ngIf="loanForm.get('loanAmount')?.invalid && loanForm.get('loanAmount')?.touched">
+        Số tiền vay tối thiểu là 1.000.000 VNĐ
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <i class="fas fa-calendar-alt"></i>
+        Thời gian vay (tháng)
+      </label>
+      <input
+        type="number"
+        formControlName="loanTerm"
+        placeholder="Nhập thời gian vay"
+        (input)="calculateLoan()"
+      >
+      <div class="error-message" *ngIf="loanForm.get('loanTerm')?.invalid && loanForm.get('loanTerm')?.touched">
+        Thời gian vay từ 1 đến 360 tháng
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <i class="fas fa-percent"></i>
+        Lãi suất (%/năm)
+      </label>
+      <input
+        type="number"
+        formControlName="interestRate"
+        placeholder="Nhập lãi suất"
+        (input)="calculateLoan()"
+      >
+      <div class="error-message" *ngIf="loanForm.get('interestRate')?.invalid && loanForm.get('interestRate')?.touched">
+        Lãi suất từ 0.1% đến 20%
+      </div>
+    </div>
+  </form>
+
+  <div class="result" *ngIf="result">
+    <div class="result-item">
+      <span class="label">
+        <i class="fas fa-coins"></i>
+        Trả góp hàng tháng
+      </span>
+      <span class="value highlight">{{ formatCurrency(result.monthlyPayment) }}</span>
+    </div>
+
+    <div class="result-item">
+      <span class="label">
+        <i class="fas fa-chart-line"></i>
+        Tổng tiền lãi
+      </span>
+      <span class="value">{{ formatCurrency(result.totalInterest) }}</span>
+    </div>
+
+    <div class="result-item">
+      <span class="label">
+        <i class="fas fa-money-check-alt"></i>
+        Tổng tiền phải trả
+      </span>
+      <span class="value">{{ formatCurrency(result.totalPayment) }}</span>
+    </div>
+
+    <button class="schedule-btn" (click)="toggleSchedule()">
+      <i class="fas" [class.fa-chevron-down]="!showSchedule" [class.fa-chevron-up]="showSchedule"></i>
+      {{ showSchedule ? 'Ẩn lịch trả nợ' : 'Xem lịch trả nợ' }}
+    </button>
+
+    <div class="schedule" *ngIf="showSchedule">
+      <table>
+        <thead>
+          <tr>
+            <th>Kỳ</th>
+            <th>Gốc còn lại</th>
+            <th>Gốc</th>
+            <th>Lãi</th>
+            <th>Tổng phải trả</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of result.schedule">
+            <td>{{ item.month }}</td>
+            <td>{{ formatCurrency(item.remainingPrincipal) }}</td>
+            <td>{{ formatCurrency(item.principal) }}</td>
+            <td>{{ formatCurrency(item.interest) }}</td>
+            <td>{{ formatCurrency(item.monthlyPayment) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

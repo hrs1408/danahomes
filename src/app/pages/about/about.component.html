@@ -12,7 +12,7 @@
     <div class="about-header">
       <h1>{{ introduction.title }}</h1>
       <div *ngIf="introduction.image" class="about-image">
-        <img [src]="'https://lh3.googleusercontent.com/d/' + introduction.image.drive_id" [alt]="introduction.title">
+        <img [src]="'https://lh3.googleusercontent.com/d/' + introduction.image.drive_id" [alt]="introduction.title" onerror="this.src='assets/images/default_property.jpeg'">
       </div>
     </div>
 

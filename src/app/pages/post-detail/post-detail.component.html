@@ -50,7 +50,7 @@
             <h3>Tin nổi bật</h3>
             <div class="featured-posts">
               <div class="featured-post">
-                <img [src]="'https://lh3.googleusercontent.com/d/' + post?.image?.drive_id" [alt]="post?.title">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + post?.image?.drive_id" [alt]="post?.title" onerror="this.src='assets/images/default_property.jpeg'">
                 <div class="featured-content">
                   <h4>{{ post?.title }}</h4>
                   <span class="post-date">{{ getPostDate(post?.created_at || '') | date:'dd/MM/yyyy' }}</span>

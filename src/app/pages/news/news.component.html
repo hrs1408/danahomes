@@ -19,9 +19,9 @@
           </div>
 
           <div *ngIf="!loading && !error" class="news-grid">
-            <article *ngFor="let post of posts" class="news-card">
+            <article *ngFor="let post of paginatedPosts" class="news-card">
               <div class="news-image">
-                <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title" onerror="this.src='assets/images/default_property.jpeg'">
                 <div class="post-date">
                   <span class="day">{{ getPostDate(post) | date:'dd' }}</span>
                   <span class="month">{{ getPostDate(post) | date:'MM' }}</span>
@@ -33,10 +33,25 @@
                 <p class="news-excerpt">{{ getExcerpt(post.content) }}</p>
                 <div class="news-meta">
                   <span class="post-type" [class]="post.post_type">{{ post.post_type }}</span>
-                  <a [routerLink]="['/news', post.id]" class="read-more">Xem thêm</a>
+                  <a (click)="readMore(post.id)" class="read-more">Xem thêm</a>
                 </div>
               </div>
             </article>
+          </div>
+
+          <!-- Pagination -->
+          <div *ngIf="!loading && !error && totalPages > 1" class="pagination">
+            <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+              <span>&laquo;</span>
+            </button>
+            <button class="pagination-btn" *ngFor="let page of getPageNumbers()"
+              [class.active]="page === currentPage"
+              (click)="goToPage(page)">
+              {{ page }}
+            </button>
+            <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+              <span>&raquo;</span>
+            </button>
           </div>
 
           <div *ngIf="!loading && !error && posts.length === 0" class="no-posts">
@@ -62,7 +77,7 @@
             <h3>Tin nổi bật</h3>
             <div class="featured-posts">
               <div *ngFor="let post of posts.slice(0, 3)" class="featured-post">
-                <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title">
+                <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title" onerror="this.src='assets/images/default_property.jpeg'">
                 <div class="featured-content">
                   <h4>{{ post.title }}</h4>
                   <span class="post-date">{{ getPostDate(post) | date:'dd/MM/yyyy' }}</span>

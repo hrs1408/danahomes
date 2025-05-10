@@ -17,16 +17,15 @@
           <li><a routerLink="/">Trang chủ</a></li>
           <li><a routerLink="/about">Giới thiệu</a></li>
           <li>
-            <a href="#">Sản phẩm</a>
+            <a href="/products">Sản phẩm</a>
             <div class="dropdown-menu">
               <ul>
-                <li><a href="#">Căn hộ chung cư</a></li>
-                <li><a href="#">Nhà riêng</a></li>
-                <li><a href="#">Biệt thự liền kề</a></li>
-                <li><a href="#">Nhà mặt phố</a></li>
-                <li><a href="#">Đất nền dự án</a></li>
-                <li><a href="#">Trang trại, khu nghỉ dưỡng</a></li>
-                <li><a href="#">Kho, nhà xưởng</a></li>
+                <li><a [routerLink]="['/products']">Tất cả sản phẩm</a></li>
+                <li *ngFor="let category of categories">
+                  <a [routerLink]="['/products']" [queryParams]="{category: category.id}">
+                    <i [class]="category.icon"></i> {{ category.name }}
+                  </a>
+                </li>
               </ul>
             </div>
           </li>
@@ -37,6 +36,16 @@
       <a href="#" class="contact-buttons">
         <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
       </a>
+      <div class="language-selector" (click)="toggleLanguageDropdown($event)">
+        <i class="fa-solid fa-language"></i>
+        <span>{{ getCurrentLanguageName() }}</span>
+        <i class="fa-solid fa-chevron-down"></i>
+        <div class="language-dropdown" [class.show]="isLanguageDropdownOpen">
+          <div class="language-item" *ngFor="let lang of languages" (click)="changeLanguage(lang.code, $event)">
+            {{ lang.name }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="mobile-menu" [class.active]="isMobileMenuOpen">
@@ -63,13 +72,12 @@
           </a>
           <div class="mobile-dropdown-menu" [class.active]="activeDropdown === 'products'">
             <ul>
-              <li><a href="#" (click)="toggleMobileMenu()">Căn hộ chung cư</a></li>
-              <li><a href="#" (click)="toggleMobileMenu()">Nhà riêng</a></li>
-              <li><a href="#" (click)="toggleMobileMenu()">Biệt thự liền kề</a></li>
-              <li><a href="#" (click)="toggleMobileMenu()">Nhà mặt phố</a></li>
-              <li><a href="#" (click)="toggleMobileMenu()">Đất nền dự án</a></li>
-              <li><a href="#" (click)="toggleMobileMenu()">Trang trại, khu nghỉ dưỡng</a></li>
-              <li><a href="#" (click)="toggleMobileMenu()">Kho, nhà xưởng</a></li>
+              <li><a [routerLink]="['/products']" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
+              <li *ngFor="let category of categories">
+                <a [routerLink]="['/products']" [queryParams]="{category: category.id}" (click)="toggleMobileMenu()">
+                  <i [class]="category.icon"></i> {{ category.name }}
+                </a>
+              </li>
             </ul>
           </div>
         </li>
@@ -80,5 +88,8 @@
     <a href="#" class="mobile-contact-button" (click)="toggleMobileMenu()">
       <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
     </a>
+    <div class="mobile-language-selector">
+      <div id="google_translate_element"></div>
+    </div>
   </div>
 </header>

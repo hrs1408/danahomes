@@ -17,9 +17,21 @@ import { ProjectByCityComponent } from './components/project-by-city/project-by-
 import { AboutComponent } from './pages/about/about.component';
 import { NewsComponent } from './pages/news/news.component';
 import { PostDetailComponent } from './pages/post-detail/post-detail.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { LoanCalculatorComponent } from './components/loan-calculator/loan-calculator.component';
+import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { SearchResultsComponent } from './pages/search-results/search-results.component';
 
 // Register Swiper custom elements
 register();
+
+const routes: Routes = [
+  { path: 'search', component: SearchResultsComponent }
+];
 
 @NgModule({
   declarations: [
@@ -35,13 +47,25 @@ register();
     ProjectByCityComponent,
     AboutComponent,
     NewsComponent,
-    PostDetailComponent
+    PostDetailComponent,
+    ProductsComponent,
+    LoanCalculatorComponent,
+    SearchResultsComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
+    FormsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [
     provideClientHydration()

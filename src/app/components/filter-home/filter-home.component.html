@@ -16,18 +16,24 @@
   </div>
 
   <div class="search-box">
-    <select class="property-type">
+    <select class="property-type" [(ngModel)]="searchForm.product_type">
       <option value="">Loại nhà đất</option>
-      <!-- Thêm các option khác -->
+      <option value="apartment">Căn hộ</option>
+      <option value="villa">Biệt thự</option>
+      <option value="house">Nhà phố</option>
+      <option value="land">Đất nền</option>
+      <option value="office">Văn phòng</option>
+      <option value="store">Cửa hàng</option>
     </select>
 
     <input
       type="text"
       class="search-input"
       placeholder="Nhập địa điểm hoặc từ khóa (Ví dụ: Vinhomes)"
+      [(ngModel)]="searchForm.name"
     />
 
-    <button class="search-btn">
+    <button class="search-btn" (click)="onSearch()">
       <i class="fas fa-search"></i>
       Tìm kiếm
     </button>
@@ -43,7 +49,7 @@
       <div class="search-row">
         <div class="search-group">
           <label>Tỉnh/Thành phố</label>
-          <select class="search-select" (change)="onProvinceChange($event)">
+          <select class="search-select" (change)="onProvinceChange($event)" [(ngModel)]="selectedProvince">
             <option value="">Chọn Tỉnh/Thành phố</option>
             <option *ngFor="let province of provinces" [value]="province.code">
               {{ province.name }}
@@ -55,8 +61,9 @@
           <label>Quận/Huyện</label>
           <select
             class="search-select"
-            [disabled]="!searchForm.province"
+            [disabled]="!selectedProvince"
             (change)="onDistrictChange($event)"
+            [(ngModel)]="selectedDistrict"
           >
             <option value="">Chọn Quận/Huyện</option>
             <option *ngFor="let district of districts" [value]="district.code">
@@ -68,30 +75,25 @@
 
       <div class="search-row">
         <div class="search-group">
-          <label>Diện tích</label>
+          <label>Diện tích (m²)</label>
           <div class="range-inputs">
             <div class="input-with-unit">
-              <input type="number" placeholder="Từ" class="number-input" />
-              <span class="unit">m²</span>
-            </div>
-            <span class="separator">-</span>
-            <div class="input-with-unit">
-              <input type="number" placeholder="Đến" class="number-input" />
+              <input type="number" placeholder="Từ" class="number-input" [(ngModel)]="searchForm.area" />
               <span class="unit">m²</span>
             </div>
           </div>
         </div>
 
         <div class="search-group">
-          <label>Mức giá</label>
+          <label>Mức giá (tỷ)</label>
           <div class="range-inputs">
             <div class="input-with-unit">
-              <input type="number" placeholder="Từ" class="number-input" />
+              <input type="number" placeholder="Từ" class="number-input" [(ngModel)]="searchForm.price" />
               <span class="unit">tỷ</span>
             </div>
             <span class="separator">-</span>
             <div class="input-with-unit">
-              <input type="number" placeholder="Đến" class="number-input" />
+              <input type="number" placeholder="Đến" class="number-input" [(ngModel)]="searchForm.price_to" />
               <span class="unit">tỷ</span>
             </div>
           </div>
@@ -101,27 +103,27 @@
   </div>
 
   <div class="property-types">
-    <div class="type-item">
+    <div class="type-item" (click)="searchForm.product_type = 'apartment'; onSearch()">
       <i class="fas fa-building"></i>
       <span>Căn hộ</span>
     </div>
-    <div class="type-item">
+    <div class="type-item" (click)="searchForm.product_type = 'villa'; onSearch()">
       <i class="fas fa-home"></i>
       <span>Biệt thự</span>
     </div>
-    <div class="type-item">
-      <i class="fas fa-city"></i>
-      <span>Chung cư</span>
-    </div>
-    <div class="type-item">
+    <div class="type-item" (click)="searchForm.product_type = 'house'; onSearch()">
       <i class="fas fa-house-user"></i>
       <span>Nhà phố</span>
     </div>
-    <div class="type-item">
+    <div class="type-item" (click)="searchForm.product_type = 'land'; onSearch()">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Đất nền</span>
+    </div>
+    <div class="type-item" (click)="searchForm.product_type = 'office'; onSearch()">
       <i class="fas fa-building"></i>
       <span>Văn phòng</span>
     </div>
-    <div class="type-item">
+    <div class="type-item" (click)="searchForm.product_type = 'store'; onSearch()">
       <i class="fas fa-store"></i>
       <span>Cửa hàng</span>
     </div>
