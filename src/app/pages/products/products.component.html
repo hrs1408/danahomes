@@ -93,45 +93,50 @@
 
             <!-- Giao diện cho danh mục dự án -->
             <ng-container *ngIf="isProjectCategory">
-              <div *ngFor="let product of paginatedProducts" class="project-card">
-                <div class="project-image">
+              <div *ngFor="let product of paginatedProducts" class="project-card hover-effect">
+                <div class="project-image-wrapper">
                   <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
                   <div class="project-overlay">
-                    <div class="project-status" [ngClass]="product.product_detail.project_status">
-                      {{ product.product_detail.project_status }}
-                    </div>
-                    <div class="project-type">
-                      {{ product.product_detail.project_type }}
+                    <div class="project-badges">
+                      <div class="project-status" [ngClass]="product.product_detail.project_status">
+                        {{ product.product_detail.project_status }}
+                      </div>
+                      <div class="project-type">
+                        {{ product.product_detail.project_type }}
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="project-content">
                   <h3 class="project-title">{{ product.name }}</h3>
                   <div class="project-info">
-                    <div class="info-item">
+                    <div class="info-item location">
                       <i class="fas fa-map-marker-alt"></i>
                       <span>{{ product.address_detail.address }}</span>
                     </div>
-                    <div class="info-item">
-                      <i class="fas fa-building"></i>
-                      <span>{{ product.product_detail.investor }}</span>
-                    </div>
-                    <div class="info-item">
-                      <i class="fas fa-chart-area"></i>
-                      <span>{{ product.product_detail.area }} m²</span>
+                    <div class="info-row">
+                      <div class="info-item investor">
+                        <i class="fas fa-building"></i>
+                        <span>{{ product.product_detail.investor }}</span>
+                      </div>
+                      <div class="info-item area">
+                        <i class="fas fa-chart-area"></i>
+                        <span>{{ product.product_detail.area }} m²</span>
+                      </div>
                     </div>
                   </div>
                   <div class="project-price">
+                    <i class="fas fa-tag"></i>
                     <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
                     <span *ngIf="product.product_detail.price_to">
                       {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
                     </span>
                   </div>
                   <div class="project-utilities">
-                    <h4>Tiện ích</h4>
+                    <h4><i class="fas fa-star"></i> Tiện ích nổi bật</h4>
                     <div class="utilities-list">
                       <div class="utility-item" *ngFor="let utility of product.product_detail.utilities.split(',')">
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check-circle"></i>
                         <span>{{ utility.trim() }}</span>
                       </div>
                     </div>

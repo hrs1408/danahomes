@@ -1,0 +1,197 @@
+<div class="contact-page">
+  <div class="contact-header">
+    <h2>Liên hệ với chúng tôi</h2>
+    <p>Hãy để lại thông tin, chúng tôi sẽ liên hệ với bạn sớm nhất</p>
+  </div>
+
+  <div [ngClass]="{'contact-container-normal': !byModal, 'contact-container-modal': byModal}">
+    <div class="contact-info" *ngIf="!byModal">
+      <div class="info-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <div>
+          <h4>Địa chỉ</h4>
+          <p>123 Nguyễn Văn Linh, Đà Nẵng</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-phone"></i>
+        <div>
+          <h4>Điện thoại</h4>
+          <p>0123 456 789</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-envelope"></i>
+        <div>
+          <h4>Email</h4>
+          <p>contact&#64;danahomes.com</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-clock"></i>
+        <div>
+          <h4>Giờ làm việc</h4>
+          <p>8:00 - 17:30, Thứ 2 - Chủ nhật</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-container">
+      <form
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit()"
+        class="contact-form"
+      >
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">
+              <i class="fas fa-user"></i>
+              Họ và tên *
+            </label>
+            <input
+              type="text"
+              id="fullName"
+              formControlName="fullName"
+              placeholder="Nhập họ và tên của bạn"
+              [ngClass]="{
+                'is-invalid':
+                  contactForm.get('fullName')?.invalid &&
+                  contactForm.get('fullName')?.touched
+              }"
+            />
+            <div
+              *ngIf="
+                contactForm.get('fullName')?.invalid &&
+                contactForm.get('fullName')?.touched
+              "
+              class="invalid-feedback"
+            >
+              Vui lòng nhập họ và tên
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">
+              <i class="fas fa-phone"></i>
+              Số điện thoại *
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
+              placeholder="Nhập số điện thoại"
+              [ngClass]="{
+                'is-invalid':
+                  contactForm.get('phone')?.invalid &&
+                  contactForm.get('phone')?.touched
+              }"
+            />
+            <div
+              *ngIf="
+                contactForm.get('phone')?.invalid &&
+                contactForm.get('phone')?.touched
+              "
+              class="invalid-feedback"
+            >
+              <span *ngIf="contactForm.get('phone')?.errors?.['required']"
+                >Vui lòng nhập số điện thoại</span
+              >
+              <span *ngIf="contactForm.get('phone')?.errors?.['pattern']"
+                >Số điện thoại không hợp lệ</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">
+              <i class="fas fa-envelope"></i>
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Nhập địa chỉ email"
+              [ngClass]="{
+                'is-invalid':
+                  contactForm.get('email')?.invalid &&
+                  contactForm.get('email')?.touched
+              }"
+            />
+            <div
+              *ngIf="
+                contactForm.get('email')?.invalid &&
+                contactForm.get('email')?.touched
+              "
+              class="invalid-feedback"
+            >
+              Email không hợp lệ
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address">
+              <i class="fas fa-map-marker-alt"></i>
+              Địa chỉ
+            </label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              placeholder="Nhập địa chỉ của bạn"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="content">
+            <i class="fas fa-comment"></i>
+            Nội dung *
+          </label>
+          <textarea
+            id="content"
+            formControlName="content"
+            rows="4"
+            placeholder="Nhập nội dung liên hệ"
+            [ngClass]="{
+              'is-invalid':
+                contactForm.get('content')?.invalid &&
+                contactForm.get('content')?.touched
+            }"
+          ></textarea>
+          <div
+            *ngIf="
+              contactForm.get('content')?.invalid &&
+              contactForm.get('content')?.touched
+            "
+            class="invalid-feedback"
+          >
+            Vui lòng nhập nội dung
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="productLink">
+            <i class="fas fa-link"></i>
+            Link bất động sản quan tâm
+          </label>
+          <input
+            type="text"
+            id="productLink"
+            formControlName="productLink"
+            placeholder="Nhập link bất động sản bạn quan tâm"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit" [disabled]="isSubmitting">
+            <i class="fas fa-paper-plane"></i>
+            {{ isSubmitting ? "Đang gửi..." : "Gửi thông tin" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

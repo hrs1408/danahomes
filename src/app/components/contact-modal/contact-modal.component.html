@@ -1,0 +1,11 @@
+<div class="modal-overlay" (click)="close()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">Liên hệ tư vấn</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="modal-body">
+      <app-contact-form [byModal]="true"></app-contact-form>
+    </div>
+  </div>
+</div>

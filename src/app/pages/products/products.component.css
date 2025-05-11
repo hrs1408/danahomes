@@ -378,179 +378,183 @@
 
 .project-grid .project-card {
   background: #fff;
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  margin-bottom: 30px;
 }
 
-.project-grid .project-card:hover {
+.project-grid .project-card.hover-effect:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.project-grid .project-card:hover .project-image img {
-  transform: scale(1.05);
-}
-
-.project-grid .project-card .project-image {
+.project-grid .project-card .project-image-wrapper {
   position: relative;
-  height: 300px;
+  height: 250px;
   overflow: hidden;
 }
 
-.project-grid .project-card .project-image img {
+.project-grid .project-card .project-image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.project-grid .project-card .project-image .project-overlay {
+.project-grid .project-card .project-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.project-grid .project-card .project-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  padding: 1rem;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+  padding: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  z-index: 1;
 }
 
-.project-grid .project-card .project-image .project-overlay .project-status {
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  backdrop-filter: blur(5px);
+.project-grid .project-card .project-badges {
+  display: flex;
+  gap: 10px;
 }
 
-.project-grid .project-card .project-image .project-overlay .project-status.dang-ban {
-  background-color: rgba(76, 175, 80, 0.9);
-  color: white;
-}
-
-.project-grid .project-card .project-image .project-overlay .project-status.sap-mo-ban {
-  background-color: rgba(255, 152, 0, 0.9);
-  color: white;
-}
-
-.project-grid .project-card .project-image .project-overlay .project-status.da-ban {
-  background-color: rgba(244, 67, 54, 0.9);
-  color: white;
-}
-
-.project-grid .project-card .project-image .project-overlay .project-type {
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  background-color: rgba(33, 150, 243, 0.9);
-  color: white;
+.project-grid .project-card .project-status, .project-grid .project-card .project-type {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #fff;
   backdrop-filter: blur(5px);
 }
 
 .project-grid .project-card .project-content {
-  padding: 2rem;
+  padding: 25px;
 }
 
-.project-grid .project-card .project-content .project-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #002250;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
+.project-grid .project-card .project-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  line-height: 1.3;
 }
 
-.project-grid .project-card .project-content .project-info {
-  margin-bottom: 1.5rem;
+.project-grid .project-card .project-info {
+  margin-bottom: 20px;
 }
 
-.project-grid .project-card .project-content .project-info .info-item {
+.project-grid .project-card .project-info .info-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-}
-
-.project-grid .project-card .project-content .project-info .info-item i {
-  color: #1a73e8;
-  font-size: 1.125rem;
-  width: 1.5rem;
-  margin-right: 0.75rem;
-}
-
-.project-grid .project-card .project-content .project-info .info-item span {
+  margin-bottom: 10px;
   color: #666;
-  font-size: 1rem;
 }
 
-.project-grid .project-card .project-content .project-price {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a73e8;
-  margin-bottom: 1.5rem;
-}
-
-.project-grid .project-card .project-content .project-utilities {
-  margin-bottom: 1.5rem;
-}
-
-.project-grid .project-card .project-content .project-utilities h4 {
-  font-size: 1.125rem;
+.project-grid .project-card .project-info .info-item i {
+  width: 25px;
   color: #002250;
-  margin-bottom: 1rem;
+  margin-right: 10px;
 }
 
-.project-grid .project-card .project-content .project-utilities .utilities-list {
+.project-grid .project-card .project-info .info-item.location {
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 15px;
+}
+
+.project-grid .project-card .project-info .info-row {
+  display: flex;
+  gap: 20px;
+}
+
+.project-grid .project-card .project-price {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #e74c3c;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-grid .project-card .project-price i {
+  font-size: 0.9em;
+}
+
+.project-grid .project-card .project-utilities {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.project-grid .project-card .project-utilities h4 {
+  font-size: 1.1em;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-grid .project-card .project-utilities h4 i {
+  color: #f1c40f;
+}
+
+.project-grid .project-card .project-utilities .utilities-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
 }
 
-.project-grid .project-card .project-content .project-utilities .utilities-list .utility-item {
+.project-grid .project-card .project-utilities .utility-item {
   display: flex;
   align-items: center;
-}
-
-.project-grid .project-card .project-content .project-utilities .utilities-list .utility-item i {
-  color: #4caf50;
-  margin-right: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.project-grid .project-card .project-content .project-utilities .utilities-list .utility-item span {
+  gap: 8px;
+  font-size: 0.9em;
   color: #666;
-  font-size: 0.875rem;
 }
 
-.project-grid .project-card .project-content .view-project-btn {
+.project-grid .project-card .project-utilities .utility-item i {
+  color: #2ecc71;
+}
+
+.project-grid .project-card .view-project-btn {
   width: 100%;
-  padding: 1rem;
-  background: linear-gradient(45deg, #1a73e8, #1557b0);
-  border: none;
-  border-radius: 8px;
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #002250, #2980b9);
   color: white;
-  font-size: 1rem;
-  font-weight: 500;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  cursor: pointer;
+  gap: 10px;
   transition: all 0.3s ease;
 }
 
-.project-grid .project-card .project-content .view-project-btn:hover {
-  background: linear-gradient(45deg, #1557b0, #1a73e8);
+.project-grid .project-card .view-project-btn:hover {
+  background: linear-gradient(135deg, #2980b9, #002250);
   transform: translateY(-2px);
 }
 
-.project-grid .project-card .project-content .view-project-btn i {
-  font-size: 1rem;
+.project-grid .project-card .view-project-btn i {
   transition: transform 0.3s ease;
 }
 
-.project-grid .project-card .project-content .view-project-btn:hover i {
+.project-grid .project-card .view-project-btn:hover i {
   transform: translateX(5px);
 }
 
@@ -561,7 +565,7 @@
 }
 
 @media (max-width: 768px) {
-  .project-grid .project-card .project-image {
+  .project-grid .project-card .project-image-wrapper {
     height: 250px;
   }
   .project-grid .project-card .project-content {
@@ -570,4 +574,16 @@
   .project-grid .project-card .project-content .project-utilities .utilities-list {
     grid-template-columns: 1fr;
   }
+}
+
+.project-status.available {
+  background-color: rgba(46, 204, 113, 0.8);
+}
+
+.project-status.sold {
+  background-color: rgba(231, 76, 60, 0.8);
+}
+
+.project-status.pending {
+  background-color: rgba(241, 196, 15, 0.8);
 }

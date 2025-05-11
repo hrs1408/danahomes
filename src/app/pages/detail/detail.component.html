@@ -23,17 +23,36 @@
       </div>
 
       <!-- Product Header -->
-      <div class="product-header">
-        <h1>{{isProject ? 'Dự án:' : 'Sản phẩm:'}} {{ product.name }}</h1>
-        <div class="product-tags">
-          <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
-            {{ tag.name }}
-          </span>
+      <div class="product-header" [class.project-header]="isProject">
+        <div class="header-content">
+          <h1>
+            <span class="product-type">{{ isProject ? 'Dự án bất động sản:' : 'Sản phẩm:' }}</span>
+            {{ product.name }}
+          </h1>
+          <div class="product-tags">
+            <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+              {{ tag.name }}
+            </span>
+          </div>
+          <div *ngIf="isProject" class="project-meta">
+            <div class="meta-item">
+              <i class="fas fa-building"></i>
+              <span>{{ product.product_detail.investor }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-map-marked-alt"></i>
+              <span>{{ product.address_detail.district }}, {{ product.address_detail.province }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-chart-line"></i>
+              <span>{{ product.product_detail.project_status }}</span>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Product Gallery -->
-      <div class="product-gallery">
+      <div class="product-gallery" [class.project-gallery]="isProject">
         <div class="main-image">
           <button class="nav-btn prev" (click)="prevImage()" *ngIf="product.images.length > 1">
             <i class="fas fa-chevron-left"></i>
@@ -42,6 +61,14 @@
           <button class="nav-btn next" (click)="nextImage()" *ngIf="product.images.length > 1">
             <i class="fas fa-chevron-right"></i>
           </button>
+          <div *ngIf="isProject" class="project-overlay">
+            <div class="project-status" [ngClass]="product.product_detail.project_status">
+              {{ product.product_detail.project_status }}
+            </div>
+            <div class="project-type">
+              {{ product.product_detail.project_type }}
+            </div>
+          </div>
         </div>
         <div class="thumbnail-list" *ngIf="product.images.length > 1">
           <div *ngFor="let image of product.images; let i = index"
@@ -54,87 +81,71 @@
       </div>
 
       <!-- Product Info -->
-      <div class="product-info">
-        <div class="info-section">
-          <h2>Thông tin cơ bản</h2>
-          <div class="info-grid">
-            <div class="info-item">
-              <span class="label">
-                <i class="fas fa-tag"></i>
-                Giá:
-              </span>
-              <span class="value" *ngIf="!product.product_detail.price_to">
-                {{ formatPrice(product.product_detail.price) }}
-              </span>
-              <span class="value" *ngIf="product.product_detail.price_to">
-                {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
-              </span>
+      <div class="product-info" [class.project-info]="isProject">
+        <div class="info-section overview-section" *ngIf="isProject">
+          <h2><i class="fas fa-info-circle"></i> Tổng quan dự án</h2>
+          <div class="project-overview">
+            <div class="overview-item">
+              <i class="fas fa-building"></i>
+              <div class="item-content">
+                <span class="label">Chủ đầu tư</span>
+                <span class="value">{{ product.product_detail.investor }}</span>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">
-                <i class="fas fa-vector-square"></i>
-                Diện tích:
-              </span>
-              <span class="value">{{ product.product_detail.area }} m²</span>
+            <div class="overview-item">
+              <i class="fas fa-vector-square"></i>
+              <div class="item-content">
+                <span class="label">Quy mô</span>
+                <span class="value">{{ product.product_detail.area }} m²</span>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">
-                <i class="fas fa-bed"></i>
-                Số phòng ngủ:
-              </span>
-              <span class="value">{{ product.product_detail.bedroom }}</span>
+            <div class="overview-item">
+              <i class="fas fa-home"></i>
+              <div class="item-content">
+                <span class="label">Loại hình</span>
+                <span class="value">{{ product.product_detail.project_type }}</span>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">
-                <i class="fas fa-bath"></i>
-                Số phòng tắm:
-              </span>
-              <span class="value">{{ product.product_detail.bathroom }}</span>
+            <div class="overview-item">
+              <i class="fas fa-chart-line"></i>
+              <div class="item-content">
+                <span class="label">Trạng thái</span>
+                <span class="value status-badge" [ngClass]="product.product_detail.project_status">
+                  {{ product.product_detail.project_status }}
+                </span>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">
-                <i class="fas fa-home"></i>
-                Loại hình:
-              </span>
-              <span class="value">{{ product.product_detail.type_product }}</span>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.investor">
-              <span class="label">
-                <i class="fas fa-building"></i>
-                Chủ đầu tư:
-              </span>
-              <span class="value">{{ product.product_detail.investor }}</span>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.project_type">
-              <span class="label">
-                <i class="fas fa-city"></i>
-                Loại dự án:
-              </span>
-              <span class="value">{{ product.product_detail.project_type }}</span>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.project_status">
-              <span class="label">
-                <i class="fas fa-info-circle"></i>
-                Trạng thái:
-              </span>
-              <span class="value">{{ product.product_detail.project_status }}</span>
+            <div class="overview-item">
+              <i class="fas fa-tag"></i>
+              <div class="item-content">
+                <span class="label">Giá bán</span>
+                <span class="value price-range">
+                  <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                  <span *ngIf="product.product_detail.price_to">
+                    {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Địa chỉ -->
-        <div class="info-section">
-          <h2>Địa chỉ</h2>
-          <p class="address">
-            {{ product.address_detail.address }}, {{ product.address_detail.ward }},
-            {{ product.address_detail.district }}, {{ product.address_detail.province }}
-          </p>
-          <div class="map-container">
-            <div id="map"></div>
+        <div class="info-section location-section">
+          <h2><i class="fas fa-map-marked-alt"></i> Vị trí dự án</h2>
+          <div class="location-content">
+            <p class="address">
+              <i class="fas fa-map-marker-alt"></i>
+              {{ product.address_detail.address }}, {{ product.address_detail.ward }},
+              {{ product.address_detail.district }}, {{ product.address_detail.province }}
+            </p>
+            <div class="map-container">
+              <div id="map"></div>
+            </div>
+            <a [href]="product.address_detail.google_address_link" target="_blank" class="map-link">
+              <i class="fas fa-directions"></i> Xem chỉ đường trên Google Maps
+            </a>
           </div>
-          <a [href]="product.address_detail.google_address_link" target="_blank" class="map-link">
-            <i class="fas fa-map-marker-alt"></i> Xem trên bản đồ
-          </a>
         </div>
 
         <!-- Chi phí -->
@@ -157,20 +168,22 @@
         </div>
 
         <!-- Nội dung chi tiết -->
-        <div class="info-section">
-          <h2>Thông tin chi tiết</h2>
+        <div class="info-section content-section">
+          <h2><i class="fas fa-file-alt"></i> Thông tin chi tiết</h2>
           <div class="content" [innerHTML]="getSafeHtml(product.product_detail.content)"></div>
         </div>
 
         <!-- Tiện ích -->
-        <div class="info-section" *ngIf="product.product_detail.utilities">
-          <h2>Tiện ích</h2>
-          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.utilities)"></div>
+        <div class="info-section utilities-section" *ngIf="product.product_detail.utilities">
+          <h2><i class="fas fa-star"></i> Tiện ích nổi bật</h2>
+          <div class="utilities-content">
+            <div class="content" [innerHTML]="getSafeHtml(product.product_detail.utilities)"></div>
+          </div>
         </div>
 
         <!-- Nội thất -->
-        <div class="info-section" *ngIf="product.product_detail.interiol">
-          <h2>Nội thất</h2>
+        <div class="info-section interior-section" *ngIf="product.product_detail.interiol">
+          <h2><i class="fas fa-couch"></i> Thiết kế & Nội thất</h2>
           <div class="content" [innerHTML]="getSafeHtml(product.product_detail.interiol)"></div>
         </div>
 

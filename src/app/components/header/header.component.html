@@ -33,7 +33,7 @@
           <li><a routerLink="/contact">Liên hệ</a></li>
         </ul>
       </nav>
-      <a href="#" class="contact-buttons">
+      <a href="#" class="contact-buttons" (click)="openContactModal($event)">
         <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
       </a>
       <div class="language-selector" (click)="toggleLanguageDropdown($event)">
@@ -85,7 +85,7 @@
         <li><a routerLink="/contact" (click)="toggleMobileMenu()">Liên hệ</a></li>
       </ul>
     </nav>
-    <a href="#" class="mobile-contact-button" (click)="toggleMobileMenu()">
+    <a class="mobile-contact-button" (click)="openContactModal($event)">
       <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
     </a>
     <div class="mobile-language-selector">

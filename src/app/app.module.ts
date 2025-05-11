@@ -30,6 +30,9 @@ import { CompanyInfoComponent } from './components/company-info/company-info.com
 import { FeaturedNewsComponent } from './components/featured-news/featured-news.component';
 import { FeaturesComponent } from './components/features/features.component';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { ContactFormComponent } from './components/contact-form/contact-form.component';
+import { ContactModalComponent } from './components/contact-modal/contact-modal.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Register Swiper custom elements
 register();
 
@@ -59,7 +62,9 @@ const routes: Routes = [
     CompanyInfoComponent,
     FeaturedNewsComponent,
     FeaturesComponent,
-    LoadingOverlayComponent
+    LoadingOverlayComponent,
+    ContactFormComponent,
+    ContactModalComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +79,8 @@ const routes: Routes = [
       preventDuplicates: true,
     }),
     FormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgbModule,
   ],
   providers: [
     provideClientHydration()

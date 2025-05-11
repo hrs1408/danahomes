@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ProductService, ProductCategory } from '../../services/product.service';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ContactModalComponent } from '../contact-modal/contact-modal.component';
 declare global {
   interface Window {
     googleTranslateElementInit: () => void;
@@ -21,7 +22,7 @@ interface Language {
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   isMobileMenuOpen = false;
@@ -39,7 +40,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     { code: 'zh-CN', name: '中文' }
   ];
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     if (typeof document !== 'undefined') {
@@ -163,6 +167,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       error: (error) => {
         console.error('Lỗi khi tải danh mục:', error);
       }
+    });
+  }
+
+  openContactModal(event: Event): void {
+    event.preventDefault();
+    this.modalService.open(ContactModalComponent, {
+      size: 'xl',
+      centered: true,
+      scrollable: true
     });
   }
 }
