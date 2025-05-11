@@ -1,23 +1,27 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { InformationService, CompanyInformation } from '../../services/information.service';
 
 @Component({
   selector: 'app-contact-form',
   templateUrl: './contact-form.component.html',
   styleUrls: ['./contact-form.component.scss'],
 })
-export class ContactFormComponent {
+export class ContactFormComponent implements OnInit {
   contactForm: FormGroup;
   isSubmitting = false;
   @Input() byModal = false;
+  companyInfo: CompanyInformation | null = null;
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private informationService: InformationService
   ) {
     this.contactForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -26,6 +30,23 @@ export class ContactFormComponent {
       email: ['', [Validators.email]],
       content: ['', Validators.required],
       productLink: ['']
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadCompanyInfo();
+  }
+
+  private loadCompanyInfo(): void {
+    this.informationService.getInformation().subscribe({
+      next: (response) => {
+        if (!response.meta.error) {
+          this.companyInfo = response.data;
+        }
+      },
+      error: (error) => {
+        console.error('Lỗi khi tải thông tin công ty:', error);
+      }
     });
   }
 

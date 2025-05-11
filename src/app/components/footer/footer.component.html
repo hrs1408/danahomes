@@ -58,14 +58,13 @@
       <div class="logo">
         <img src="../../../assets/photos/logo-landscape-2.png" alt="" width="200px" />
       </div>
-      <div class="contact">
+      <div class="contact" *ngIf="companyInfo">
         <div>
-          <i class="fa fa-map-marker"></i> Địa chỉ: Tầng 8 Ladeco, 266 Đội Cấn,
-          Hà Nội
+          <i class="fa fa-map-marker"></i> Địa chỉ: {{ companyInfo.address }}
         </div>
-        <div><i class="fa fa-phone"></i> Hotline: 1900 6750</div>
+        <div><i class="fa fa-phone"></i> Hotline: {{ companyInfo.hotline }}</div>
         <div>
-          <i class="fa fa-envelope"></i> Email: awesome160916&#64;gmail.com
+          <i class="fa fa-envelope"></i> Email: {{ companyInfo.email }}
         </div>
       </div>
     </div>
@@ -77,12 +76,12 @@
         <span class="divider">|</span>
         <span>Phát triển bởi Trung tâm công nghệ HRS</span>
       </div>
-      <div class="footer-social">
+      <div class="footer-social" *ngIf="companyInfo">
         <span>Kết nối với chúng tôi:</span>
         <div class="social-icons">
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#"><i class="fa-brands fa-twitter"></i></a>
-          <a href="#"><i class="fa-brands fa-google"></i></a>
+          <a [href]="companyInfo.facebook" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a [href]="companyInfo.twitter" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+          <a [href]="companyInfo.google" target="_blank"><i class="fa-brands fa-google"></i></a>
         </div>
       </div>
     </div>

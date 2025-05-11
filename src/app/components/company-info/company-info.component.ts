@@ -57,7 +57,7 @@ export class CompanyInfoComponent implements OnInit, AfterViewInit {
 
     try {
       // Fix cho Leaflet icon
-      const iconUrl = 'assets/photos/marker-icon.jpg';
+      const iconUrl = 'https://www.openstreetmap.org/assets/leaflet/dist/images/marker-icon-3d253116ec4ba0e1f22a01cdf1ff7f120fa4d89a6cd0933d68f12951d19809b4.png';
       const iconDefault = this.L.icon({
         iconUrl,
         iconSize: [25, 41],
@@ -78,7 +78,7 @@ export class CompanyInfoComponent implements OnInit, AfterViewInit {
 
       // Thêm marker
       const marker = this.L.marker([16.0544, 108.2022]).addTo(this.map);
-      marker.bindPopup('Dana Homes').openPopup();
+      marker.bindPopup('Danahomes').openPopup();
     } catch (error) {
       console.error('Error initializing map:', error);
     }

@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml, Meta, Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 
 // Khai báo biến L để tránh lỗi khi chạy SSR
 declare let L: any;
@@ -38,6 +39,7 @@ export class DetailComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private meta: Meta,
     private title: Title,
+    private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.initContactForm();
@@ -246,25 +248,46 @@ export class DetailComponent implements OnInit, AfterViewInit {
   }
 
   onSubmitContact(): void {
-    if (this.contactForm.invalid || this.submitting) return;
+    if (this.contactForm.valid && !this.submitting) {
+      this.submitting = true;
 
-    this.submitting = true;
-    const formData = this.contactForm.value;
+      const formData = new FormData();
 
-    this.productService.submitContactForm({
-      ...formData,
-      productId: this.product?.id
-    }).subscribe({
-      next: () => {
-        this.toastr.success('Gửi tin nhắn thành công');
-        this.contactForm.reset();
-        this.submitting = false;
-      },
-      error: (error) => {
-        console.error('Lỗi khi gửi form liên hệ:', error);
-        this.toastr.error('Có lỗi xảy ra. Vui lòng thử lại sau');
-        this.submitting = false;
-      }
-    });
+      // Map form fields to Google Form fields với entry ID chính xác
+      formData.append('entry.1348537145', this.contactForm.value.name);
+      formData.append('entry.338049320', this.contactForm.value.address || 'Từ sản phẩm chi tiết');
+      formData.append('entry.2018706474', this.contactForm.value.phone);
+      formData.append('entry.351127077', this.contactForm.value.email || '');
+      formData.append('entry.1731357089', this.contactForm.value.message);
+      formData.append('entry.165271468', window.location.href);
+
+      // Gửi form đến Google Forms
+      this.http
+        .post(
+          'https://docs.google.com/forms/d/e/1FAIpQLSfJWW50QDcK6S2SCn8EWAKhRlHMeg91k-ZDQsap7Wp3bF84XQ/formResponse',
+          formData
+        )
+        .subscribe({
+          next: () => {
+            this.submitting = false;
+            this.toastr.success('Gửi thông tin thành công! Chúng tôi sẽ liên hệ với bạn sớm.', 'Thành công');
+            this.contactForm.reset();
+          },
+          error: () => {
+            // Google Form luôn trả về lỗi CORS nhưng vẫn submit thành công
+            this.submitting = false;
+            this.toastr.success('Gửi thông tin thành công! Chúng tôi sẽ liên hệ với bạn sớm.', 'Thành công');
+            this.contactForm.reset();
+          }
+        });
+    } else {
+      Object.keys(this.contactForm.controls).forEach(key => {
+        const control = this.contactForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
+      this.toastr.error('Vui lòng điền đầy đủ thông tin bắt buộc');
+    }
   }
 }

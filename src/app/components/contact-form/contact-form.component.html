@@ -5,26 +5,26 @@
   </div>
 
   <div [ngClass]="{'contact-container-normal': !byModal, 'contact-container-modal': byModal}">
-    <div class="contact-info" *ngIf="!byModal">
+    <div class="contact-info" *ngIf="!byModal && companyInfo">
       <div class="info-item">
         <i class="fas fa-map-marker-alt"></i>
         <div>
           <h4>Địa chỉ</h4>
-          <p>123 Nguyễn Văn Linh, Đà Nẵng</p>
+          <p>{{ companyInfo.address }}</p>
         </div>
       </div>
       <div class="info-item">
         <i class="fas fa-phone"></i>
         <div>
           <h4>Điện thoại</h4>
-          <p>0123 456 789</p>
+          <p>{{ companyInfo.hotline }}</p>
         </div>
       </div>
       <div class="info-item">
         <i class="fas fa-envelope"></i>
         <div>
           <h4>Email</h4>
-          <p>contact&#64;danahomes.com</p>
+          <p>{{ companyInfo.email }}</p>
         </div>
       </div>
       <div class="info-item">
