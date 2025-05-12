@@ -45,7 +45,7 @@
             </div>
             <div class="meta-item">
               <i class="fas fa-chart-line"></i>
-              <span>{{ product.product_detail.project_status }}</span>
+              <span>{{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}</span>
             </div>
           </div>
         </div>
@@ -84,10 +84,10 @@
           </button>
           <div *ngIf="isProject" class="project-overlay">
             <div class="project-status" [ngClass]="product.product_detail.project_status">
-              {{ product.product_detail.project_status }}
+              {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
             </div>
             <div class="project-type">
-              {{ product.product_detail.project_type }}
+              {{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@
               <i class="fas fa-home"></i>
               <div class="item-content">
                 <span class="label">Loại hình</span>
-                <span class="value">{{ product.product_detail.project_type }}</span>
+                <span class="value">{{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}</span>
               </div>
             </div>
             <div class="overview-item">
@@ -132,7 +132,7 @@
               <div class="item-content">
                 <span class="label">Trạng thái</span>
                 <span class="value status-badge" [ngClass]="product.product_detail.project_status">
-                  {{ product.product_detail.project_status }}
+                  {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
                 </span>
               </div>
             </div>
@@ -234,15 +234,15 @@
                 <i class="fas fa-city"></i>
                 Loại dự án
               </div>
-              <div class="value">{{ product.product_detail.project_type }}</div>
+              <div class="value">{{ getProjectTypeInfo(product.product_detail.project_type).text }}</div>
             </div>
             <div class="info-item" *ngIf="product.product_detail.project_status">
               <div class="label">
                 <i class="fas fa-info-circle"></i>
                 Trạng thái dự án
               </div>
-              <div class="value status-badge" [ngClass]="product.product_detail.project_status">
-                {{ product.product_detail.project_status }}
+              <div class="value " [ngClass]="product.product_detail.project_status" [style.background-color]="getProjectStatusInfo(product.product_detail.project_status).color + '20'" [style.color]="getProjectStatusInfo(product.product_detail.project_status).color">
+                {{ getProjectStatusInfo(product.product_detail.project_status).text }}
               </div>
             </div>
             <div class="info-item" *ngIf="product.product_detail.investor">
