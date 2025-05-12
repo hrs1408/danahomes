@@ -72,7 +72,7 @@
           </a>
           <div class="mobile-dropdown-menu" [class.active]="activeDropdown === 'products'">
             <ul>
-              <li><a [routerLink]="['/products']" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
+              <li><a routerLink="'/products'" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
               <li *ngFor="let category of categories">
                 <a [routerLink]="['/products']" [queryParams]="{category: category.id}" (click)="toggleMobileMenu()">
                   <i [class]="category.icon"></i> {{ category.name }}

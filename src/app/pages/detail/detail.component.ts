@@ -7,9 +7,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 
-// Khai báo biến L để tránh lỗi khi chạy SSR
-declare let L: any;
-
 interface ProjectTypeInfo {
   text: string;
   color: string;
@@ -21,7 +18,6 @@ interface ProjectStatusInfo {
   color: string;
   backgroundColor: string;
 }
-
 
 @Component({
   selector: 'app-detail',
@@ -36,6 +32,7 @@ export class DetailComponent implements OnInit, AfterViewInit {
   currentImageIndex = 0;
   private map: any = null;
   private marker: any = null;
+  private L: any;
 
   contactForm!: FormGroup;
   submitting = false;
@@ -76,8 +73,18 @@ export class DetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    // Map sẽ được khởi tạo sau khi có dữ liệu sản phẩm
+  async ngAfterViewInit(): Promise<void> {
+    if (isPlatformBrowser(this.platformId)) {
+      await this.loadLeaflet();
+      this.initMap();
+    }
+  }
+
+  private async loadLeaflet(): Promise<void> {
+    if (typeof window !== 'undefined') {
+      const L = await import('leaflet');
+      this.L = L;
+    }
   }
 
   private loadProductDetail(productId: number): void {
@@ -95,12 +102,6 @@ export class DetailComponent implements OnInit, AfterViewInit {
           } else {
             this.loadRelatedProducts();
           }
-
-          if (isPlatformBrowser(this.platformId)) {
-            setTimeout(() => {
-              this.initMap();
-            });
-          }
         } else {
           this.error = response.meta.message;
         }
@@ -116,41 +117,44 @@ export class DetailComponent implements OnInit, AfterViewInit {
 
   private initMap(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    if (!this.product || !this.product.address_detail.google_address_link) return;
+    if (!this.product || !this.product.address_detail.google_address_link || !this.L) return;
 
-    // Import Leaflet động khi cần thiết
-    import('leaflet').then((L) => {
-      // Lấy tọa độ từ google_address_link
-      const match = this.product?.address_detail.google_address_link.match(/mlat=(-?\d+\.\d+)&mlon=(-?\d+\.\d+)/);
-      if (!match) return;
+    // Lấy tọa độ từ google_address_link
+    const match = this.product?.address_detail.google_address_link.match(/mlat=(-?\d+\.\d+)&mlon=(-?\d+\.\d+)/);
+    if (!match) return;
 
-      const lat = parseFloat(match[1]);
-      const lng = parseFloat(match[2]);
+    const lat = parseFloat(match[1]);
+    const lng = parseFloat(match[2]);
 
-      // Nếu map đã tồn tại, xóa nó đi
-      if (this.map) {
-        this.map.remove();
-      }
+    // Nếu map đã tồn tại, xóa nó đi
+    if (this.map) {
+      this.map.remove();
+    }
 
-      // Khởi tạo map mới
-      this.map = L.map('map', ).setView([lat, lng], 16);
+    // Khởi tạo map mới
+    this.map = this.L.map('map').setView([lat, lng], 16);
 
-      // Thêm OpenStreetMap tile layer
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© Danahomes'
-      }).addTo(this.map);
+    // Thêm OpenStreetMap tile layer
+    this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© Danahomes'
+    }).addTo(this.map);
 
-      // Thêm marker
-      const icon = L.icon({
-        iconUrl: 'https://www.openstreetmap.org/assets/leaflet/dist/images/marker-icon-3d253116ec4ba0e1f22a01cdf1ff7f120fa4d89a6cd0933d68f12951d19809b4.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-      });
+    // Fix icon paths cho production
+    const iconUrl = 'https://www.openstreetmap.org/assets/marker-red-ea1f472cd753fdbe59b263a7dc4886006415079498be4d13a18c12ed33ac5b26.png';
 
-      this.marker = L.marker([lat, lng], { icon }).addTo(this.map);
-      this.marker.bindPopup(this.product?.name || '').openPopup();
+    const iconDefault = this.L.icon({
+      iconUrl,
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      tooltipAnchor: [16, -28],
+      shadowSize: [41, 41]
     });
+    this.L.Marker.prototype.options.icon = iconDefault;
+
+    // Thêm marker
+    this.marker = this.L.marker([lat, lng]).addTo(this.map);
+    this.marker.bindPopup(this.product?.name || '').openPopup();
   }
 
   getSafeHtml(content: string): SafeHtml {

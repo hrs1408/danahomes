@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -23,7 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { LoanCalculatorComponent } from './components/loan-calculator/loan-calculator.component';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { SaleComponent } from './components/sale/sale.component';
 import { CompanyInfoComponent } from './components/company-info/company-info.component';
@@ -35,10 +35,6 @@ import { ContactModalComponent } from './components/contact-modal/contact-modal.
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Register Swiper custom elements
 register();
-
-const routes: Routes = [
-  { path: 'search', component: SearchResultsComponent }
-];
 
 @NgModule({
   declarations: [
@@ -79,11 +75,11 @@ const routes: Routes = [
       preventDuplicates: true,
     }),
     FormsModule,
-    RouterModule.forRoot(routes),
     NgbModule,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

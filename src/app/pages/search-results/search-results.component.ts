@@ -133,7 +133,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   viewProductDetail(productId: number): void {
-    this.router.navigate(['/detail', productId]);
+    this.router.navigate(['/products', productId]);
   }
 
   calculatePricePerM2(price: number, area: number): string {

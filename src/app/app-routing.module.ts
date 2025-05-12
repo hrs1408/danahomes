@@ -8,6 +8,8 @@ import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'detail/:id', component: DetailComponent},
@@ -21,7 +23,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, {
+    useHash: true,
+    scrollPositionRestoration: 'enabled'
+  })],
+  exports: [RouterModule],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ]
 })
 export class AppRoutingModule { }

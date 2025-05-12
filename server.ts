@@ -17,16 +17,19 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.get('**', express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
+  server.use('/assets', express.static(join(browserDistFolder, 'assets'), {
+    maxAge: '1y'
   }));
 
-  // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
+  // All routes use the Angular engine
+  server.get('*', (req, res, next) => {
+    // Skip SSR for static files
+    if (req.url.startsWith('/assets')) {
+      next();
+      return;
+    }
+
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
