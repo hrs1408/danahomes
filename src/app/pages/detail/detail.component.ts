@@ -10,6 +10,19 @@ import { HttpClient } from '@angular/common/http';
 // Khai báo biến L để tránh lỗi khi chạy SSR
 declare let L: any;
 
+interface ProjectTypeInfo {
+  text: string;
+  color: string;
+  backgroundColor?: string;
+}
+
+interface ProjectStatusInfo {
+  text: string;
+  color: string;
+  backgroundColor: string;
+}
+
+
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -206,30 +219,52 @@ export class DetailComponent implements OnInit, AfterViewInit {
   }
 
   private updateMetaTags(): void {
-    if (!this.product) return;
+    if (!this.product?.product_detail?.content || !this.product.images?.[0]) return;
+
+    const description = this.product.product_detail.content.substring(0, 160);
+    const imageUrl = `https://lh3.googleusercontent.com/d/${this.product.images[0].drive_id}`;
 
     this.title.setTitle(`${this.product.name} | Dana Homes`);
-
-    this.meta.updateTag({ name: 'description', content: this.product.product_detail.content.substring(0, 160) });
+    this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: this.product.name });
-    this.meta.updateTag({ property: 'og:description', content: this.product.product_detail.content.substring(0, 160) });
-    this.meta.updateTag({ property: 'og:image', content: `https://lh3.googleusercontent.com/d/${this.product.images[0].drive_id}` });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:image', content: imageUrl });
     this.meta.updateTag({ property: 'og:url', content: window.location.href });
   }
 
   shareOnFacebook(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.product || !isPlatformBrowser(this.platformId)) return;
 
-    const url = encodeURIComponent(window.location.href);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    const url = window.location.href;
+    const content = this.getShareContent();
+
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(content)}`,
+      '_blank'
+    );
   }
 
   shareOnTwitter(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.product || !isPlatformBrowser(this.platformId)) return;
 
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(this.product?.name || '');
-    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+    const url = window.location.href;
+    const content = this.getShareContent();
+
+    window.open(
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(content)}`,
+      '_blank'
+    );
+  }
+
+  private getShareContent(): string {
+    if (!this.product?.product_detail) return '';
+
+    const content = this.product.product_detail.content;
+    if (content) {
+      return content.substring(0, 160);
+    }
+
+    return this.product.name || '';
   }
 
   shareOnZalo(): void {
@@ -290,4 +325,71 @@ export class DetailComponent implements OnInit, AfterViewInit {
       this.toastr.error('Vui lòng điền đầy đủ thông tin bắt buộc');
     }
   }
+
+  getProjectTypeInfo(slug: string): ProjectTypeInfo {
+    switch (slug) {
+      case 'luxury_apartment':
+        return {
+          text: 'Căn hộ cao cấp',
+          color: '#2c3e50',
+          backgroundColor: '#ecf0f1'
+        };
+      case 'urban_area':
+        return {
+          text: 'Khu đô thị',
+          color: '#27ae60'
+        };
+      case 'resort':
+        return {
+          text: 'Khu nghỉ dưỡng',
+          color: '#3498db'
+        };
+      case 'complex':
+        return {
+          text: 'Khu phức hợp',
+          color: '#8e44ad'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666'
+        };
+    }
+  }
+
+  getProjectStatusInfo(slug: string): ProjectStatusInfo {
+    switch (slug) {
+      case 'selling':
+        return {
+          text: 'Đang bán',
+          color: '#fff',
+          backgroundColor: '#2ecc71'
+        };
+      case 'coming_soon':
+        return {
+          text: 'Sắp mở bán',
+          color: '#fff',
+          backgroundColor: '#f1c40f'
+        };
+      case 'delivered':
+        return {
+          text: 'Đã bàn giao',
+          color: '#fff',
+          backgroundColor: '#3498db'
+        };
+      case 'completed':
+        return {
+          text: 'Đã hoàn thành',
+          color: '#fff',
+          backgroundColor: '#95a5a6'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666',
+          backgroundColor: '#f8f9fa'
+        };
+    }
+  }
+
 }

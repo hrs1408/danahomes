@@ -173,14 +173,34 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  &.project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+
+    &.project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
+  height: 100%;
 
   &:hover {
     transform: translateY(-5px);
@@ -296,6 +316,116 @@
         &:hover {
           background-color: #001a3a;
         }
+      }
+    }
+  }
+
+  &.rental-card {
+    .product-badge.rental {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .utility-costs {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+
+      .cost-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        color: #666;
+
+        i {
+          color: #002250;
+          width: 20px;
+          text-align: center;
+        }
+      }
+    }
+
+    .property-features {
+      display: flex;
+      gap: 15px;
+      margin: 15px 0;
+
+      .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+
+        i {
+          color: #002250;
+        }
+      }
+    }
+
+    .furniture-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-style: italic;
+
+      i {
+        color: #002250;
+      }
+    }
+  }
+
+  &.sale-card {
+    .product-badge.sale {
+      background: #2196F3;
+      color: white;
+    }
+
+    .property-info {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+
+        i {
+          color: #002250;
+        }
+      }
+    }
+
+    .furniture-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      margin: 15px 0;
+      font-style: italic;
+
+      i {
+        color: #002250;
+      }
+    }
+
+    .detail-item.price {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+
+      .value {
+        color: #e74c3c;
+        font-weight: 700;
+        font-size: 1.1em;
       }
     }
   }
@@ -595,5 +725,42 @@
 
   &.pending {
     background-color: rgba(241, 196, 15, 0.8);
+  }
+}
+
+.detail-item.description {
+  margin: 15px 0;
+
+  .content-preview {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+  }
+}
+
+.project-description {
+  margin: 15px 0;
+
+  .content-preview {
+    color: #666;
+    font-size: 0.95em;
+    line-height: 1.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
   }
 }

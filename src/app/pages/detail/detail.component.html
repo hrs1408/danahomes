@@ -51,6 +51,27 @@
         </div>
       </div>
 
+      <!-- Price Section -->
+      <div class="price-banner">
+        <div class="container">
+          <div class="price-content">
+            <div class="price-label">
+              <i class="fas fa-tag"></i>
+              <span *ngIf="product.product_detail.type_product === 'rent'">Giá cho thuê:</span>
+              <span *ngIf="product.product_detail.type_product === 'sale'">Giá bán:</span>
+              <span *ngIf="product.product_detail.type_product === 'project'">Giá dự án:</span>
+            </div>
+            <div class="price-value">
+              <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+              <span *ngIf="product.product_detail.price_to">
+                {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+              </span>
+              <span class="price-unit" *ngIf="product.product_detail.type_product === 'rent'">/tháng</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Product Gallery -->
       <div class="product-gallery" [class.project-gallery]="isProject">
         <div class="main-image">
@@ -115,18 +136,6 @@
                 </span>
               </div>
             </div>
-            <div class="overview-item">
-              <i class="fas fa-tag"></i>
-              <div class="item-content">
-                <span class="label">Giá bán</span>
-                <span class="value price-range">
-                  <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
-                  <span *ngIf="product.product_detail.price_to">
-                    {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
-                  </span>
-                </span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -149,42 +158,119 @@
         </div>
 
         <!-- Chi phí -->
-        <div class="info-section" *ngIf="product.product_detail.eletric_price || product.product_detail.water_price || product.product_detail.internet_price">
-          <h2>Chi phí dịch vụ</h2>
+        <div class="info-section utility-costs" *ngIf="product.product_detail.type_product === 'rent' && (product.product_detail.eletric_price || product.product_detail.water_price || product.product_detail.internet_price)">
+          <h2><i class="fas fa-money-bill-wave"></i> Chi phí dịch vụ</h2>
           <div class="info-grid">
             <div class="info-item" *ngIf="product.product_detail.eletric_price">
-              <span class="label">Giá điện:</span>
-              <span class="value">{{ formatPrice(product.product_detail.eletric_price) }}/kWh</span>
+              <div class="label">
+                <i class="fas fa-bolt"></i>
+                Giá điện
+              </div>
+              <div class="value">{{ formatPrice(product.product_detail.eletric_price) }}/kWh</div>
             </div>
             <div class="info-item" *ngIf="product.product_detail.water_price">
-              <span class="label">Giá nước:</span>
-              <span class="value">{{ formatPrice(product.product_detail.water_price) }}/m³</span>
+              <div class="label">
+                <i class="fas fa-water"></i>
+                Giá nước
+              </div>
+              <div class="value">{{ formatPrice(product.product_detail.water_price) }}/m³</div>
             </div>
             <div class="info-item" *ngIf="product.product_detail.internet_price">
-              <span class="label">Giá Internet:</span>
-              <span class="value">{{ formatPrice(product.product_detail.internet_price) }}/tháng</span>
+              <div class="label">
+                <i class="fas fa-wifi"></i>
+                Giá Internet
+              </div>
+              <div class="value">{{ formatPrice(product.product_detail.internet_price) }}/tháng</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin cơ bản -->
+        <div class="info-section basic-info">
+          <h2><i class="fas fa-info-circle"></i> Thông tin cơ bản</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="product.product_detail.area">
+              <div class="label">
+                <i class="fas fa-vector-square"></i>
+                Diện tích
+              </div>
+              <div class="value">{{ product.product_detail.area }} m²</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.bedroom">
+              <div class="label">
+                <i class="fas fa-bed"></i>
+                Số phòng ngủ
+              </div>
+              <div class="value">{{ product.product_detail.bedroom }}</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.bathroom">
+              <div class="label">
+                <i class="fas fa-bath"></i>
+                Số phòng tắm
+              </div>
+              <div class="value">{{ product.product_detail.bathroom }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">
+                <i class="fas fa-tag"></i>
+                Giá
+              </div>
+              <div class="value price-range">
+                <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                <span *ngIf="product.product_detail.price_to">
+                  {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin dự án -->
+        <div class="info-section project-info" *ngIf="isProject">
+          <h2><i class="fas fa-building"></i> Thông tin dự án</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="product.product_detail.project_type">
+              <div class="label">
+                <i class="fas fa-city"></i>
+                Loại dự án
+              </div>
+              <div class="value">{{ product.product_detail.project_type }}</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.project_status">
+              <div class="label">
+                <i class="fas fa-info-circle"></i>
+                Trạng thái dự án
+              </div>
+              <div class="value status-badge" [ngClass]="product.product_detail.project_status">
+                {{ product.product_detail.project_status }}
+              </div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.investor">
+              <div class="label">
+                <i class="fas fa-user-tie"></i>
+                Chủ đầu tư
+              </div>
+              <div class="value">{{ product.product_detail.investor }}</div>
             </div>
           </div>
         </div>
 
         <!-- Nội dung chi tiết -->
-        <div class="info-section content-section">
-          <h2><i class="fas fa-file-alt"></i> Thông tin chi tiết</h2>
+        <div class="info-section description-section" *ngIf="product.product_detail.content">
+          <h2><i class="fas fa-file-alt"></i> Mô tả chi tiết</h2>
           <div class="content" [innerHTML]="getSafeHtml(product.product_detail.content)"></div>
         </div>
 
         <!-- Tiện ích -->
         <div class="info-section utilities-section" *ngIf="product.product_detail.utilities">
-          <h2><i class="fas fa-star"></i> Tiện ích nổi bật</h2>
-          <div class="utilities-content">
-            <div class="content" [innerHTML]="getSafeHtml(product.product_detail.utilities)"></div>
-          </div>
+          <h2><i class="fas fa-star"></i> Tiện ích</h2>
+          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.utilities)"></div>
         </div>
 
         <!-- Nội thất -->
-        <div class="info-section interior-section" *ngIf="product.product_detail.interiol">
-          <h2><i class="fas fa-couch"></i> Thiết kế & Nội thất</h2>
-          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.interiol)"></div>
+        <div class="info-section interior-section" *ngIf="product.product_detail.interior">
+          <h2><i class="fas fa-couch"></i> Nội thất</h2>
+          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.interior)"></div>
         </div>
 
         <!-- Công cụ tính lãi suất -->
@@ -333,6 +419,12 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Investment Type -->
+        <div class="info-section investment-type" *ngIf="product.product_detail.type_of_investment">
+          <i class="fas fa-chart-line"></i>
+          <span>{{ product.product_detail.type_of_investment }}</span>
         </div>
       </div>
     </div>

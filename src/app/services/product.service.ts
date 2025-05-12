@@ -30,22 +30,24 @@ export interface AddressDetail {
 
 export interface ProductDetail {
   id: number;
+  price: number;
+  price_to?: number;
+  area: number;
   bedroom: number;
   bathroom: number;
-  area: number;
-  price: number;
-  price_to: number;
-  content: string;
-  type_product: string;
-  investor: string;
-  project_type: string;
-  project_status: string;
-  type_of_investment: string;
-  eletric_price: number;
-  water_price: number;
-  internet_price: number;
+  type_product: 'rent' | 'sale' | 'project';
+  project_status?: 'available' | 'sold' | 'pending';
+  project_type?: string;
+  investor?: string;
   utilities: string;
   interiol: string;
+  interior?: string;
+  content?: string;
+  type_of_investment?: string;
+  eletric_price?: number;
+  water_price?: number;
+  internet_price?: number;
+
 }
 
 export interface Product {

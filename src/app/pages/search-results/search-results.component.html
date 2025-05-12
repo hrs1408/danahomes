@@ -87,14 +87,14 @@
             </div>
           </div>
 
-          <div class="product-features" *ngIf="product.product_detail.utilities || product.product_detail.interiol">
+          <div class="features" *ngIf="product.product_detail.utilities || product.product_detail.interior">
             <div class="feature" *ngIf="product.product_detail.utilities">
               <i class="fas fa-star"></i>
               <span>{{ product.product_detail.utilities }}</span>
             </div>
-            <div class="feature" *ngIf="product.product_detail.interiol">
-              <i class="fas fa-home"></i>
-              <span>{{ product.product_detail.interiol }}</span>
+            <div class="feature" *ngIf="product.product_detail.interior">
+              <i class="fas fa-couch"></i>
+              <span>{{ product.product_detail.interior }}</span>
             </div>
           </div>
 

@@ -1,6 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Product, ProductCategory } from '../../services/product.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+interface ProjectTypeInfo {
+  text: string;
+  color: string;
+  backgroundColor?: string;
+}
+
+interface ProjectStatusInfo {
+  text: string;
+  color: string;
+  backgroundColor: string;
+}
 
 @Component({
   selector: 'app-products',
@@ -27,7 +40,8 @@ export class ProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -155,5 +169,130 @@ export class ProductsComponent implements OnInit {
       style: 'currency',
       currency: 'VND'
     }).format(price);
+  }
+
+  isRentalProduct(product: Product): boolean {
+    return product.product_detail.type_product === 'rent';
+  }
+
+  isSaleProduct(product: Product): boolean {
+    return product.product_detail.type_product === 'sale';
+  }
+
+  isProjectProduct(product: Product): boolean {
+    return product.product_detail.type_product === 'project' || this.selectedCategory === this.PROJECT_CATEGORY_ID;
+  }
+
+  truncateHTML(html: string, maxLength: number = 150): SafeHtml {
+    if (!html) return '';
+
+    // Tạo một div tạm thời để parse HTML
+    const div = document.createElement('div');
+    div.innerHTML = html;
+
+    // Lấy text content
+    let text = div.textContent || div.innerText || '';
+
+    // Truncate text
+    if (text.length > maxLength) {
+      text = text.substring(0, maxLength) + '...';
+    }
+
+    return this.sanitizer.bypassSecurityTrustHtml(text);
+  }
+
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  getProjectTypeInfo(slug: string): ProjectTypeInfo {
+    switch (slug) {
+      case 'luxury_apartment':
+        return {
+          text: 'Căn hộ cao cấp',
+          color: '#2c3e50',
+          backgroundColor: '#ecf0f1'
+        };
+      case 'urban_area':
+        return {
+          text: 'Khu đô thị',
+          color: '#27ae60'
+        };
+      case 'resort':
+        return {
+          text: 'Khu nghỉ dưỡng',
+          color: '#3498db'
+        };
+      case 'complex':
+        return {
+          text: 'Khu phức hợp',
+          color: '#8e44ad'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666'
+        };
+    }
+  }
+
+  getProjectStatusInfo(slug: string): ProjectStatusInfo {
+    switch (slug) {
+      case 'selling':
+        return {
+          text: 'Đang bán',
+          color: '#fff',
+          backgroundColor: '#2ecc71'
+        };
+      case 'coming_soon':
+        return {
+          text: 'Sắp mở bán',
+          color: '#fff',
+          backgroundColor: '#f1c40f'
+        };
+      case 'delivered':
+        return {
+          text: 'Đã bàn giao',
+          color: '#fff',
+          backgroundColor: '#3498db'
+        };
+      case 'completed':
+        return {
+          text: 'Đã hoàn thành',
+          color: '#fff',
+          backgroundColor: '#95a5a6'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666',
+          backgroundColor: '#f8f9fa'
+        };
+    }
+  }
+
+  getIconClass(icon: string): string {
+    if (!icon) return 'fas fa-home'; // default icon
+
+    // Kiểm tra nếu là icon của Ant Design
+    if (icon.endsWith('-ant')) {
+      return `anticon anticon-${icon.replace('-ant', '')}`;
+    }
+
+    // Kiểm tra nếu là icon của Material
+    if (icon.endsWith('-mat')) {
+      return `material-icons`;
+    }
+
+    // Trường hợp mặc định là Font Awesome
+    return icon;
+  }
+
+  getIconContent(icon: string): string | null {
+    // Chỉ trả về text content cho Material icons
+    if (icon.endsWith('-mat')) {
+      return icon.replace('-mat', '');
+    }
+    return null;
   }
 }
