@@ -76,7 +76,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleDropdown(dropdown: string) {
+  toggleDropdown(dropdown: string, event: Event) {
+    event.preventDefault();
     if (this.activeDropdown === dropdown) {
       this.activeDropdown = null;
     } else {
@@ -158,6 +159,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   private loadCategories(): void {
+    this.categories = [];
     this.productService.getAllCategories().subscribe({
       next: (response) => {
         if (!response.meta.error) {
@@ -177,5 +179,21 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       centered: true,
       scrollable: true
     });
+  }
+
+  getIconClass(iconName: string): string {
+    if (iconName.endsWith('-ant')) {
+      return `anticon anticon-${iconName.replace('-ant', '')}`;
+    } else if (iconName.endsWith('-mat')) {
+      return `material-icons`;
+    }
+    return iconName; // Trả về nguyên gốc nếu không phải ant hoặc material
+  }
+
+  getIconContent(iconName: string): string | null {
+    if (iconName.endsWith('-mat')) {
+      return iconName.replace('-mat', '');
+    }
+    return null;
   }
 }

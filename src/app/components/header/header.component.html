@@ -17,13 +17,15 @@
           <li><a routerLink="/">Trang chủ</a></li>
           <li><a routerLink="/about">Giới thiệu</a></li>
           <li>
-            <a href="/products">Sản phẩm</a>
+            <a routerLink="/products">Sản phẩm</a>
             <div class="dropdown-menu">
               <ul>
-                <li><a [routerLink]="['/products']">Tất cả sản phẩm</a></li>
+                <li><a [routerLink]="['/products']" (click)="$event.stopPropagation()">Tất cả sản phẩm</a></li>
                 <li *ngFor="let category of categories">
-                  <a [routerLink]="['/products']" [queryParams]="{category: category.id}">
-                    <i [class]="category.icon"></i> {{ category.name }}
+                  <a [routerLink]="['/products']"
+                     [queryParams]="{category: category.id}"
+                     (click)="$event.stopPropagation()">
+                    <i [class]="getIconClass(category.icon)" [innerHTML]="getIconContent(category.icon)"></i> {{ category.name }}
                   </a>
                 </li>
               </ul>
@@ -33,7 +35,7 @@
           <li><a routerLink="/contact">Liên hệ</a></li>
         </ul>
       </nav>
-      <a href="#" class="contact-buttons" (click)="openContactModal($event)">
+      <a class="contact-buttons" (click)="openContactModal($event)">
         <i class="fa-solid fa-phone-volume"></i> Liên hệ tư vấn
       </a>
       <div class="language-selector" (click)="toggleLanguageDropdown($event)">
@@ -67,15 +69,15 @@
         <li><a routerLink="/" (click)="toggleMobileMenu()">Trang chủ</a></li>
         <li><a routerLink="/about" (click)="toggleMobileMenu()">Giới thiệu</a></li>
         <li class="mobile-dropdown" [class.active]="activeDropdown === 'products'">
-          <a href="javascript:void(0)" (click)="toggleDropdown('products')">
+          <a [routerLink]="['/products']" (click)="toggleDropdown('products', $event)">
             Sản phẩm <i class="fa-solid fa-chevron-down"></i>
           </a>
           <div class="mobile-dropdown-menu" [class.active]="activeDropdown === 'products'">
             <ul>
-              <li><a routerLink="'/products'" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
+              <li><a [routerLink]="['/products']" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
               <li *ngFor="let category of categories">
                 <a [routerLink]="['/products']" [queryParams]="{category: category.id}" (click)="toggleMobileMenu()">
-                  <i [class]="category.icon"></i> {{ category.name }}
+                  <i [class]="getIconClass(category.icon)" [innerHTML]="getIconContent(category.icon)"></i> {{ category.name }}
                 </a>
               </li>
             </ul>

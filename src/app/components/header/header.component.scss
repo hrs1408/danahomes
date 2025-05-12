@@ -102,8 +102,11 @@
           li {
             margin: 0 15px;
             position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
 
-            a {
+            > a {
               display: flex;
               align-items: center;
               height: 100%;
@@ -112,6 +115,7 @@
               font-size: 18px;
               border-top: 2px solid transparent;
               transition: all 0.3s ease;
+              padding: 0 5px;
 
               &:hover {
                 border-top: 2px solid #002250;
@@ -121,34 +125,64 @@
             .dropdown-menu {
               position: absolute;
               top: 100%;
-              left: 0;
+              left: -20px;
               background: white;
-              min-width: 200px;
+              min-width: 250px;
               box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-              border-radius: 0px 0px 4px 4px ;
+              border-radius: 0px 0px 4px 4px;
               opacity: 0;
               visibility: hidden;
               transform: translateY(10px);
               transition: all 0.3s ease;
               z-index: 1000;
+              pointer-events: none;
+              padding: 8px 0;
 
               ul {
                 display: flex;
                 flex-direction: column;
                 height: auto;
-                padding: 8px 0;
+                width: 100%;
 
                 li {
                   margin: 0;
                   width: 100%;
-                  white-space: nowrap;
+                  height: auto;
+
                   a {
                     padding: 10px 20px;
                     height: auto;
+                    width: 100%;
                     color: #002250;
                     font-size: 16px;
                     border-top: none;
                     transition: all 0.3s ease;
+                    white-space: nowrap;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    i {
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 20px;
+                      height: 20px;
+
+                      &.anticon {
+                        font-size: 18px;
+                      }
+
+                      &.material-icons {
+                        font-size: 20px;
+                        width: auto;
+                        height: auto;
+                      }
+
+                      &.fa-solid, &.fa-regular, &.fa-brands {
+                        font-size: 16px;
+                      }
+                    }
 
                     &:hover {
                       background-color: #f5f5f5;
@@ -160,10 +194,14 @@
             }
 
             &:hover {
+              > a {
+                border-top: 2px solid #002250;
+              }
               .dropdown-menu {
                 opacity: 1;
                 visibility: visible;
                 transform: translateY(0);
+                pointer-events: auto;
               }
             }
           }
@@ -318,22 +356,47 @@
             font-size: 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
             padding: 10px 0;
 
             i {
-              transition: transform 0.3s ease;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 20px;
+              height: 20px;
+
+              &.anticon {
+                font-size: 18px;
+              }
+
+              &.material-icons {
+                font-size: 20px;
+                width: auto;
+                height: auto;
+              }
+
+              &.fa-solid, &.fa-regular, &.fa-brands {
+                font-size: 16px;
+              }
+
+              &.fa-chevron-down {
+                margin-left: auto;
+                transition: transform 0.3s ease;
+              }
             }
           }
 
           &.mobile-dropdown {
             .mobile-dropdown-menu {
-              display: none;
+              max-height: 0;
+              overflow: hidden;
+              transition: max-height 0.3s ease-out;
               padding-left: 15px;
-              margin-top: 10px;
 
               &.active {
-                display: block;
+                max-height: 500px;
+                transition: max-height 0.5s ease-in;
               }
 
               ul {
@@ -343,13 +406,14 @@
                   a {
                     font-size: 14px;
                     color: #666;
+                    padding: 8px 0;
                   }
                 }
               }
             }
 
             &.active {
-              a i {
+              a i.fa-chevron-down {
                 transform: rotate(180deg);
               }
             }
