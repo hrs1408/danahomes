@@ -6,9 +6,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-import * as L from 'leaflet';
-
-// Khai báo biến L để tránh lỗi khi chạy SSR
 
 interface ProjectTypeInfo {
   text: string;
@@ -21,7 +18,6 @@ interface ProjectStatusInfo {
   color: string;
   backgroundColor: string;
 }
-
 
 @Component({
   selector: 'app-detail',
@@ -115,43 +111,41 @@ export class DetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private initMap(): void {
+  private async initMap(): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) return;
     if (!this.product || !this.product.address_detail.google_address_link) return;
 
-    // Import Leaflet động khi cần thiết
-    import('leaflet').then((L) => {
-      // Lấy tọa độ từ google_address_link
-      const match = this.product?.address_detail.google_address_link.match(/mlat=(-?\d+\.\d+)&mlon=(-?\d+\.\d+)/);
-      if (!match) return;
+    const match = this.product?.address_detail.google_address_link.match(/mlat=(-?\d+\.\d+)&mlon=(-?\d+\.\d+)/);
+    if (!match) return;
 
-      const lat = parseFloat(match[1]);
-      const lng = parseFloat(match[2]);
+    const lat = parseFloat(match[1]);
+    const lng = parseFloat(match[2]);
 
-      // Nếu map đã tồn tại, xóa nó đi
+    try {
+      const L = await import('leaflet');
+
       if (this.map) {
         this.map.remove();
       }
 
-      // Khởi tạo map mới
-      this.map = L.map('map', ).setView([lat, lng], 16);
+      this.map = L.map('map').setView([lat, lng], 16);
 
-      // Thêm OpenStreetMap tile layer
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© Danahomes'
       }).addTo(this.map);
 
-      // Thêm marker
-      const icon = L.icon({
-        iconUrl: 'https://www.openstreetmap.org/assets/leaflet/dist/images/marker-icon-3d253116ec4ba0e1f22a01cdf1ff7f120fa4d89a6cd0933d68f12951d19809b4.png',
-        iconSize: [25, 41],
+      const customIcon = L.icon({
+        iconUrl: 'https://www.openstreetmap.org/assets/leaflet/dist/images/marker-icon-3d253116ec4ba0e1f22a01cdf1ff7f120fa4d89a6cd0933d68f12951d19809b4.png',        shadowUrl: '/assets/images/marker-shadow.png',
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
+        shadowSize: [41, 41]
       });
 
-      this.marker = L.marker([lat, lng], { icon }).addTo(this.map);
+      this.marker = L.marker([lat, lng], { icon: customIcon }).addTo(this.map);
       this.marker.bindPopup(this.product?.name || '').openPopup();
-    });
+    } catch (error) {
+      console.error('Error initializing map:', error);
+    }
   }
 
   getSafeHtml(content: string): SafeHtml {
