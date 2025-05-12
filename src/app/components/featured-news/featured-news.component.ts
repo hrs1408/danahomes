@@ -69,6 +69,13 @@ export class FeaturedNewsComponent implements OnInit {
     return text.substring(0, 150) + '...';
   }
 
+  getExcerpt2(content: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = content;
+    const text = div.textContent || div.innerText || '';
+    return text.substring(0, 100) + '...';
+  }
+
   viewAllNews(): void {
     this.router.navigate(['/news'], {
       queryParams: {

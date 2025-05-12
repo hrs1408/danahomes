@@ -1,19 +1,28 @@
 <div class="featured-news-section">
   <div class="container">
+    <h2 class="title">
+      Tin tức <span class="highlight">mới nhất</span>
+    </h2>
     <div class="section-header">
       <div class="tabs">
         <button
           [class.active]="activeTab === 'featured'"
           (click)="setActiveTab('featured')"
-        >Tin nổi bật</button>
+        >
+          Tin nổi bật
+        </button>
         <button
           [class.active]="activeTab === 'news'"
           (click)="setActiveTab('news')"
-        >Tin tức</button>
+        >
+          Tin tức
+        </button>
         <button
           [class.active]="activeTab === 'fengshui'"
           (click)="setActiveTab('fengshui')"
-        >Tư vấn phong thủy</button>
+        >
+          Tư vấn phong thủy
+        </button>
       </div>
     </div>
 
@@ -27,48 +36,74 @@
       <div *ngIf="!loading && !error" class="news-grid">
         <!-- Tin chính -->
         <div class="main-news" *ngIf="getFilteredPosts().length > 0">
-          <article class="news-card main" (click)="readMore(getFilteredPosts()[0].id)">
+          <article
+            class="news-card main"
+            (click)="readMore(getFilteredPosts()[0].id)"
+          >
             <div class="news-image">
-              <img [src]="'https://lh3.googleusercontent.com/d/' + getFilteredPosts()[0].image.drive_id"
-                   [alt]="getFilteredPosts()[0].title"
-                   onerror="this.src='assets/images/default_property.jpeg'">
+              <img
+                [src]="
+                  'https://lh3.googleusercontent.com/d/' +
+                  getFilteredPosts()[0].image.drive_id
+                "
+                [alt]="getFilteredPosts()[0].title"
+                onerror="this.src='assets/images/default_property.jpeg'"
+              />
             </div>
             <div class="news-content">
               <div class="post-date">
                 <i class="far fa-clock"></i>
-                {{ getPostDate(getFilteredPosts()[0]) | date:'dd/MM/yyyy' }}
+                {{ getPostDate(getFilteredPosts()[0]) | date : "dd/MM/yyyy" }}
               </div>
               <h3 class="news-title">{{ getFilteredPosts()[0].title }}</h3>
-              <p class="news-excerpt">{{ getExcerpt(getFilteredPosts()[0].content) }}</p>
+              <p class="news-excerpt">
+                {{ getExcerpt(getFilteredPosts()[0].content) }}
+              </p>
             </div>
           </article>
         </div>
 
         <!-- Tin phụ -->
         <div class="side-news">
-          <article *ngFor="let post of getFilteredPosts().slice(1, 4)" class="news-card side" (click)="readMore(post.id)">
+          <article
+            *ngFor="let post of getFilteredPosts().slice(1, 4)"
+            class="news-card side"
+            (click)="readMore(post.id)"
+          >
             <div class="news-image">
-              <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id"
-                   [alt]="post.title"
-                   onerror="this.src='assets/images/default_property.jpeg'">
+              <img
+                [src]="
+                  'https://lh3.googleusercontent.com/d/' + post.image.drive_id
+                "
+                [alt]="post.title"
+                onerror="this.src='assets/images/default_property.jpeg'"
+              />
             </div>
             <div class="news-content">
               <div class="post-date">
                 <i class="far fa-clock"></i>
-                {{ getPostDate(post) | date:'dd/MM/yyyy' }}
+                {{ getPostDate(post) | date : "dd/MM/yyyy" }}
               </div>
               <h3 class="news-title">{{ post.title }}</h3>
+              <p class="news-excerpt" style="line-height: 1.4">
+                {{ getExcerpt2(post.content) }}
+              </p>
             </div>
           </article>
         </div>
       </div>
 
-      <div *ngIf="!loading && !error && getFilteredPosts().length === 0" class="no-posts">
+      <div
+        *ngIf="!loading && !error && getFilteredPosts().length === 0"
+        class="no-posts"
+      >
         <p>Không có tin tức nào trong danh mục này.</p>
       </div>
 
       <div class="view-more">
-        <button class="view-more-btn" (click)="viewAllNews()">Xem thêm</button>
+        <button class="view-more-btn" (click)="viewAllNews()">
+          <i class="fas fa-arrow-right" style="margin-right: 10px"></i> Xem thêm
+        </button>
       </div>
     </div>
   </div>

@@ -3,6 +3,11 @@ import Swiper from 'swiper';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { ProductService, Product } from '../../services/product.service';
 import { Router } from '@angular/router';
+interface ProjectStatusInfo {
+  text: string;
+  color: string;
+  backgroundColor: string;
+}
 
 @Component({
   selector: 'app-popular',
@@ -101,5 +106,71 @@ export class PopularComponent implements OnInit, AfterViewInit {
 
   viewDetails(productId: number) {
     this.router.navigate(['/products', productId]);
+  }
+
+  getProjectStatusInfo(slug: string): ProjectStatusInfo {
+    switch (slug) {
+      case 'selling':
+        return {
+          text: 'Đang bán',
+          color: '#fff',
+          backgroundColor: '#2ecc71'
+        };
+      case 'coming_soon':
+        return {
+          text: 'Sắp mở bán',
+          color: '#fff',
+          backgroundColor: '#f1c40f'
+        };
+      case 'delivered':
+        return {
+          text: 'Đã bàn giao',
+          color: '#fff',
+          backgroundColor: '#3498db'
+        };
+      case 'completed':
+        return {
+          text: 'Đã hoàn thành',
+          color: '#fff',
+          backgroundColor: '#95a5a6'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666',
+          backgroundColor: '#f8f9fa'
+        };
+    }
+  }
+
+  getProjectTypeInfo(slug: string): { text: string; color: string; backgroundColor?: string } {
+    switch (slug) {
+      case 'luxury_apartment':
+        return {
+          text: 'Căn hộ cao cấp',
+          color: '#2c3e50',
+          backgroundColor: '#ecf0f1'
+        };
+      case 'urban_area':
+        return {
+          text: 'Khu đô thị',
+          color: '#27ae60'
+        };
+      case 'resort':
+        return {
+          text: 'Khu nghỉ dưỡng',
+          color: '#3498db'
+        };
+      case 'complex':
+        return {
+          text: 'Khu phức hợp',
+          color: '#8e44ad'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666'
+        };
+    }
   }
 }
