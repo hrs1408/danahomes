@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { InformationService, CompanyInformation } from '../../services/information.service';
 
 @Component({
   selector: 'app-contact-buttons',
@@ -8,10 +9,33 @@ import { Component, OnInit, HostListener } from '@angular/core';
 export class ContactButtonsComponent implements OnInit {
   showScrollTop = false;
   isMenuOpen = false;
+  companyInfo: CompanyInformation | null = null;
+  loading = false;
+  error: string | null = null;
 
-  constructor() { }
+  constructor(private informationService: InformationService) {}
 
   ngOnInit(): void {
+    this.loadCompanyInfo();
+  }
+
+  private loadCompanyInfo(): void {
+    this.loading = true;
+    this.informationService.getInformation().subscribe({
+      next: (response) => {
+        if (!response.meta.error) {
+          this.companyInfo = response.data;
+        } else {
+          this.error = response.meta.message;
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải thông tin công ty:', err);
+        this.error = 'Không thể tải thông tin liên hệ. Vui lòng thử lại sau.';
+        this.loading = false;
+      }
+    });
   }
 
   @HostListener('window:scroll')

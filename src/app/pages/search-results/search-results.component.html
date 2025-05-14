@@ -51,8 +51,12 @@
               <span class="badge type-badge" *ngIf="product.product_detail.type_product === 'project'">
                 <i class="fas fa-building"></i> Dự án
               </span>
-              <span class="badge status-badge" *ngIf="product.product_detail.project_status">
-                {{ product.product_detail.project_status }}
+              <span class="badge status-badge" *ngIf="product.product_detail.project_status"
+                    [style.color]="getProjectStatusInfo(product.product_detail.project_status).color"
+                    [style.backgroundColor]="getProjectStatusInfo(product.product_detail.project_status).backgroundColor"
+                    [class]="getProjectStatusInfo(product.product_detail.project_status).animationClass">
+                <i class="fas fa-{{getProjectStatusInfo(product.product_detail.project_status).icon}}" *ngIf="getProjectStatusInfo(product.product_detail.project_status).icon"></i>
+                {{ getProjectStatusInfo(product.product_detail.project_status).text }}
               </span>
             </div>
             <div class="quick-info">
@@ -82,7 +86,7 @@
           <div class="location-info">
             <i class="fas fa-map-marker-alt"></i>
             <div class="address-details">
-              <p class="main-address">{{ product.address_detail.address }}</p>
+              <p class="main-address" style="font-size: 14px; line-height: 1.4;">{{ product.address_detail.address }}</p>
               <!-- <p class="sub-address">{{ product.address_detail.ward }}, {{ product.address_detail.district }}, {{ product.address_detail.province }}</p> -->
             </div>
           </div>

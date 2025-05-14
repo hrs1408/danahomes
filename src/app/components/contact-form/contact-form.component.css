@@ -1,45 +1,46 @@
 .contact-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: clamp(20px, 5vw, 40px);
 }
 
 .contact-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: clamp(20px, 5vw, 40px);
 }
 
 .contact-header h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   color: #333;
   margin-bottom: 1rem;
 }
 
 .contact-header p {
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2vw, 1.1rem);
   color: #666;
 }
 
 .contact-container-normal {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 40px;
+  gap: clamp(20px, 4vw, 40px);
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+  padding: clamp(15px, 3vw, 30px);
 }
 
 .contact-container-modal {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 20px;
   background: #fff;
   border-radius: 12px;
+  padding: clamp(15px, 3vw, 30px);
 }
 
 .contact-info {
-  padding: 30px;
+  padding: clamp(15px, 3vw, 30px);
   background: #f8f9fa;
   border-radius: 8px;
 }
@@ -47,11 +48,11 @@
 .contact-info .info-item {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 30px;
+  margin-bottom: clamp(20px, 4vw, 30px);
 }
 
 .contact-info .info-item i {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   color: #007bff;
   margin-right: 15px;
   margin-top: 5px;
@@ -60,27 +61,28 @@
 .contact-info .info-item h4 {
   margin: 0 0 5px;
   color: #333;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2vw, 1.1rem);
 }
 
 .contact-info .info-item p {
   margin: 0;
   color: #666;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
 }
 
 .contact-form-container {
-  padding: 20px;
+  padding: clamp(15px, 3vw, 20px);
 }
 
 .contact-form .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: clamp(15px, 3vw, 20px);
+  margin-bottom: clamp(15px, 3vw, 20px);
 }
 
 .contact-form .form-group {
-  margin-bottom: 20px;
+  margin-bottom: clamp(15px, 3vw, 20px);
 }
 
 .contact-form .form-group label {
@@ -89,20 +91,22 @@
   margin-bottom: 8px;
   color: #333;
   font-weight: 500;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
 }
 
 .contact-form .form-group label i {
   margin-right: 8px;
   color: #007bff;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
 }
 
 .contact-form .form-group input,
 .contact-form .form-group textarea {
   width: 100%;
-  padding: 12px;
+  padding: clamp(8px, 2vw, 12px);
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
   transition: all 0.3s ease;
 }
 
@@ -125,17 +129,17 @@
 
 .contact-form .form-group textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: clamp(100px, 20vw, 120px);
 }
 
 .contact-form .form-group .invalid-feedback {
   color: #dc3545;
-  font-size: 0.875rem;
+  font-size: clamp(0.8rem, 1.6vw, 0.875rem);
   margin-top: 5px;
 }
 
 .contact-form .form-actions {
-  margin-top: 30px;
+  margin-top: clamp(20px, 4vw, 30px);
   text-align: center;
 }
 
@@ -143,8 +147,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 40px;
-  font-size: 1.1rem;
+  padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 40px);
+  font-size: clamp(1rem, 2vw, 1.1rem);
   font-weight: 500;
   color: white;
   background: linear-gradient(45deg, #007bff, #0056b3);
@@ -152,6 +156,8 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 100%;
+  max-width: 300px;
 }
 
 .contact-form .form-actions .btn-submit i {
@@ -169,19 +175,30 @@
 }
 
 @media (max-width: 992px) {
-  .contact-container {
+  .contact-container-normal {
     grid-template-columns: 1fr;
   }
-  .contact-info {
-    padding: 20px;
+  .contact-info .info-item {
+    margin-bottom: 20px;
+  }
+  .contact-info .info-item:last-child {
+    margin-bottom: 0;
   }
 }
 
-@media (max-width: 768px) {
-  .contact-form .form-row {
-    grid-template-columns: 1fr;
+@media (max-width: 576px) {
+  .contact-page {
+    padding: 15px;
   }
   .contact-header h2 {
-    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .contact-form .form-group label {
+    font-size: 0.9rem;
+  }
+  .contact-form .form-group input,
+  .contact-form .form-group textarea {
+    font-size: 0.9rem;
+    padding: 8px;
   }
 }

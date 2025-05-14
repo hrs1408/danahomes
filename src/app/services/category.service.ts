@@ -3,19 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export interface CompanyInformation {
+export interface Category {
   id: number;
-  address: string;
-  hotline: string;
-  email: string;
-  facebook: string;
-  twitter: string;
-  google: string;
-  zalo: string;
+  slug: string;
+  name: string;
+  icon: string;
 }
 
-export interface InformationResponse {
-  data: CompanyInformation;
+export interface CategoryResponse {
+  data: Category[];
   meta: {
     error: boolean;
     message: string;
@@ -26,12 +22,12 @@ export interface InformationResponse {
 @Injectable({
   providedIn: 'root'
 })
-export class InformationService {
+export class CategoryService {
   private readonly API_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  getInformation(): Observable<InformationResponse> {
-    return this.http.get<InformationResponse>(`${this.API_URL}/information/get`);
+  getCategories(): Observable<CategoryResponse> {
+    return this.http.get<CategoryResponse>(`${this.API_URL}/category/get-all`);
   }
 }

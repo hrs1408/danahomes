@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { SafeHtmlComponent } from '../../components/safe-html/safe-html.component';
+import type { Map, Marker } from 'leaflet';
 
 // Khai báo biến L để tránh lỗi khi chạy SSR
 
@@ -154,8 +155,8 @@ export class DetailComponent implements OnInit, AfterViewInit {
   loading = true;
   error: string | null = null;
   currentImageIndex = 0;
-  map!: L.Map;
-  marker!: L.Marker;
+  map: Map | null = null;
+  marker: Marker | null = null;
   pageContent: PageContent | null = null;
 
   contactForm!: FormGroup;
@@ -247,9 +248,9 @@ export class DetailComponent implements OnInit, AfterViewInit {
 
   private async initMap(): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) return;
-    if (!this.product || !this.product.address_detail.google_address_link) return;
+    if (!this.product?.address_detail?.google_address_link) return;
 
-    const match = this.product?.address_detail.google_address_link.match(/mlat=(-?\d+\.\d+)&mlon=(-?\d+\.\d+)/);
+    const match = this.product.address_detail.google_address_link.match(/mlat=(-?\d+\.\d+)&mlon=(-?\d+\.\d+)/);
     if (!match) return;
 
     const lat = parseFloat(match[1]);
@@ -269,9 +270,11 @@ export class DetailComponent implements OnInit, AfterViewInit {
       }).addTo(this.map);
 
       const customIcon = L.icon({
-        iconUrl: 'https://www.openstreetmap.org/assets/leaflet/dist/images/marker-icon-3d253116ec4ba0e1f22a01cdf1ff7f120fa4d89a6cd0933d68f12951d19809b4.png',        shadowUrl: '/assets/images/marker-shadow.png',
+        iconUrl: 'https://www.openstreetmap.org/assets/leaflet/dist/images/marker-icon-3d253116ec4ba0e1f22a01cdf1ff7f120fa4d89a6cd0933d68f12951d19809b4.png',
+        iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       });
 

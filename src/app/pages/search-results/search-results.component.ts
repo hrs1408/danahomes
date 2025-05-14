@@ -2,6 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Product, SearchParams } from '../../services/product.service';
 
+interface ProjectStatusInfo {
+  text: string;
+  color: string;
+  backgroundColor: string;
+  icon?: string;
+  animationClass?: string;
+}
+
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
@@ -72,6 +80,65 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
+  getProjectStatusInfo(slug: string): ProjectStatusInfo {
+    switch (slug) {
+      case 'selling':
+        return {
+          text: 'Đang bán',
+          color: '#fff',
+          backgroundColor: '#2ecc71',
+          icon: 'shopping-cart',
+          animationClass: 'pulse'
+        };
+      case 'coming_soon':
+        return {
+          text: 'Sắp mở bán',
+          color: '#fff',
+          backgroundColor: '#f1c40f',
+          icon: 'clock',
+          animationClass: 'bounce'
+        };
+      case 'delivered':
+        return {
+          text: 'Đã bàn giao',
+          color: '#fff',
+          backgroundColor: '#3498db',
+          icon: 'check-circle',
+          animationClass: 'fade'
+        };
+      case 'completed':
+        return {
+          text: 'Đã hoàn thành',
+          color: '#fff',
+          backgroundColor: '#95a5a6',
+          icon: 'flag',
+          animationClass: 'slide'
+        };
+      case 'reserved':
+        return {
+          text: 'Đã đặt cọc',
+          color: '#fff',
+          backgroundColor: '#e74c3c',
+          icon: 'lock',
+          animationClass: 'shake'
+        };
+      case 'on_hold':
+        return {
+          text: 'Tạm ngưng',
+          color: '#fff',
+          backgroundColor: '#9b59b6',
+          icon: 'pause',
+          animationClass: 'fade'
+        };
+      default:
+        return {
+          text: '',
+          color: '#666',
+          backgroundColor: '#f8f9fa'
+        };
+    }
+  }
+
   private search(): void {
     this.loading = true;
     this.error = null;
@@ -133,7 +200,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   viewProductDetail(productId: number): void {
-    this.router.navigate(['/products', productId]);
+    this.router.navigate(['/detail', productId]);
   }
 
   calculatePricePerM2(price: number, area: number): string {

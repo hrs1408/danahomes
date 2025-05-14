@@ -3,18 +3,32 @@
     <i class="fas" [class.fa-times]="isMenuOpen" [class.fa-plus]="!isMenuOpen"></i>
   </button>
 
-  <div class="buttons-wrapper">
+  <div class="buttons-wrapper" *ngIf="!loading && !error">
     <button class="contact-button scroll-top-button" [class.show]="showScrollTop" (click)="scrollToTop()">
       <i class="fas fa-arrow-up"></i>
     </button>
-    <a href="tel:+84123456789" class="contact-button phone-button">
+
+    <a *ngIf="companyInfo?.hotline" [href]="'tel:' + companyInfo?.hotline" class="contact-button phone-button">
       <i class="fas fa-phone"></i>
     </a>
-    <a href="https://zalo.me/yourZaloID" target="_blank" class="contact-button zalo-button">
+
+    <a *ngIf="companyInfo?.zalo" [href]="companyInfo?.zalo" target="_blank" class="contact-button zalo-button">
       <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo.png" alt="Zalo" />
     </a>
-    <a href="https://m.me/yourFacebookID" target="_blank" class="contact-button messenger-button">
+
+    <a *ngIf="companyInfo?.facebook" [href]="companyInfo?.facebook" target="_blank" class="contact-button messenger-button">
       <i class="fab fa-facebook-messenger"></i>
     </a>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-wrapper" *ngIf="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-message" *ngIf="error">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ error }}
   </div>
 </div>

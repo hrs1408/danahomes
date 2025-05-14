@@ -103,29 +103,39 @@
   </div>
 
   <div class="property-types">
-    <div class="type-item" (click)="searchForm.product_type = 'apartment'; onSearch()">
-      <i class="fas fa-building"></i>
-      <span>Căn hộ</span>
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner"></div>
+      <span>Đang tải danh mục...</span>
     </div>
-    <div class="type-item" (click)="searchForm.product_type = 'villa'; onSearch()">
-      <i class="fas fa-home"></i>
-      <span>Biệt thự</span>
+
+    <!-- Error State -->
+    <div class="error-state" *ngIf="error">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
     </div>
-    <div class="type-item" (click)="searchForm.product_type = 'house'; onSearch()">
-      <i class="fas fa-house-user"></i>
-      <span>Nhà phố</span>
-    </div>
-    <div class="type-item" (click)="searchForm.product_type = 'land'; onSearch()">
-      <i class="fas fa-map-marked-alt"></i>
-      <span>Đất nền</span>
-    </div>
-    <div class="type-item" (click)="searchForm.product_type = 'office'; onSearch()">
-      <i class="fas fa-building"></i>
-      <span>Văn phòng</span>
-    </div>
-    <div class="type-item" (click)="searchForm.product_type = 'store'; onSearch()">
-      <i class="fas fa-store"></i>
-      <span>Cửa hàng</span>
+
+    <!-- Categories -->
+    <div class="swiper category-swiper" #categorySwiper>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let category of categories" (click)="onCategoryClick(category)">
+          <div class="type-item">
+            <div class="icon-container" [class]="getIconClass(category.icon)">
+              <ng-container *ngIf="getIconContent(category.icon); else defaultIcon">
+                <!-- Material Icon -->
+                {{ getIconContent(category.icon) }}
+              </ng-container>
+              <ng-template #defaultIcon>
+                <!-- Ant Design or Font Awesome icons are handled by CSS -->
+              </ng-template>
+            </div>
+            <span>{{ category.name }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
     </div>
   </div>
 </div>

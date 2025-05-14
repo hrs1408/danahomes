@@ -21,6 +21,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   border: none;
+  text-decoration: none;
 }
 
 .contact-button:hover {
@@ -73,6 +74,57 @@
   visibility: visible;
 }
 
+.loading-wrapper {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error-message {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  background: #fff3f3;
+  color: #dc3545;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 250px;
+}
+
+.error-message i {
+  font-size: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 768px) {
   .toggle-button {
     display: flex;
@@ -97,5 +149,10 @@
   }
   .contact-buttons.menu-open .toggle-button {
     transform: rotate(135deg);
+  }
+  .contact-buttons .loading-wrapper,
+  .contact-buttons .error-message {
+    bottom: auto;
+    top: -60px;
   }
 }

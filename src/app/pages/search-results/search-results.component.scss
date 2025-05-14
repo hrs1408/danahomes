@@ -1,19 +1,19 @@
 .search-results-page {
-  padding: 40px 0;
+  padding: clamp(20px, 5vw, 40px) 0;
   min-height: calc(100vh - 80px);
   background: #f8f9fa;
 
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 clamp(15px, 3vw, 20px);
   }
 
   .page-header {
-    margin-bottom: 30px;
+    margin-bottom: clamp(20px, 4vw, 30px);
 
     h1 {
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 3vw, 2rem);
       color: #333;
       margin-bottom: 15px;
     }
@@ -21,24 +21,24 @@
     .search-summary {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: clamp(10px, 2vw, 15px);
       align-items: center;
 
       .total-results {
-        font-size: 1.1rem;
+        font-size: clamp(0.9rem, 1.8vw, 1.1rem);
         color: #666;
       }
 
       .search-filters {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: clamp(8px, 1.5vw, 10px);
 
         .filter-tag {
           background: #e9ecef;
           padding: 6px 12px;
           border-radius: 20px;
-          font-size: 0.9rem;
+          font-size: clamp(0.8rem, 1.6vw, 0.9rem);
           color: #495057;
           display: flex;
           align-items: center;
@@ -52,6 +52,7 @@
 
           &:hover {
             background: #dee2e6;
+            transform: translateY(-1px);
           }
         }
       }
@@ -62,24 +63,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 300px;
+    min-height: clamp(200px, 40vh, 400px);
 
     .loading {
       text-align: center;
 
       .spinner {
-        width: 40px;
-        height: 40px;
+        width: clamp(30px, 6vw, 50px);
+        height: clamp(30px, 6vw, 50px);
         border: 3px solid #f3f3f3;
         border-top: 3px solid #4285f4;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 0 auto 15px;
+        border-width: clamp(2px, 0.4vw, 4px);
       }
 
       p {
         color: #666;
-        font-size: 1.1rem;
+        font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+        margin-top: clamp(10px, 2vw, 15px);
       }
     }
   }
@@ -95,9 +98,10 @@
 
   .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(15px, 3vw, 25px);
+    margin-bottom: clamp(30px, 5vw, 40px);
+    width: 100%;
 
     .product-card {
       background: white;
@@ -106,6 +110,9 @@
       box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
       border: 1px solid rgba(0, 0, 0, 0.05);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
 
       &:hover {
         transform: translateY(-5px);
@@ -159,16 +166,18 @@
           .product-badges {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
 
             .badge {
               padding: 6px 12px;
               border-radius: 20px;
-              font-size: 0.85rem;
+              font-size: clamp(0.75rem, 1.5vw, 0.85rem);
               font-weight: 500;
               display: flex;
               align-items: center;
               gap: 5px;
               backdrop-filter: blur(5px);
+              white-space: nowrap;
 
               i {
                 font-size: 0.9rem;
@@ -180,8 +189,7 @@
               }
 
               &.status-badge {
-                background: rgba(255, 255, 255, 0.85);
-                color: #333;
+                backdrop-filter: blur(5px);
               }
             }
           }
@@ -195,13 +203,15 @@
               padding: 8px 15px;
               border-radius: 25px;
               backdrop-filter: blur(5px);
+              flex-wrap: wrap;
 
               span {
                 color: #333;
-                font-size: 0.9rem;
+                font-size: clamp(0.8rem, 1.6vw, 0.9rem);
                 display: flex;
                 align-items: center;
                 gap: 5px;
+                white-space: nowrap;
 
                 i {
                   color: #4285f4;
@@ -213,15 +223,18 @@
       }
 
       .product-content {
-        padding: 20px;
+        padding: clamp(15px, 3vw, 20px);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
 
         .product-header {
           margin-bottom: 15px;
 
           .product-title {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.25rem);
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: clamp(8px, 1.5vw, 12px);
             line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -232,7 +245,7 @@
 
           .product-price {
             color: #4285f4;
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 2.2vw, 1.4rem);
             font-weight: 700;
 
             &.negotiable {
@@ -241,7 +254,7 @@
 
             .price-per-m2 {
               display: block;
-              font-size: 0.9rem;
+              font-size: clamp(0.8rem, 1.6vw, 0.9rem);
               color: #666;
               font-weight: normal;
               margin-top: 3px;
@@ -257,6 +270,7 @@
           i {
             color: #4285f4;
             margin-top: 3px;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
           }
 
           .address-details {
@@ -264,18 +278,18 @@
 
             .main-address {
               color: #333;
-              font-size: 0.95rem;
+              font-size: clamp(0.85rem, 1.7vw, 0.95rem);
               margin-bottom: 3px;
-            }
-
-            .sub-address {
-              color: #666;
-              font-size: 0.85rem;
+              line-height: 1.4;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
             }
           }
         }
 
-        .product-features {
+        .features {
           margin-bottom: 15px;
 
           .feature {
@@ -284,11 +298,11 @@
             gap: 8px;
             margin-bottom: 5px;
             color: #555;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 1.6vw, 0.9rem);
 
             i {
               color: #4285f4;
-              font-size: 0.85rem;
+              font-size: clamp(0.75rem, 1.5vw, 0.85rem);
             }
 
             &:last-child {
@@ -306,7 +320,7 @@
           .tag {
             padding: 5px 12px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 1.5vw, 0.85rem);
             border: 1px solid;
             transition: all 0.2s ease;
 
@@ -320,7 +334,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-top: 20px;
+          margin-top: auto;
           padding-top: 15px;
           border-top: 1px solid #eee;
 
@@ -329,7 +343,7 @@
             align-items: center;
             gap: 8px;
             color: #666;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 1.6vw, 0.9rem);
 
             i {
               color: #4285f4;
@@ -342,7 +356,7 @@
             border: 1px solid #4285f4;
             color: #4285f4;
             background: transparent;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 1.6vw, 0.9rem);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -369,34 +383,35 @@
 
   .no-results {
     text-align: center;
-    padding: 50px 20px;
+    padding: clamp(20px, 4vw, 40px);
 
     i {
-      font-size: 3rem;
+      font-size: clamp(2rem, 4vw, 3rem);
       color: #adb5bd;
       margin-bottom: 20px;
     }
 
-    h2 {
-      font-size: 1.5rem;
-      color: #495057;
-      margin-bottom: 10px;
+    h3 {
+      font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+      margin-bottom: clamp(10px, 2vw, 15px);
     }
 
     p {
-      color: #6c757d;
+      font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+      color: #666;
     }
   }
 
   .pagination {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 40px;
+    gap: clamp(5px, 1vw, 10px);
+    margin-top: clamp(30px, 5vw, 40px);
+    flex-wrap: wrap;
 
     .page-btn {
-      width: 40px;
-      height: 40px;
+      width: clamp(35px, 7vw, 40px);
+      height: clamp(35px, 7vw, 40px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -406,10 +421,12 @@
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
+      font-size: clamp(0.8rem, 1.6vw, 0.9rem);
 
       &:hover:not(:disabled) {
         background: #e9ecef;
         border-color: #ced4da;
+        transform: translateY(-1px);
       }
 
       &.active {
@@ -433,36 +450,119 @@
 
 @media (max-width: 768px) {
   .search-results-page {
-    padding: 20px 0;
-
-    .page-header {
-      h1 {
-        font-size: 1.5rem;
-      }
-    }
-
     .results-grid {
       grid-template-columns: 1fr;
-      gap: 20px;
+
+      .product-card {
+        .product-image {
+          height: 180px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .search-results-page {
+    .results-grid {
+      grid-template-columns: 1fr;
 
       .product-card {
         .product-image {
           height: 200px;
         }
+      }
+    }
 
-        .product-content {
-          padding: 15px;
-
-          .product-header {
-            .product-title {
-              font-size: 1.1rem;
-            }
-
-            .product-price {
-              font-size: 1.2rem;
-            }
-          }
+    .page-header {
+      .search-filters {
+        .filter-tag {
+          padding: 4px 10px;
         }
+      }
+    }
+  }
+}
+
+// Status badge animations
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes fade {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes slide {
+  0% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  100% { transform: translateX(-3px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.badge {
+  &.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: clamp(6px, 1.5vw, 10px) clamp(12px, 2vw, 16px);
+    border-radius: 20px;
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    i {
+      font-size: clamp(0.8rem, 1.6vw, 1rem);
+    }
+
+    &.pulse { animation: pulse 2s infinite; }
+    &.bounce { animation: bounce 2s infinite; }
+    &.fade { animation: fade 2s infinite; }
+    &.slide { animation: slide 2s infinite; }
+    &.shake { animation: shake 2s infinite; }
+  }
+}
+
+// Responsive font sizes and spacing
+.product-card {
+  .product-title {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.4;
+    margin-bottom: clamp(8px, 1.5vw, 12px);
+  }
+
+  .product-price {
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-weight: 600;
+    color: #2ecc71;
+  }
+
+  .product-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: clamp(10px, 2vw, 15px);
+    margin-top: clamp(12px, 2.5vw, 20px);
+
+    .meta-item {
+      font-size: clamp(0.85rem, 1.7vw, 1rem);
+
+      i {
+        font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+        margin-right: 6px;
       }
     }
   }
