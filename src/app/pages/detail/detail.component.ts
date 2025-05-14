@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
+import { SafeHtmlComponent } from '../../components/safe-html/safe-html.component';
 
 // Khai báo biến L để tránh lỗi khi chạy SSR
 
@@ -22,6 +23,124 @@ interface ProjectStatusInfo {
   backgroundColor: string;
 }
 
+interface BaseBlock {
+  id: string;
+  type: string;
+  order: number;
+}
+
+interface HeadingBlock extends BaseBlock {
+  content: string;
+  level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  alignment: 'left' | 'center' | 'right';
+  color: string;
+  fontSize: number;
+}
+
+interface ButtonBlock extends BaseBlock {
+  text: string;
+  url: string;
+  target: '_self' | '_blank';
+  style: 'primary' | 'default' | 'dashed' | 'link' | 'text';
+  size: 'small' | 'large';
+  fullWidth: boolean;
+  alignment: 'left' | 'center' | 'right';
+}
+
+interface SliderBlock extends BaseBlock {
+  type: 'slider';
+  images: {
+    url: string;
+    title?: string;
+    description?: string;
+  }[];
+}
+
+interface ParagraphBlock extends BaseBlock {
+  type: 'paragraph';
+  content: string;
+  title?: string;
+}
+
+interface ListBlock extends BaseBlock {
+  type: 'list';
+  items: {
+    title: string;
+    description?: string;
+    icon?: string;
+  }[];
+  style: 'bullet' | 'number' | 'icon';
+}
+
+interface ImageListBlock extends BaseBlock {
+  type: 'image-list';
+  items: {
+    image: string;
+    title?: string;
+    description?: string;
+  }[];
+  layout: 'grid' | 'carousel';
+  columns: 2 | 3 | 4;
+}
+
+interface VideoBlock extends BaseBlock {
+  type: 'video';
+  url: string;
+  title?: string;
+  description?: string;
+  autoplay?: boolean;
+  controls?: boolean;
+  poster?: string;
+}
+
+interface GalleryBlock extends BaseBlock {
+  type: 'gallery';
+  images: {
+    url: string;
+    thumbnail?: string;
+    title?: string;
+    description?: string;
+  }[];
+  layout: 'masonry' | 'grid';
+  columns: 2 | 3 | 4;
+  spacing: number;
+}
+
+interface ImageBoxBlock extends BaseBlock {
+  type: 'image-box';
+  image: {
+    url: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  };
+  title: string;
+  description: string;
+  layout: 'left' | 'right' | 'top' | 'bottom' | 'overlay';
+  titleTag: 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  imageRounded: boolean;
+  imageShadow: boolean;
+  backgroundColor?: string;
+  textColor?: string;
+  padding: number;
+  spacing: number;
+}
+
+interface LayoutSection {
+  id: string;
+  columns: number;
+  columnGap: number;
+  blocks: {
+    columnIndex: number;
+    block: ContentBlock;
+  }[];
+}
+
+type ContentBlock = HeadingBlock | ButtonBlock | SliderBlock | ParagraphBlock | ListBlock | ImageListBlock | VideoBlock | GalleryBlock | ImageBoxBlock;
+
+interface PageContent {
+  blocks: (ContentBlock | LayoutSection)[];
+}
 
 @Component({
   selector: 'app-detail',
@@ -37,12 +156,15 @@ export class DetailComponent implements OnInit, AfterViewInit {
   currentImageIndex = 0;
   map!: L.Map;
   marker!: L.Marker;
+  pageContent: PageContent | null = null;
 
   contactForm!: FormGroup;
   submitting = false;
   relatedProducts: Product[] = [];
   projectProducts: Product[] = [];
   isProject = false;
+
+  currentSlideIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -93,6 +215,14 @@ export class DetailComponent implements OnInit, AfterViewInit {
 
           if (this.isProject) {
             this.loadProjectProducts();
+            // Parse page builder content if exists
+            if (this.product.product_detail.content) {
+              try {
+                this.pageContent = JSON.parse(this.product.product_detail.content);
+              } catch (e) {
+                console.error('Lỗi khi parse page builder content:', e);
+              }
+            }
           } else {
             this.loadRelatedProducts();
           }
@@ -393,4 +523,242 @@ export class DetailComponent implements OnInit, AfterViewInit {
     }
   }
 
+  renderBlock(block: ContentBlock): string {
+    let html = '';
+    switch (block.type) {
+      case 'heading':
+        const headingBlock = block as HeadingBlock;
+        html = `
+          <${headingBlock.level} style="
+            color: ${headingBlock.color};
+            font-size: ${headingBlock.fontSize}px;
+            text-align: ${headingBlock.alignment};
+          ">
+            ${headingBlock.content}
+          </${headingBlock.level}>
+        `;
+        break;
+
+      case 'button':
+        const buttonBlock = block as ButtonBlock;
+        html = `
+          <div style="text-align: ${buttonBlock.alignment}">
+            <a href="${buttonBlock.url}"
+               target="${buttonBlock.target}"
+               class="btn btn-${buttonBlock.style} btn-${buttonBlock.size}"
+               style="${buttonBlock.fullWidth ? 'width: 100%;' : ''}">
+              ${buttonBlock.text}
+            </a>
+          </div>
+        `;
+        break;
+
+      case 'paragraph':
+        const paragraphBlock = block as ParagraphBlock;
+        html = `
+          <div class="paragraph-block">
+            ${paragraphBlock.title ? `<h3>${paragraphBlock.title}</h3>` : ''}
+            <div class="paragraph-content">${paragraphBlock.content}</div>
+          </div>
+        `;
+        break;
+
+      case 'list':
+        const listBlock = block as ListBlock;
+        const listItems = listBlock.items.map(item => {
+          const icon = item.icon ? `<i class="${item.icon}"></i>` : '';
+          return `
+            <li>
+              ${icon}
+              <div class="list-item-content">
+                <h4>${item.title}</h4>
+                ${item.description ? `<p>${item.description}</p>` : ''}
+              </div>
+            </li>
+          `;
+        }).join('');
+
+        html = `
+          <ul class="list-block list-style-${listBlock.style}">
+            ${listItems}
+          </ul>
+        `;
+        break;
+
+      case 'image-list':
+        const imageListBlock = block as ImageListBlock;
+        const imageItems = imageListBlock.items.map(item => `
+          <div class="image-list-item">
+            <img src="${item.image}" alt="${item.title || ''}" />
+            ${item.title ? `<h4>${item.title}</h4>` : ''}
+            ${item.description ? `<p>${item.description}</p>` : ''}
+          </div>
+        `).join('');
+
+        html = `
+          <div class="image-list-block layout-${imageListBlock.layout}" style="
+            display: grid;
+            grid-template-columns: repeat(${imageListBlock.columns}, 1fr);
+            gap: 20px;
+          ">
+            ${imageItems}
+          </div>
+        `;
+        break;
+
+      case 'video':
+        const videoBlock = block as VideoBlock;
+        html = `
+          <div class="video-block">
+            ${videoBlock.title ? `<h3>${videoBlock.title}</h3>` : ''}
+            <video
+              src="${videoBlock.url}"
+              ${videoBlock.poster ? `poster="${videoBlock.poster}"` : ''}
+              ${videoBlock.controls ? 'controls' : ''}
+              ${videoBlock.autoplay ? 'autoplay' : ''}
+              style="width: 100%;"
+            ></video>
+            ${videoBlock.description ? `<p>${videoBlock.description}</p>` : ''}
+          </div>
+        `;
+        break;
+
+      case 'gallery':
+        const galleryBlock = block as GalleryBlock;
+        const galleryItems = galleryBlock.images.map(image => `
+          <div class="gallery-item">
+            <img src="${image.url}" alt="${image.title || ''}" />
+            ${image.title ? `<h4>${image.title}</h4>` : ''}
+            ${image.description ? `<p>${image.description}</p>` : ''}
+          </div>
+        `).join('');
+
+        html = `
+          <div class="gallery-block layout-${galleryBlock.layout}" style="
+            display: grid;
+            grid-template-columns: repeat(${galleryBlock.columns}, 1fr);
+            gap: ${galleryBlock.spacing}px;
+          ">
+            ${galleryItems}
+          </div>
+        `;
+        break;
+
+      case 'image-box':
+        const imageBoxBlock = block as ImageBoxBlock;
+        const imageBoxContent = `
+          <div class="image-box-content" style="
+            background-color: ${imageBoxBlock.backgroundColor || 'transparent'};
+            color: ${imageBoxBlock.textColor || 'inherit'};
+            padding: ${imageBoxBlock.padding}px;
+          ">
+            <img
+              src="${imageBoxBlock.image.url}"
+              alt="${imageBoxBlock.image.alt}"
+              ${imageBoxBlock.image.width ? `width="${imageBoxBlock.image.width}"` : ''}
+              ${imageBoxBlock.image.height ? `height="${imageBoxBlock.image.height}"` : ''}
+              class="${imageBoxBlock.imageRounded ? 'rounded' : ''} ${imageBoxBlock.imageShadow ? 'shadow' : ''}"
+            />
+            <${imageBoxBlock.titleTag}>${imageBoxBlock.title}</${imageBoxBlock.titleTag}>
+            <p>${imageBoxBlock.description}</p>
+          </div>
+        `;
+
+        html = `
+          <div class="image-box-block layout-${imageBoxBlock.layout}" style="gap: ${imageBoxBlock.spacing}px;">
+            ${imageBoxContent}
+          </div>
+        `;
+        break;
+
+      default:
+        html = '';
+    }
+    return html;
+  }
+
+  renderLayoutSection(section: LayoutSection): string {
+    const columnWidth = `${100 / section.columns}%`;
+    const columnBlocks = Array.from({ length: section.columns }, (_, i) => {
+      const blocksInColumn = section.blocks
+        .filter(b => b.columnIndex === i)
+        .map(b => this.renderBlock(b.block))
+        .join('');
+      return `<div class="layout-column" style="width: ${columnWidth};">${blocksInColumn}</div>`;
+    }).join('');
+
+    return `
+      <div class="layout-section" style="display: flex; gap: ${section.columnGap}px;">
+        ${columnBlocks}
+      </div>
+    `;
+  }
+
+  isLayoutSection(block: ContentBlock | LayoutSection): block is LayoutSection {
+    return 'columns' in block && 'blocks' in block;
+  }
+
+  isHeadingBlock(block: ContentBlock | LayoutSection): block is HeadingBlock {
+    return 'type' in block && block.type === 'heading';
+  }
+
+  isButtonBlock(block: ContentBlock | LayoutSection): block is ButtonBlock {
+    return 'type' in block && block.type === 'button';
+  }
+
+  isSliderBlock(block: ContentBlock | LayoutSection): block is SliderBlock {
+    return 'type' in block && block.type === 'slider';
+  }
+
+  isParagraphBlock(block: ContentBlock | LayoutSection): block is ParagraphBlock {
+    return 'type' in block && block.type === 'paragraph';
+  }
+
+  isListBlock(block: ContentBlock | LayoutSection): block is ListBlock {
+    return 'type' in block && block.type === 'list';
+  }
+
+  isImageListBlock(block: ContentBlock | LayoutSection): block is ImageListBlock {
+    return 'type' in block && block.type === 'image-list';
+  }
+
+  isVideoBlock(block: ContentBlock | LayoutSection): block is VideoBlock {
+    return 'type' in block && block.type === 'video';
+  }
+
+  isGalleryBlock(block: ContentBlock | LayoutSection): block is GalleryBlock {
+    return 'type' in block && block.type === 'gallery';
+  }
+
+  isImageBoxBlock(block: ContentBlock | LayoutSection): block is ImageBoxBlock {
+    return 'type' in block && block.type === 'image-box';
+  }
+
+  getColumnBlocks(section: LayoutSection, columnIndex: number): ContentBlock[] {
+    return section.blocks
+      .filter(block => block.columnIndex === columnIndex)
+      .map(block => block.block);
+  }
+
+  onImageError(event: any): void {
+    event.target.src = 'https://cdn3.iconfinder.com/data/icons/it-and-ui-mixed-filled-outlines/48/default_image-1024.png';
+  }
+
+  // Slider methods
+  prevSlide(layoutBlock: SliderBlock): void {
+    const totalSlides = layoutBlock.images?.length || 0;
+    this.currentSlideIndex = (this.currentSlideIndex - 1 + totalSlides) % totalSlides;
+  }
+
+  nextSlide(layoutBlock: SliderBlock): void {
+    const totalSlides = layoutBlock.images?.length || 0;
+    this.currentSlideIndex = (this.currentSlideIndex + 1) % totalSlides;
+  }
+
+  goToSlide(index: number, layoutBlock: SliderBlock): void {
+    const totalSlides = layoutBlock.images?.length || 0;
+    if (index >= 0 && index < totalSlides) {
+      this.currentSlideIndex = index;
+    }
+  }
 }

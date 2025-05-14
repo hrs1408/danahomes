@@ -88,7 +88,6 @@ export class PopularComponent implements OnInit, AfterViewInit {
   }
 
   getMainImage(product: Product): string {
-    // Trả về ảnh mặc định nếu không có ảnh
     if (!product.images || product.images.length === 0) {
       return '1CWmWfmLASqMynRs5_yYlYAv42nvy9bJ3'; // Thay thế bằng ID ảnh mặc định của bạn
     }
