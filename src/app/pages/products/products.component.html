@@ -33,6 +33,28 @@
               </li>
             </ul>
           </div>
+
+          <!-- Thêm bộ lọc loại sản phẩm -->
+          <div class="sidebar-section" *ngIf="!isProjectCategory">
+            <h3>Loại sản phẩm</h3>
+            <ul class="category-list">
+              <li>
+                <a [class.active]="!selectedProductType" (click)="changeProductType(null)">
+                  <i class="fas fa-list"></i> Tất cả
+                </a>
+              </li>
+              <li>
+                <a [class.active]="selectedProductType === 'rent'" (click)="changeProductType('rent')">
+                  <i class="fas fa-key"></i> Cho thuê
+                </a>
+              </li>
+              <li>
+                <a [class.active]="selectedProductType === 'sale'" (click)="changeProductType('sale')">
+                  <i class="fas fa-tag"></i> Mua bán
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 

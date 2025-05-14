@@ -35,6 +35,7 @@ export class ProductsComponent implements OnInit {
 
   // Lọc
   selectedCategory: number | null = null;
+  selectedProductType: string | null = null;
   isProjectCategory = false;
 
   constructor(
@@ -51,6 +52,13 @@ export class ProductsComponent implements OnInit {
       if (params['category']) {
         this.selectedCategory = Number(params['category']);
         this.isProjectCategory = this.selectedCategory === this.PROJECT_CATEGORY_ID;
+      }
+
+      if (params['type']) {
+        this.selectedProductType = params['type'];
+      }
+
+      if (this.selectedCategory) {
         this.loadProductsByCategory(this.selectedCategory);
       } else {
         this.loadAllProducts();
@@ -65,8 +73,7 @@ export class ProductsComponent implements OnInit {
       next: (response) => {
         if (!response.meta.error) {
           this.products = response.data;
-          this.totalPages = Math.ceil(this.products.length / this.pageSize);
-          this.updatePaginatedProducts();
+          this.filterProducts();
         } else {
           this.error = response.meta.message;
         }
@@ -85,10 +92,15 @@ export class ProductsComponent implements OnInit {
     this.error = null;
     this.productService.getProductsByCategory(categoryId).subscribe({
       next: (response) => {
-        console.log('Response from API:', response); // Thêm log để debug
-        this.products = response.data;
-        this.totalPages = Math.ceil(this.products.length / this.pageSize);
-        this.updatePaginatedProducts();
+        if (!response.meta.error) {
+          this.products = response.data;
+          if (this.isProjectCategory) {
+            this.selectedProductType = null;
+          }
+          this.filterProducts();
+        } else {
+          this.error = response.meta.message;
+        }
         this.loading = false;
       },
       error: (error) => {
@@ -122,7 +134,15 @@ export class ProductsComponent implements OnInit {
   }
 
   viewAllProducts(): void {
-    this.router.navigate(['/products']);
+    this.selectedCategory = null;
+    this.selectedProductType = null;
+    this.isProjectCategory = false;
+    this.currentPage = 1;
+    this.router.navigate(['/products'], {
+      queryParams: {}
+    }).then(() => {
+      this.loadAllProducts();
+    });
   }
 
   viewProductDetail(productId: number): void {
@@ -130,9 +150,18 @@ export class ProductsComponent implements OnInit {
   }
 
   updatePaginatedProducts(): void {
+    let productsToShow = this.products;
+
+    if (!this.isProjectCategory && this.selectedProductType) {
+      productsToShow = this.products.filter(product =>
+        product.product_detail.type_product === this.selectedProductType
+      );
+    }
+
+    this.totalPages = Math.ceil(productsToShow.length / this.pageSize);
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.paginatedProducts = this.products.slice(startIndex, endIndex);
+    this.paginatedProducts = productsToShow.slice(startIndex, endIndex);
   }
 
   nextPage(): void {
@@ -294,5 +323,38 @@ export class ProductsComponent implements OnInit {
       return icon.replace('-mat', '');
     }
     return null;
+  }
+
+  filterProducts(): void {
+    let filteredProducts = this.products;
+
+    if (!this.isProjectCategory && this.selectedProductType) {
+      filteredProducts = this.products.filter(product =>
+        product.product_detail.type_product === this.selectedProductType
+      );
+    }
+
+    this.totalPages = Math.ceil(filteredProducts.length / this.pageSize);
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
+  }
+
+  changeProductType(type: string | null): void {
+    this.selectedProductType = type;
+    this.currentPage = 1; // Reset về trang 1
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        ...this.selectedCategory ? { category: this.selectedCategory } : {},
+        ...(type ? { type } : {})
+      },
+      queryParamsHandling: 'merge'
+    });
+    this.filterProducts();
   }
 }

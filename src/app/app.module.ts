@@ -33,6 +33,7 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { ContactModalComponent } from './components/contact-modal/contact-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SafeHtmlComponent } from './components/safe-html/safe-html.component';
 // Register Swiper custom elements
 register();
 
@@ -76,6 +77,7 @@ register();
     }),
     FormsModule,
     NgbModule,
+    SafeHtmlComponent
   ],
   providers: [
     provideClientHydration(),
