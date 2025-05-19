@@ -13,7 +13,7 @@
 
     <!-- Property Grid -->
     <div class="property-grid" *ngIf="!loading && !error && saleProducts.length > 0">
-        <div class="property-card" *ngFor="let product of displayedProducts">
+        <div class="property-card" *ngFor="let product of displayedProducts" (click)="viewProductDetail(product.id)">
             <div class="property-image">
                 <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)"
                      [alt]="product.name"
@@ -30,23 +30,31 @@
                 <div class="property-details">
                     <div class="detail-item">
                         <i class="fas fa-bed"></i>
-                        <span>Phòng ngủ: {{ product.product_detail.bedroom.toString().padStart(2, '0') }}</span>
+                        <span>{{ product.product_detail.bedroom.toString().padStart(2, '0') }} Phòng ngủ</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-bath"></i>
-                        <span>Phòng tắm: {{ product.product_detail.bathroom.toString().padStart(2, '0') }}</span>
+                        <span>{{ product.product_detail.bathroom.toString().padStart(2, '0') }} Phòng tắm</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-vector-square"></i>
-                        <span>Diện tích: {{ product.product_detail.area }}m²</span>
+                        <span>{{ product.product_detail.area }}m²</span>
                     </div>
                 </div>
                 <div class="property-footer">
-                    <div class="price">{{ formatPrice(product.product_detail.price) }}</div>
-                    <button class="view-more-btn" (click)="viewProductDetail(product.id)">
-                      <i class="fas fa-eye"></i>
-                      Xem chi tiết
-                    </button>
+                    <div class="price-range">
+                        <ng-container *ngIf="getPrice(product) > 0">
+                            <div class="price" [class.range]="getPriceTo(product) > 0">
+                                <span *ngIf="!getPriceTo(product)">{{ formatPrice(getPrice(product)) }}</span>
+                                <span *ngIf="getPriceTo(product) > 0">
+                                    {{ formatPrice(getPrice(product)) }} - {{ formatPrice(getPriceTo(product)) }}
+                                </span>
+                            </div>
+                        </ng-container>
+                        <div class="price negotiable" *ngIf="getPrice(product) === 0">
+                            Thương lượng
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

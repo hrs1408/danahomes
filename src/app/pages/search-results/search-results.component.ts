@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService, Product, SearchParams } from '../../services/product.service';
+import { ProductService, Product } from '../../services/product.service';
 
 interface ProjectStatusInfo {
   text: string;
@@ -10,6 +10,17 @@ interface ProjectStatusInfo {
   animationClass?: string;
 }
 
+interface SearchParams {
+  product_type?: string;
+  area?: string;
+  price?: number;
+  price_to?: number;
+  address?: string;
+  category_id?: number;
+  name?: string;
+  [key: string]: string | number | undefined;
+}
+
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
@@ -17,9 +28,20 @@ interface ProjectStatusInfo {
 })
 export class SearchResultsComponent implements OnInit {
   products: Product[] = [];
+  rentProducts: Product[] = [];
+  saleProducts: Product[] = [];
+  projectProducts: Product[] = [];
   loading = true;
   error: string | null = null;
-  searchParams: SearchParams = {};
+  searchParams: SearchParams = {
+    product_type: undefined,
+    area: undefined,
+    price: undefined,
+    price_to: undefined,
+    address: undefined,
+    category_id: undefined,
+    name: undefined
+  };
   totalResults = 0;
 
   // Phân trang
@@ -35,43 +57,42 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      // Chỉ lấy các tham số có giá trị
       const searchParams: SearchParams = {};
 
       if (params['product_type']) {
-        searchParams.product_type = params['product_type'];
+        searchParams['product_type'] = params['product_type'];
       }
 
       if (params['name']) {
-        searchParams.name = params['name'];
+        searchParams['name'] = params['name'];
       }
 
       if (params['area']) {
-        searchParams.area = params['area'];
+        searchParams['area'] = params['area'];
       }
 
       if (params['category_id']) {
         const categoryId = Number(params['category_id']);
         if (!isNaN(categoryId)) {
-          searchParams.category_id = categoryId;
+          searchParams['category_id'] = categoryId;
         }
       }
 
       if (params['address']) {
-        searchParams.address = params['address'];
+        searchParams['address'] = params['address'];
       }
 
       if (params['price']) {
         const price = Number(params['price']);
         if (!isNaN(price)) {
-          searchParams.price = price;
+          searchParams['price'] = price;
         }
       }
 
       if (params['price_to']) {
         const priceTo = Number(params['price_to']);
         if (!isNaN(priceTo)) {
-          searchParams.price_to = priceTo;
+          searchParams['price_to'] = priceTo;
         }
       }
 
@@ -139,33 +160,63 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
+  private categorizeProducts(products: Product[]): void {
+    if (!products) {
+      this.rentProducts = [];
+      this.saleProducts = [];
+      this.projectProducts = [];
+      return;
+    }
+
+    this.rentProducts = products.filter(p => p?.product_detail?.type_product === 'rent' && p?.category_id !== 7);
+    this.saleProducts = products.filter(p => p?.product_detail?.type_product === 'sale' && p?.category_id !== 7);
+    this.projectProducts = products.filter(p => p?.category_id === 7);
+  }
+
   private search(): void {
     this.loading = true;
     this.error = null;
 
     // Chỉ gọi API nếu có ít nhất một tham số tìm kiếm
-    if (Object.keys(this.searchParams).length === 0) {
+    const cleanParams = Object.entries(this.searchParams)
+      .reduce((acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as SearchParams);
+
+    if (Object.keys(cleanParams).length === 0) {
       this.products = [];
+      this.rentProducts = [];
+      this.saleProducts = [];
+      this.projectProducts = [];
       this.totalResults = 0;
       this.totalPages = 0;
       this.loading = false;
       return;
     }
 
-    this.productService.search(this.searchParams).subscribe({
+    this.productService.search(cleanParams).subscribe({
       next: (response) => {
-        if (!response.meta.error) {
+        if (response.data) {
           const allProducts = response.data;
           this.totalResults = allProducts.length;
           this.totalPages = Math.ceil(this.totalResults / this.pageSize);
+
+          // Phân loại sản phẩm
+          this.categorizeProducts(allProducts);
 
           // Phân trang
           const startIndex = (this.currentPage - 1) * this.pageSize;
           const endIndex = startIndex + this.pageSize;
           this.products = allProducts.slice(startIndex, endIndex);
         } else {
-          this.error = response.meta.message;
+          this.error = response.meta?.message || 'Không có dữ liệu';
           this.products = [];
+          this.rentProducts = [];
+          this.saleProducts = [];
+          this.projectProducts = [];
           this.totalResults = 0;
           this.totalPages = 0;
         }
@@ -175,6 +226,9 @@ export class SearchResultsComponent implements OnInit {
         console.error('Lỗi khi tìm kiếm:', error);
         this.error = 'Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại sau.';
         this.products = [];
+        this.rentProducts = [];
+        this.saleProducts = [];
+        this.projectProducts = [];
         this.totalResults = 0;
         this.totalPages = 0;
         this.loading = false;
@@ -189,10 +243,8 @@ export class SearchResultsComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(price);
+    const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formattedPrice + ' VNĐ';
   }
 
   getMainImage(product: Product): string {
@@ -203,9 +255,74 @@ export class SearchResultsComponent implements OnInit {
     this.router.navigate(['/detail', productId]);
   }
 
-  calculatePricePerM2(price: number, area: number): string {
+  calculatePricePerM2(price: number, area: number, priceTo?: number): string {
     if (!price || !area || area === 0) return '';
-    const pricePerM2 = price / area;
-    return this.formatPrice(pricePerM2);
+
+    if (priceTo) {
+      const priceM2 = (price / area).toFixed(0);
+      const priceToM2 = (priceTo / area).toFixed(0);
+      return priceM2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' VNĐ' + ' - ' + priceToM2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'VNĐ';
+    }
+    return (price / area).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'VNĐ';
+  }
+
+  removeFilter(filterName: keyof SearchParams): void {
+    if (this.searchParams && filterName in this.searchParams) {
+      const updatedParams = { ...this.searchParams };
+      delete updatedParams[filterName];
+      this.searchParams = updatedParams;
+      this.updateSearchResults();
+    }
+
+  }
+
+  private updateSearchResults(): void {
+    this.loading = true;
+    this.error = null;
+
+    // Loại bỏ các giá trị undefined trước khi gửi request
+    const cleanParams = Object.entries(this.searchParams)
+      .reduce((acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as SearchParams);
+
+    this.productService.search(cleanParams).subscribe(
+      (response) => {
+        if (response.data) {
+          this.products = response.data;
+          this.totalResults = response.data.length;
+          this.totalPages = Math.ceil(this.totalResults / this.pageSize);
+        } else {
+          this.products = [];
+          this.totalResults = 0;
+          this.totalPages = 0;
+        }
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Lỗi khi tìm kiếm:', error);
+        this.error = 'Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại.';
+        this.loading = false;
+        this.products = [];
+        this.totalResults = 0;
+        this.totalPages = 0;
+      }
+    );
+  }
+
+  // Thêm các phương thức getter để lấy số lượng sản phẩm theo từng loại
+  get rentProductsCount(): number {
+    return this.rentProducts.length;
+  }
+
+  get saleProductsCount(): number {
+    return this.saleProducts.length;
+  }
+
+  get projectProductsCount(): number {
+    return this.projectProducts.length;
   }
 }

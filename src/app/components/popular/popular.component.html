@@ -30,7 +30,7 @@
             <div class="project-info">
               <!-- Tiêu đề và trạng thái -->
               <div class="project-header">
-                <h3 class="project-title">{{product.name}}</h3>
+                <a [routerLink]="['/detail', product.id]" class="project-title" style="text-decoration: none; color: black;"><h3 class="project-title">{{product.name}}</h3></a>
                 <div class="project-status" *ngIf="product.category_id === 7 && product.product_detail.project_status">
                   <span class="status-badge">{{getProjectStatusInfo(product.product_detail.project_status).text}}</span>
                 </div>
@@ -69,24 +69,6 @@
                 </div>
               </div>
 
-              <!-- Thông tin cho thuê -->
-              <div class="rental-info" *ngIf="product.product_detail.type_product === 'rent'">
-                <div class="utility-costs">
-                  <div class="cost-item" *ngIf="product.product_detail.eletric_price">
-                    <i class="fas fa-bolt"></i>
-                    <span>Điện: {{product.product_detail.eletric_price}}đ/kWh</span>
-                  </div>
-                  <div class="cost-item" *ngIf="product.product_detail.water_price">
-                    <i class="fas fa-water"></i>
-                    <span>Nước: {{product.product_detail.water_price}}đ/m³</span>
-                  </div>
-                  <div class="cost-item" *ngIf="product.product_detail.internet_price">
-                    <i class="fas fa-wifi"></i>
-                    <span>Internet: {{product.product_detail.internet_price}}đ/tháng</span>
-                  </div>
-                </div>
-              </div>
-
               <!-- Thông tin dự án -->
               <div class="project-specific-info" *ngIf="product.category_id === 7">
                 <div class="info-item investor" *ngIf="product.product_detail.investor">
@@ -98,16 +80,14 @@
                   <span>{{getProjectTypeInfo(product.product_detail.project_type).text}}</span>
                 </div>
               </div>
-
-              <!-- Tiện ích và nội thất -->
-              <div class="utilities-section" *ngIf="product.product_detail.utilities || product.product_detail.interior">
-                <div class="feature-item" *ngIf="product.product_detail.utilities">
-                  <i class="fas fa-star"></i>
-                  <span>{{product.product_detail.utilities}}</span>
+              <div class="project-specific-info" *ngIf="product.category_id === 7">
+                <div class="info-item investor" *ngIf="product.product_detail.investor">
+                  <i class="fas fa-building"></i>
+                  <span>{{product.product_detail.investor}}</span>
                 </div>
-                <div class="feature-item" *ngIf="product.product_detail.interior">
-                  <i class="fas fa-couch"></i>
-                  <span>{{product.product_detail.interior}}</span>
+                <div class="info-item project-type" *ngIf="product.product_detail.project_type">
+                  <i class="fas fa-city"></i>
+                  <span>{{getProjectTypeInfo(product.product_detail.project_type).text}}</span>
                 </div>
               </div>
 

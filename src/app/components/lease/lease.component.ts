@@ -39,10 +39,8 @@ export class LeaseComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
-    if (price >= 1000000000) {
-      return (price / 1000000000).toFixed(2) + ' tỷ';
-    }
-    return (price / 1000000).toFixed(0) + ' triệu';
+    const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formattedPrice + ' VNĐ';
   }
 
   getMainImage(product: Product): string {

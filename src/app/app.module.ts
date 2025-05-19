@@ -34,6 +34,7 @@ import { ContactFormComponent } from './components/contact-form/contact-form.com
 import { ContactModalComponent } from './components/contact-modal/contact-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SafeHtmlComponent } from './components/safe-html/safe-html.component';
+import { PropertyConsignmentComponent } from './pages/property-consignment/property-consignment.component';
 // Register Swiper custom elements
 register();
 
@@ -61,7 +62,8 @@ register();
     FeaturesComponent,
     LoadingOverlayComponent,
     ContactFormComponent,
-    ContactModalComponent
+    ContactModalComponent,
+    PropertyConsignmentComponent
   ],
   imports: [
     BrowserModule,

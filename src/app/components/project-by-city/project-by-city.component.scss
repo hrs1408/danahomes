@@ -34,21 +34,65 @@
 
   .cities-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr;
-    gap: 20px;
-    max-width: 1600px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 160px;
+    gap: 15px;
     margin: 0 auto;
 
     .city-card {
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      height: 300px;
       position: relative;
       cursor: pointer;
-      display: block;
+      transition: transform 0.3s ease;
+
+      // Quận Hải Châu - Lớn nhất
+      &:nth-child(1) {
+        grid-column: span 6;
+        grid-row: span 2;
+      }
+
+      // Quận Thanh Khê
+      &:nth-child(2) {
+        grid-column: span 3;
+        grid-row: span 2;
+      }
+
+      // Quận Sơn Trà
+      &:nth-child(3) {
+        grid-column: span 3;
+        grid-row: span 2;
+      }
+
+      // Quận Ngũ Hành Sơn
+      &:nth-child(4) {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+
+      // Quận Liên Chiểu
+      &:nth-child(5) {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+
+      // Quận Cẩm Lệ
+      &:nth-child(6) {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+
+      // Huyện Hòa Vang
+      &:nth-child(7) {
+        grid-column: span 12;
+        grid-row: span 1;
+        min-height: 200px;
+      }
 
       &:hover {
+        transform: translateY(-5px);
+
         .city-image {
           .city-overlay {
             background-color: rgba(0, 0, 0, 0.6);
@@ -63,14 +107,6 @@
             }
           }
         }
-      }
-
-      &:nth-child(4) {
-        grid-column: span 2;
-      }
-
-      &:nth-child(n+4) {
-        height: 280px;
       }
 
       .city-image {
@@ -102,19 +138,21 @@
             z-index: 2;
 
             .project-count {
-              display: block;
-              color: #ff3b30;
-              font-size: 48px;
+              color: #fff;
+              font-size: 36px;
               font-weight: bold;
-              line-height: 1;
-              margin-bottom: 8px;
+              margin: 10px 0 5px;
+            }
+
+            .project-text {
+              color: #fff;
+              font-size: 16px;
+              margin-top: 5px;
             }
 
             .project-label {
-              display: block;
               color: white;
               font-size: 18px;
-              text-transform: uppercase;
               font-weight: 500;
             }
           }
@@ -128,7 +166,7 @@
 
             .city-name {
               color: white;
-              font-size: 24px;
+              font-size: 20px;
               font-weight: bold;
               margin: 0;
               text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -143,21 +181,74 @@
 @media (max-width: 1200px) {
   .project-by-city {
     .cities-grid {
-      max-width: 100%;
+      grid-template-columns: repeat(8, 1fr);
 
       .city-card {
-        height: 260px;
+        // Quận Hải Châu
+        &:nth-child(1) {
+          grid-column: span 4;
+          grid-row: span 2;
+        }
 
-        &:nth-child(n+4) {
-          height: 240px;
+        // Quận Thanh Khê và Sơn Trà
+        &:nth-child(2), &:nth-child(3) {
+          grid-column: span 4;
+          grid-row: span 1;
+        }
+
+        // Quận Ngũ Hành Sơn và Liên Chiểu
+        &:nth-child(4), &:nth-child(5) {
+          grid-column: span 4;
+          grid-row: span 1;
+        }
+
+        // Quận Cẩm Lệ
+        &:nth-child(6) {
+          grid-column: span 4;
+          grid-row: span 1;
+        }
+
+        // Huyện Hòa Vang
+        &:nth-child(7) {
+          grid-column: span 8;
+          grid-row: span 1;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .project-by-city {
+    .cities-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 140px;
+      gap: 12px;
+
+      .city-card {
+        // Quận Hải Châu
+        &:nth-child(1) {
+          grid-column: span 4;
+          grid-row: span 2;
+        }
+
+        // Tất cả các quận còn lại
+        &:nth-child(n+2) {
+          grid-column: span 2;
+          grid-row: span 1;
+        }
+
+        // Huyện Hòa Vang
+        &:nth-child(7) {
+          grid-column: span 4;
+          grid-row: span 1;
         }
 
         .city-overlay {
           .hover-content {
             .project-count {
-              font-size: 42px;
+              font-size: 28px;
             }
-
             .project-label {
               font-size: 16px;
             }
@@ -168,88 +259,52 @@
   }
 }
 
-@media (max-width: 992px) {
-  .project-by-city {
-    .cities-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-
-      .city-card {
-        height: 240px;
-
-        &:nth-child(4) {
-          grid-column: span 1;
-        }
-
-        &:nth-child(n+4) {
-          height: 240px;
-        }
-
-        .city-overlay {
-          .hover-content {
-            .project-count {
-              font-size: 36px;
-            }
-
-            .project-label {
-              font-size: 15px;
-            }
-          }
-
-          .default-content {
-            bottom: 16px;
-            left: 16px;
-
-            .city-name {
-              font-size: 20px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 @media (max-width: 576px) {
   .project-by-city {
+    padding: 30px 0;
+
+    .title {
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+
     .cities-grid {
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 120px;
+      gap: 10px;
 
       .city-card {
-        height: 200px;
+        &:nth-child(1) {
+          grid-column: span 2;
+          grid-row: span 2;
+        }
 
-        &:nth-child(n+4) {
-          height: 200px;
+        &:nth-child(n+2) {
+          grid-column: span 1;
+          grid-row: span 1;
+        }
+
+        &:nth-child(7) {
+          grid-column: span 2;
+          grid-row: span 1;
         }
 
         .city-overlay {
           .hover-content {
             .project-count {
-              font-size: 32px;
-              margin-bottom: 4px;
+              font-size: 24px;
             }
-
             .project-label {
               font-size: 14px;
             }
           }
-
           .default-content {
-            bottom: 12px;
-            left: 12px;
-
             .city-name {
-              font-size: 18px;
+              font-size: 16px;
             }
           }
         }
       }
-    }
-
-    .title {
-      font-size: 24px;
-      margin-bottom: 24px;
     }
   }
 }

@@ -116,13 +116,25 @@
               border-top: 2px solid transparent;
               transition: all 0.3s ease;
               padding: 0 5px;
+              white-space: nowrap;
 
               &:hover {
                 border-top: 2px solid #002250;
               }
             }
 
+            &:hover {
+              .dropdown-menu {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: all;
+              }
+            }
+
             .dropdown-menu {
+              display: none;
               position: absolute;
               top: 100%;
               left: -20px;
@@ -133,9 +145,8 @@
               opacity: 0;
               visibility: hidden;
               transform: translateY(10px);
-              transition: all 0.3s ease;
-              z-index: 1000;
-              pointer-events: none;
+              transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+              z-index: 99999;
               padding: 8px 0;
 
               ul {
@@ -143,11 +154,14 @@
                 flex-direction: column;
                 height: auto;
                 width: 100%;
+                margin: 0;
+                padding: 0;
 
                 li {
                   margin: 0;
                   width: 100%;
                   height: auto;
+                  display: block;
 
                   a {
                     padding: 10px 20px;
@@ -168,20 +182,7 @@
                       justify-content: center;
                       width: 20px;
                       height: 20px;
-
-                      &.anticon {
-                        font-size: 18px;
-                      }
-
-                      &.material-icons {
-                        font-size: 20px;
-                        width: auto;
-                        height: auto;
-                      }
-
-                      &.fa-solid, &.fa-regular, &.fa-brands {
-                        font-size: 16px;
-                      }
+                      font-size: 16px;
                     }
 
                     &:hover {
@@ -192,22 +193,11 @@
                 }
               }
             }
-
-            &:hover {
-              > a {
-                border-top: 2px solid #002250;
-              }
-              .dropdown-menu {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
-                pointer-events: auto;
-              }
-            }
           }
         }
       }
       .contact-buttons{
+        cursor: pointer;
         display: flex;
         gap: 10px;
         align-items: center;

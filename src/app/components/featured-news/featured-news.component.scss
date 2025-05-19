@@ -83,9 +83,15 @@
 
       .news-card.main {
         height: 100%;
-
+        cursor: pointer;
+        &:hover {
+          .news-title {
+            color: #4285f4;
+          }
+        }
         .news-image {
           height: 400px;
+          transition: transform 0.3s ease;
         }
 
         .news-title {
@@ -113,7 +119,12 @@
       .news-card.side {
         display: flex;
         gap: 1rem;
-
+        cursor: pointer;
+        &:hover {
+          .news-title {
+            color: #4285f4;
+          }
+        }
         .news-image {
           width: 180px;
           height: 120px;

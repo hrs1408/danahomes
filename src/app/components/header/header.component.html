@@ -20,12 +20,19 @@
             <a routerLink="/products">Sản phẩm</a>
             <div class="dropdown-menu">
               <ul>
-                <li><a [routerLink]="['/products']" (click)="$event.stopPropagation()">Tất cả sản phẩm</a></li>
-                <li *ngFor="let category of categories">
-                  <a [routerLink]="['/products']"
-                     [queryParams]="{category: category.id}"
-                     (click)="$event.stopPropagation()">
-                    <i [class]="getIconClass(category.icon)" [innerHTML]="getIconContent(category.icon)"></i> {{ category.name }}
+                <li>
+                  <a [routerLink]="['/products']" [queryParams]="{type: 'sale', category: 0}" (click)="$event.stopPropagation()">
+                    <i class="fas fa-home"></i> Mua bán
+                  </a>
+                </li>
+                <li>
+                  <a [routerLink]="['/products']" [queryParams]="{type: 'rent', category: 0}" (click)="$event.stopPropagation()">
+                    <i class="fas fa-key"></i> Cho thuê
+                  </a>
+                </li>
+                <li>
+                  <a [routerLink]="['/products']" [queryParams]="{category: 7}" (click)="$event.stopPropagation()">
+                    <i class="fas fa-building"></i> Dự án
                   </a>
                 </li>
               </ul>
@@ -33,6 +40,7 @@
           </li>
           <li><a routerLink="/news">Tin tức</a></li>
           <li><a routerLink="/contact">Liên hệ</a></li>
+          <li><a routerLink="/property-consignment">Ký gửi bất động sản</a></li>
         </ul>
       </nav>
       <a class="contact-buttons" (click)="openContactModal($event)">

@@ -1,0 +1,370 @@
+<div class="property-consignment">
+  <div class="container">
+    <h1>Ký gửi bất động sản</h1>
+
+    <div class="tabs-container">
+      <div class="tabs-wrapper">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'rent'"
+          (click)="switchTab('rent')">
+          <div class="tab-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="tab-content">
+            <span class="tab-label">Ký gửi cho thuê</span>
+            <span class="tab-description">Đăng tin cho thuê nhà, căn hộ, mặt bằng</span>
+          </div>
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'sale'"
+          (click)="switchTab('sale')">
+          <div class="tab-icon">
+            <i class="fas fa-tags"></i>
+          </div>
+          <div class="tab-content">
+            <span class="tab-label">Ký gửi mua bán</span>
+            <span class="tab-description">Đăng tin bán nhà, căn hộ, đất nền</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <form [formGroup]="consignmentForm" (ngSubmit)="onSubmit()" class="mx-auto">
+        <!-- Thông tin chủ sở hữu -->
+        <div class="form-section" formGroupName="ownerInfo">
+          <h3 class="section-title">
+            <i class="fas fa-user me-2"></i>
+            Thông tin chủ sở hữu
+          </h3>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label required">Họ và tên</label>
+              <input type="text" class="form-control" formControlName="fullName" placeholder="Nhập họ và tên">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label required">Số điện thoại</label>
+              <input type="tel" class="form-control" formControlName="phone" placeholder="Nhập số điện thoại">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">CCCD/CMND</label>
+              <input type="text" class="form-control" formControlName="idNumber" placeholder="Nhập số CCCD/CMND">
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin bất động sản -->
+        <div class="form-section" formGroupName="propertyInfo">
+          <h3 class="section-title">
+            <i class="fas fa-building me-2"></i>
+            Thông tin bất động sản
+          </h3>
+
+          <div class="row">
+            <div class="col-12 mb-4">
+              <label class="form-label required">Loại bất động sản</label>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check" *ngIf="activeTab === 'sale'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="apartment" id="type-apartment-sale">
+                  <label class="form-check-label" for="type-apartment-sale">Căn hộ</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'sale'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="house" id="type-house-sale">
+                  <label class="form-check-label" for="type-house-sale">Nhà đất</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'sale'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="land" id="type-land-sale">
+                  <label class="form-check-label" for="type-land-sale">Đất nền</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="apartment" id="type-apartment-rent">
+                  <label class="form-check-label" for="type-apartment-rent">Căn hộ</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="house" id="type-house-rent">
+                  <label class="form-check-label" for="type-house-rent">Nhà nguyên căn</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="commercial" id="type-commercial-rent">
+                  <label class="form-check-label" for="type-commercial-rent">Mặt bằng</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="type" value="room" id="type-room-rent">
+                  <label class="form-check-label" for="type-room-rent">Phòng trọ</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="type" value="other" id="type-other">
+                  <label class="form-check-label" for="type-other">Khác</label>
+                </div>
+              </div>
+              <input *ngIf="consignmentForm.get('propertyInfo.type')?.value === 'other'"
+                type="text" class="form-control mt-2" formControlName="otherType" placeholder="Nhập loại bất động sản khác">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-4">
+              <label class="form-label required">Địa chỉ chi tiết</label>
+              <input type="text" class="form-control" formControlName="address" placeholder="Nhập địa chỉ chi tiết">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="form-label required">Diện tích (m²)</label>
+              <input type="number" class="form-control" formControlName="area" placeholder="Nhập diện tích">
+            </div>
+            <div class="col-md-6 mb-4">
+              <label class="form-label">Hướng</label>
+              <select class="form-select" formControlName="direction">
+                <option value="">Chọn hướng</option>
+                <option value="east">Đông</option>
+                <option value="west">Tây</option>
+                <option value="south">Nam</option>
+                <option value="north">Bắc</option>
+                <option value="northeast">Đông Bắc</option>
+                <option value="northwest">Tây Bắc</option>
+                <option value="southeast">Đông Nam</option>
+                <option value="southwest">Tây Nam</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-4">
+              <label class="form-label required">Hiện trạng</label>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check" *ngIf="activeTab === 'sale'">
+                  <input class="form-check-input" type="radio" formControlName="status" value="empty" id="status-empty-sale">
+                  <label class="form-check-label" for="status-empty-sale">Đất trống</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'sale'">
+                  <input class="form-check-input" type="radio" formControlName="status" value="built" id="status-built-sale">
+                  <label class="form-check-label" for="status-built-sale">Đã xây nhà</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'sale'">
+                  <input class="form-check-input" type="radio" formControlName="status" value="rented" id="status-rented-sale">
+                  <label class="form-check-label" for="status-rented-sale">Đang cho thuê</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="status" value="empty" id="status-empty-rent">
+                  <label class="form-check-label" for="status-empty-rent">Trống</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="status" value="rented" id="status-rented-rent">
+                  <label class="form-check-label" for="status-rented-rent">Có khách thuê</label>
+                </div>
+                <div class="form-check" *ngIf="activeTab === 'rent'">
+                  <input class="form-check-input" type="radio" formControlName="status" value="renovating" id="status-renovating-rent">
+                  <label class="form-check-label" for="status-renovating-rent">Đang sửa chữa</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="status" value="other" id="status-other">
+                  <label class="form-check-label" for="status-other">Khác</label>
+                </div>
+              </div>
+              <input *ngIf="consignmentForm.get('propertyInfo.status')?.value === 'other'"
+                type="text" class="form-control mt-2" formControlName="otherStatus" placeholder="Nhập hiện trạng khác">
+              <input *ngIf="activeTab === 'rent' && consignmentForm.get('propertyInfo.status')?.value === 'rented'"
+                type="date" class="form-control mt-2" formControlName="currentTenantDate" placeholder="Ngày hết hạn">
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin pháp lý (chỉ hiển thị khi tab là mua bán) -->
+        <div class="form-section" *ngIf="activeTab === 'sale'" formGroupName="legalInfo">
+          <h3 class="section-title">
+            <i class="fas fa-file-contract me-2"></i>
+            Pháp lý
+          </h3>
+          <div class="d-flex flex-wrap gap-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="hasRedBook" id="legal-redbook">
+              <label class="form-check-label" for="legal-redbook">Đã có sổ đỏ/sổ hồng</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="noRedBook" id="legal-no-redbook">
+              <label class="form-check-label" for="legal-no-redbook">Chưa có sổ</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="mortgaged" id="legal-mortgaged">
+              <label class="form-check-label" for="legal-mortgaged">Đang thế chấp</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="coOwnership" id="legal-co-ownership">
+              <label class="form-check-label" for="legal-co-ownership">Có đồng sở hữu</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin giá bán (chỉ hiển thị khi tab là mua bán) -->
+        <div class="form-section" *ngIf="activeTab === 'sale'" formGroupName="priceInfo">
+          <h3 class="section-title">
+            <i class="fas fa-money-bill-wave me-2"></i>
+            Giá bán và điều kiện giao dịch
+          </h3>
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="form-label required">Giá mong muốn (VNĐ)</label>
+              <input type="number" class="form-control" formControlName="price" placeholder="Nhập giá mong muốn">
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="negotiable">
+              <label class="form-check-label">Có thương lượng</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="includeTax">
+              <label class="form-check-label">Bao gồm thuế/phí</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="bankSupport">
+              <label class="form-check-label">Hỗ trợ ngân hàng</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin cho thuê (chỉ hiển thị khi tab là cho thuê) -->
+        <div class="form-section" *ngIf="activeTab === 'rent'" formGroupName="rentalInfo">
+          <h3 class="section-title">
+            <i class="fas fa-hand-holding-usd me-2"></i>
+            Giá cho thuê và điều kiện thuê
+          </h3>
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="form-label required">Giá cho thuê mong muốn (VNĐ/tháng)</label>
+              <input type="number" class="form-control" formControlName="price" placeholder="Nhập giá cho thuê">
+            </div>
+            <div class="col-md-6 mb-4">
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" formControlName="negotiable">
+                <label class="form-check-label">Có thương lượng</label>
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="includedServices" class="mb-4">
+            <label class="form-label">Bao gồm:</label>
+            <div class="d-flex flex-wrap gap-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="managementFee" id="service-management">
+                <label class="form-check-label" for="service-management">Phí quản lý</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="internet" id="service-internet">
+                <label class="form-check-label" for="service-internet">Internet</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="utilities" id="service-utilities">
+                <label class="form-check-label" for="service-utilities">Điện/nước</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="parking" id="service-parking">
+                <label class="form-check-label" for="service-parking">Gửi xe</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="other" id="service-other">
+                <label class="form-check-label" for="service-other">Khác</label>
+              </div>
+            </div>
+            <input *ngIf="consignmentForm.get('rentalInfo.includedServices.other')?.value"
+              type="text" class="form-control mt-2" formControlName="otherDetail" placeholder="Nhập chi tiết khác">
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Đặt cọc (tháng)</label>
+              <input type="number" class="form-control" formControlName="deposit" placeholder="Số tháng đặt cọc">
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Thanh toán (tháng/lần)</label>
+              <input type="number" class="form-control" formControlName="paymentTerm" placeholder="Số tháng thanh toán/lần">
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Hợp đồng tối thiểu (tháng)</label>
+              <input type="number" class="form-control" formControlName="minContract" placeholder="Số tháng tối thiểu">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="form-label">Thời gian có thể bàn giao</label>
+              <input type="date" class="form-control" formControlName="availableDate">
+            </div>
+          </div>
+
+          <div formGroupName="suitableFor">
+            <label class="form-label">Đối tượng cho thuê phù hợp:</label>
+            <div class="d-flex flex-wrap gap-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="family" id="tenant-family">
+                <label class="form-check-label" for="tenant-family">Gia đình</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="worker" id="tenant-worker">
+                <label class="form-check-label" for="tenant-worker">Người đi làm</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="student" id="tenant-student">
+                <label class="form-check-label" for="tenant-student">Sinh viên</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="foreigner" id="tenant-foreigner">
+                <label class="form-check-label" for="tenant-foreigner">Người nước ngoài</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="other" id="tenant-other">
+                <label class="form-check-label" for="tenant-other">Khác</label>
+              </div>
+            </div>
+            <input *ngIf="consignmentForm.get('rentalInfo.suitableFor.other')?.value"
+              type="text" class="form-control mt-2" formControlName="otherDetail" placeholder="Nhập đối tượng khác">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Hình ảnh bất động sản</h3>
+          <div class="image-upload-container"
+               [class.dragging]="isDragging"
+               (dragover)="onDragOver($event)"
+               (dragleave)="onDragLeave($event)"
+               (drop)="onDrop($event)">
+
+            <div class="upload-instructions" *ngIf="images.length < maxImages">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Kéo thả ảnh vào đây hoặc</p>
+              <label class="upload-button">
+                <input type="file"
+                       multiple
+                       accept="image/*"
+                       (change)="onFileSelected($event)"
+                       [attr.disabled]="images.length >= maxImages ? '' : null">
+                Chọn ảnh
+              </label>
+              <p class="upload-hint">Tối đa {{maxImages}} ảnh</p>
+            </div>
+
+            <div class="image-preview-grid">
+              <div class="image-preview-item" *ngFor="let image of images; let i = index">
+                <img [src]="image.preview" [alt]="'Preview ' + (i + 1)">
+                <button type="button" class="remove-image" (click)="removeImage(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary btn-lg px-5">
+            <i class="fas fa-paper-plane me-2"></i>
+            Gửi thông tin
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

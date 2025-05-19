@@ -231,7 +231,7 @@ export class DetailComponent implements OnInit, AfterViewInit {
           if (isPlatformBrowser(this.platformId)) {
             setTimeout(() => {
               this.initMap();
-            });
+            }, 500);
           }
         } else {
           this.error = response.meta.message;
@@ -290,10 +290,8 @@ export class DetailComponent implements OnInit, AfterViewInit {
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(price);
+    const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formattedPrice + ' VNĐ';
   }
 
   nextImage(): void {

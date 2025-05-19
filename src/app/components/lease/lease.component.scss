@@ -43,6 +43,7 @@ $breakpoint-sm: 576px;
   }
 
   .property-card {
+    cursor: pointer;
     max-height: none;
     min-height: 250px;
     display: flex;
@@ -54,7 +55,13 @@ $breakpoint-sm: 576px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(0);
-
+    &:hover {
+      .property-info {
+        .property-title{
+          color: #4285f4;
+        }
+      }
+    }
     .property-image {
       position: relative;
       width: 40%;
@@ -105,15 +112,69 @@ $breakpoint-sm: 576px;
         z-index: 2;
       }
 
-      .price-tag {
+      .price-wrapper {
         position: absolute;
-        left: 12px;
         bottom: 12px;
-        color: white;
-        font-size: clamp(14px, 2vw, 18px);
-        font-weight: 600;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        left: 12px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 12px 15px;
+        border-radius: 8px;
+        backdrop-filter: blur(5px);
         z-index: 2;
+        transition: all 0.3s ease;
+        min-width: 180px;
+        max-width: 250px;
+
+        .price-label {
+          display: block;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 12px;
+          font-weight: 400;
+          margin-bottom: 6px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .price-range {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          .price-item {
+            span {
+              color: white;
+              font-size: 14px;
+              font-weight: 600;
+              display: block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            .price-from {
+              color: #4CAF50;
+            }
+
+            .price-to {
+              color: #FFC107;
+            }
+          }
+        }
+
+        .price-unit {
+          display: block;
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 11px;
+          font-weight: 400;
+          margin-top: 4px;
+          font-style: italic;
+        }
+
+        &:hover {
+          transform: translateY(-3px);
+          background: rgba(0, 0, 0, 0.8);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
       }
 
       .rent-now-overlay {

@@ -61,10 +61,8 @@ export class SaleComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
-    if (price >= 1000000000) {
-      return (price / 1000000000).toFixed(2) + ' tỷ';
-    }
-    return (price / 1000000).toFixed(0) + ' triệu';
+    const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formattedPrice + ' VNĐ';
   }
 
   getMainImage(product: Product): string {
@@ -76,5 +74,13 @@ export class SaleComponent implements OnInit {
 
   viewProductDetail(productId: number) {
     this.router.navigate(['/detail', productId]);
+  }
+
+  getPrice(product: Product): number {
+    return product?.product_detail?.price || 0;
+  }
+
+  getPriceTo(product: Product): number {
+    return product?.product_detail?.price_to || 0;
   }
 }

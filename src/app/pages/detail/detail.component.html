@@ -152,7 +152,7 @@
               <div id="map"></div>
             </div>
             <a [href]="product.address_detail.google_address_link" target="_blank" class="map-link">
-              <i class="fas fa-directions"></i> Xem chỉ đường trên Google Maps
+              <i class="fas fa-directions"></i> Xem chỉ đường trên Maps
             </a>
           </div>
         </div>
@@ -556,7 +556,7 @@
         </div>
 
         <!-- Công cụ tính lãi suất -->
-        <div class="info-section">
+        <div class="info-section" *ngIf="product.product_detail.type_product !== 'rent'">
           <h2>
             <i class="fas fa-calculator"></i>
             Công cụ tính lãi suất vay

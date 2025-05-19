@@ -194,10 +194,8 @@ export class ProductsComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(price);
+    const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formattedPrice + ' VNĐ';
   }
 
   isRentalProduct(product: Product): boolean {

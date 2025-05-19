@@ -18,7 +18,18 @@
                      onerror="this.src='assets/images/default_property.jpeg'">
                 <span class="rent-tag">Cho thuê</span>
                 <span class="hot-tag" *ngIf="product.tag && product.tag.length > 0">HOT</span>
-                <span class="price-tag">{{ formatPrice(product.product_detail.price) }}</span>
+                <div class="price-wrapper">
+                  <span class="price-label">Giá thuê</span>
+                  <div class="price-range">
+                    <div class="price-item">
+                      <span class="price-from">Từ: {{ formatPrice(product.product_detail.price) }}</span>
+                    </div>
+                    <div class="price-item" *ngIf="product.product_detail.price_to">
+                      <span class="price-to">Đến: {{ formatPrice(product.product_detail.price_to) }}</span>
+                    </div>
+                  </div>
+                  <span class="price-unit">/tháng</span>
+                </div>
                 <div class="rent-now-overlay">
                     <button class="rent-now-btn">
                         <i class="fas fa-home"></i>

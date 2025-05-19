@@ -9,277 +9,268 @@
       </div>
     </div>
 
-    <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-3">
-        <div class="sidebar">
-          <div class="sidebar-section">
-            <h3>Danh mục sản phẩm</h3>
-            <ul class="category-list">
-              <li>
-                <a [class.active]="!selectedCategory" (click)="viewAllProducts()">
-                  <i class="fas fa-home"></i> Tất cả sản phẩm
-                </a>
-              </li>
-              <li *ngFor="let category of categories">
-                <a [class.active]="selectedCategory === category.id" (click)="viewCategory(category.id)">
-                  <i [class]="getIconClass(category.icon)">
-                    <ng-container *ngIf="getIconContent(category.icon)">
-                      {{ getIconContent(category.icon) }}
-                    </ng-container>
-                  </i>
-                  {{ category.name }}
-                </a>
-              </li>
-            </ul>
-          </div>
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="categories-filter">
+        <h3>Danh mục sản phẩm</h3>
+        <ul class="category-list">
+          <li>
+            <a [class.active]="!selectedCategory" (click)="viewAllProducts()">
+              <i class="fas fa-home"></i> Tất cả sản phẩm
+            </a>
+          </li>
+          <li *ngFor="let category of categories">
+            <a [class.active]="selectedCategory === category.id" (click)="viewCategory(category.id)">
+              <i [class]="getIconClass(category.icon)">
+                <ng-container *ngIf="getIconContent(category.icon)">
+                  {{ getIconContent(category.icon) }}
+                </ng-container>
+              </i>
+              {{ category.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
 
-          <!-- Thêm bộ lọc loại sản phẩm -->
-          <div class="sidebar-section" *ngIf="!isProjectCategory">
-            <h3>Loại sản phẩm</h3>
-            <ul class="category-list">
-              <li>
-                <a [class.active]="!selectedProductType" (click)="changeProductType(null)">
-                  <i class="fas fa-list"></i> Tất cả
-                </a>
-              </li>
-              <li>
-                <a [class.active]="selectedProductType === 'rent'" (click)="changeProductType('rent')">
-                  <i class="fas fa-key"></i> Cho thuê
-                </a>
-              </li>
-              <li>
-                <a [class.active]="selectedProductType === 'sale'" (click)="changeProductType('sale')">
-                  <i class="fas fa-tag"></i> Mua bán
-                </a>
-              </li>
-            </ul>
-          </div>
+      <div class="product-type-filter" *ngIf="!isProjectCategory">
+        <h3>Loại sản phẩm</h3>
+        <ul class="category-list">
+          <li>
+            <a [class.active]="!selectedProductType" (click)="changeProductType(null)">
+              <i class="fas fa-list"></i> Tất cả
+            </a>
+          </li>
+          <li>
+            <a [class.active]="selectedProductType === 'rent'" (click)="changeProductType('rent')">
+              <i class="fas fa-key"></i> Cho thuê
+            </a>
+          </li>
+          <li>
+            <a [class.active]="selectedProductType === 'sale'" (click)="changeProductType('sale')">
+              <i class="fas fa-tag"></i> Mua bán
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-content-wrapper">
+      <div *ngIf="loading" class="loading-container">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Đang tải sản phẩm...</p>
         </div>
       </div>
 
-      <!-- Main Content -->
-      <div class="col-md-9">
-        <div class="products-content-wrapper">
-          <div *ngIf="loading" class="loading-container">
-            <div class="loading">
-              <div class="spinner"></div>
-              <p>Đang tải sản phẩm...</p>
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div *ngIf="!loading && !error" class="products-grid" [class.project-grid]="isProjectCategory">
+        <!-- Rental Products -->
+        <ng-container *ngFor="let product of paginatedProducts">
+          <div class="product-card rental-card cursor-pointer" *ngIf="!isProjectCategory && isRentalProduct(product)" (click)="viewProductDetail(product.id)">
+            <div class="product-image">
+              <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+              <div class="product-badge rental">Cho thuê</div>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title" style="line-height: 1.4;">{{ product.name }}</h3>
+              <p class="product-address" style="line-height: 1.4;">
+                <i class="fa fa-map-marker"></i>
+                {{ product.address_detail.address }}
+              </p>
+              <div class="product-details">
+                <div class="detail-item">
+                  <span class="label">Giá thuê:</span>
+                  <span class="value">{{ formatPrice(product.product_detail.price) }}/tháng</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Diện tích:</span>
+                  <span class="value">{{ product.product_detail.area }} m²</span>
+                </div>
+                <div class="utility-costs">
+                  <div class="cost-item" *ngIf="product.product_detail.eletric_price">
+                    <i class="fas fa-bolt"></i>
+                    <span>Điện: {{ formatPrice(product.product_detail.eletric_price) }}/kWh</span>
+                  </div>
+                  <div class="cost-item" *ngIf="product.product_detail.water_price">
+                    <i class="fas fa-water"></i>
+                    <span>Nước: {{ formatPrice(product.product_detail.water_price) }}/m³</span>
+                  </div>
+                  <div class="cost-item" *ngIf="product.product_detail.internet_price">
+                    <i class="fas fa-wifi"></i>
+                    <span>Internet: {{ formatPrice(product.product_detail.internet_price) }}/tháng</span>
+                  </div>
+                </div>
+                <div class="property-features">
+                  <div class="feature-item" *ngIf="product.product_detail.area">
+                    <i class="fas fa-chart-area"></i>
+                    <span>{{ product.product_detail.area }} m²</span>
+                  </div>
+                  <div class="feature-item">
+                    <i class="fas fa-bed"></i>
+                    <span>{{ product.product_detail.bedroom }} phòng ngủ</span>
+                  </div>
+                  <div class="feature-item">
+                    <i class="fas fa-bath"></i>
+                    <span>{{ product.product_detail.bathroom }} phòng tắm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="product-meta">
+                <div class="tags">
+                  <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+                    {{ tag.name }}
+                  </span>
+                </div>
+                <button class="view-btn">Xem chi tiết</button>
+              </div>
             </div>
           </div>
+        </ng-container>
 
-          <div *ngIf="error" class="error-message">
-            {{ error }}
+        <!-- Sale Products -->
+        <ng-container *ngFor="let product of paginatedProducts">
+          <div class="product-card sale-card cursor-pointer" *ngIf="!isProjectCategory && isSaleProduct(product)" (click)="viewProductDetail(product.id)">
+            <div class="product-image">
+              <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+              <div class="product-badge sale">Mua bán</div>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title" style="line-height: 1.4;">{{ product.name }}</h3>
+              <p class="product-address" style="line-height: 1.4;">
+                <i class="fa fa-map-marker"></i>
+                {{ product.address_detail.address }}
+              </p>
+              <div class="product-details">
+                <div class="detail-item price">
+                  <span class="label">Giá:</span>
+                  <span class="value" *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                  <span class="value" *ngIf="product.product_detail.price_to">
+                    {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                  </span>
+                </div>
+                <div class="detail-item description" *ngIf="product.product_detail.content">
+                  <div class="content-preview" [innerHTML]="truncateHTML(product.product_detail.content)"></div>
+                </div>
+                <div class="property-info">
+                  <div class="info-item">
+                    <i class="fas fa-chart-area"></i>
+                    <span>{{ product.product_detail.area }} m²</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-bed"></i>
+                    <span>{{ product.product_detail.bedroom }} phòng ngủ</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-bath"></i>
+                    <span>{{ product.product_detail.bathroom }} phòng tắm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="product-meta">
+                <div class="tags">
+                  <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+                    {{ tag.name }}
+                  </span>
+                </div>
+                <button class="view-btn">Xem chi tiết</button>
+              </div>
+            </div>
           </div>
+        </ng-container>
 
-          <div *ngIf="!loading && !error" class="products-grid" [class.project-grid]="isProjectCategory">
-            <!-- Rental Products -->
-            <ng-container *ngFor="let product of paginatedProducts">
-              <div class="product-card rental-card" *ngIf="!isProjectCategory && isRentalProduct(product)">
-                <div class="product-image">
-                  <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
-                  <div class="product-badge rental">Cho thuê</div>
-                </div>
-                <div class="product-content">
-                  <h3 class="product-title" style="line-height: 1.4;">{{ product.name }}</h3>
-                  <p class="product-address" style="line-height: 1.4;">
-                    <i class="fa fa-map-marker"></i>
-                    {{ product.address_detail.address }}
-                  </p>
-                  <div class="product-details">
-                    <div class="detail-item">
-                      <span class="label">Giá thuê:</span>
-                      <span class="value">{{ formatPrice(product.product_detail.price) }}/tháng</span>
-                    </div>
-                    <div class="detail-item">
-                      <span class="label">Diện tích:</span>
-                      <span class="value">{{ product.product_detail.area }} m²</span>
-                    </div>
-                    <div class="utility-costs">
-                      <div class="cost-item" *ngIf="product.product_detail.eletric_price">
-                        <i class="fas fa-bolt"></i>
-                        <span>Điện: {{ formatPrice(product.product_detail.eletric_price) }}/kWh</span>
-                      </div>
-                      <div class="cost-item" *ngIf="product.product_detail.water_price">
-                        <i class="fas fa-water"></i>
-                        <span>Nước: {{ formatPrice(product.product_detail.water_price) }}/m³</span>
-                      </div>
-                      <div class="cost-item" *ngIf="product.product_detail.internet_price">
-                        <i class="fas fa-wifi"></i>
-                        <span>Internet: {{ formatPrice(product.product_detail.internet_price) }}/tháng</span>
-                      </div>
-                    </div>
-                    <div class="property-features">
-                      <div class="feature-item" *ngIf="product.product_detail.area">
-                        <i class="fas fa-chart-area"></i>
-                        <span>{{ product.product_detail.area }} m²</span>
-                      </div>
-                      <div class="feature-item">
-                        <i class="fas fa-bed"></i>
-                        <span>{{ product.product_detail.bedroom }} phòng ngủ</span>
-                      </div>
-                      <div class="feature-item">
-                        <i class="fas fa-bath"></i>
-                        <span>{{ product.product_detail.bathroom }} phòng tắm</span>
-                      </div>
-                    </div>
+        <!-- Project Products -->
+        <ng-container *ngIf="isProjectCategory">
+          <div *ngFor="let product of paginatedProducts" class="project-card hover-effect cursor-pointer" (click)="viewProductDetail(product.id)">
+            <div class="project-image-wrapper">
+              <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+              <div class="project-overlay">
+                <div class="project-badges">
+                  <div class="project-status"
+                       [style.color]="getProjectStatusInfo(product.product_detail.project_status ?? '').color"
+                       [style.background-color]="getProjectStatusInfo(product.product_detail.project_status ?? '').backgroundColor">
+                    {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
                   </div>
-                  <div class="product-meta">
-                    <div class="tags">
-                      <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
-                        {{ tag.name }}
-                      </span>
-                    </div>
-                    <button class="view-btn" (click)="viewProductDetail(product.id)">Xem chi tiết</button>
+                  <div class="project-type"
+                       [style.color]="getProjectTypeInfo(product.product_detail.project_type ?? '').color"
+                       [style.background-color]="getProjectTypeInfo(product.product_detail.project_type ?? '').backgroundColor">
+                    {{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}
                   </div>
                 </div>
               </div>
-            </ng-container>
-
-            <!-- Sale Products -->
-            <ng-container *ngFor="let product of paginatedProducts">
-              <div class="product-card sale-card" *ngIf="!isProjectCategory && isSaleProduct(product)">
-                <div class="product-image">
-                  <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
-                  <div class="product-badge sale">Mua bán</div>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">{{ product.name }}</h3>
+              <div class="project-info">
+                <div class="info-item location">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span style="line-height: 1.4;">{{ product.address_detail.address }}</span>
                 </div>
-                <div class="product-content">
-                  <h3 class="product-title" style="line-height: 1.4;">{{ product.name }}</h3>
-                  <p class="product-address" style="line-height: 1.4;">
-                    <i class="fa fa-map-marker"></i>
-                    {{ product.address_detail.address }}
-                  </p>
-                  <div class="product-details">
-                    <div class="detail-item price">
-                      <span class="label">Giá:</span>
-                      <span class="value" *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
-                      <span class="value" *ngIf="product.product_detail.price_to">
-                        {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
-                      </span>
-                    </div>
-                    <div class="detail-item description" *ngIf="product.product_detail.content">
-                      <div class="content-preview" [innerHTML]="truncateHTML(product.product_detail.content)"></div>
-                    </div>
-                    <div class="property-info">
-                      <div class="info-item">
-                        <i class="fas fa-chart-area"></i>
-                        <span>{{ product.product_detail.area }} m²</span>
-                      </div>
-                      <div class="info-item">
-                        <i class="fas fa-bed"></i>
-                        <span>{{ product.product_detail.bedroom }} phòng ngủ</span>
-                      </div>
-                      <div class="info-item">
-                        <i class="fas fa-bath"></i>
-                        <span>{{ product.product_detail.bathroom }} phòng tắm</span>
-                      </div>
-                    </div>
+                <div class="info-row">
+                  <div class="info-item investor">
+                    <i class="fas fa-building"></i>
+                    <span>{{ product.product_detail.investor }}</span>
                   </div>
-                  <div class="product-meta">
-                    <div class="tags">
-                      <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
-                        {{ tag.name }}
-                      </span>
-                    </div>
-                    <button class="view-btn" (click)="viewProductDetail(product.id)">Xem chi tiết</button>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-
-            <!-- Project Products -->
-            <ng-container *ngIf="isProjectCategory">
-              <div *ngFor="let product of paginatedProducts" class="project-card hover-effect">
-                <div class="project-image-wrapper">
-                  <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
-                  <div class="project-overlay">
-                    <div class="project-badges">
-                      <div class="project-status"
-                           [style.color]="getProjectStatusInfo(product.product_detail.project_status ?? '').color"
-                           [style.background-color]="getProjectStatusInfo(product.product_detail.project_status ?? '').backgroundColor">
-                        {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
-                      </div>
-                      <div class="project-type"
-                           [style.color]="getProjectTypeInfo(product.product_detail.project_type ?? '').color"
-                           [style.background-color]="getProjectTypeInfo(product.product_detail.project_type ?? '').backgroundColor">
-                        {{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="project-content">
-                  <h3 class="project-title">{{ product.name }}</h3>
-                  <div class="project-info">
-                    <div class="info-item location">
-                      <i class="fas fa-map-marker-alt"></i>
-                      <span style="line-height: 1.4;">{{ product.address_detail.address }}</span>
-                    </div>
-                    <div class="info-row">
-                      <div class="info-item investor">
-                        <i class="fas fa-building"></i>
-                        <span>{{ product.product_detail.investor }}</span>
-                      </div>
-                      <div class="info-item project-type">
-                        <i class="fas fa-tags"></i>
-                        <span [style.color]="getProjectTypeInfo(product.product_detail.project_type ?? '').color">
-                          {{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}
-                        </span>
-                      </div>
-                      <div class="info-item project-status">
-                        <i class="fas fa-flag"></i>
-                        <span>
-                          {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="project-price">
-                    <i class="fas fa-tag"></i>
-                    <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
-                    <span *ngIf="product.product_detail.price_to">
-                      {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                  <div class="info-item project-type">
+                    <i class="fas fa-tags"></i>
+                    <span [style.color]="getProjectTypeInfo(product.product_detail.project_type ?? '').color">
+                      {{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}
                     </span>
                   </div>
-                  <div class="project-utilities">
-                    <h4><i class="fas fa-star"></i> Tiện ích nổi bật</h4>
-                    <div class="utilities-list">
-                      <div class="utility-item" *ngFor="let utility of product.product_detail.utilities.split(',')">
-                        <i class="fas fa-check-circle"></i>
-                        <span>{{ utility.trim() }}</span>
-                      </div>
-                    </div>
+                  <div class="info-item project-status">
+                    <i class="fas fa-flag"></i>
+                    <span>
+                      {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
+                    </span>
                   </div>
-                  <div class="project-description" *ngIf="product.product_detail.content">
-                    <div class="content-preview" [innerHTML]="truncateHTML(product.product_detail.content, 200)"></div>
-                  </div>
-                  <button class="view-project-btn" (click)="viewProductDetail(product.id)">
-                    <span>Xem chi tiết dự án</span>
-                    <i class="fas fa-arrow-right"></i>
-                  </button>
                 </div>
               </div>
-            </ng-container>
-          </div>
+              <div class="project-price">
+                <i class="fas fa-tag"></i>
+                <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                <span *ngIf="product.product_detail.price_to">
+                  {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                </span>
+              </div>
+              <div class="project-utilities" *ngIf="product.product_detail.utilities">
+                <h4><i class="fas fa-star"></i> Tiện ích nổi bật</h4>
+                <div class="utilities-list">
+                  <div class="utility-item" *ngFor="let utility of product.product_detail.utilities.split(',')">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ utility.trim() }}</span>
+                  </div>
+                </div>
+              </div>
 
-          <!-- Pagination -->
-          <div *ngIf="!loading && !error && totalPages > 1" class="pagination">
-            <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
-              <span>&laquo;</span>
-            </button>
-            <button class="pagination-btn" *ngFor="let page of getPageNumbers()"
-              [class.active]="page === currentPage"
-              (click)="goToPage(page)">
-              {{ page }}
-            </button>
-            <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
-              <span>&raquo;</span>
-            </button>
+              <button class="view-project-btn">
+                <span>Xem chi tiết dự án</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
           </div>
+        </ng-container>
+      </div>
 
-          <div *ngIf="!loading && !error && products.length === 0" class="no-products">
-            <p>Không có sản phẩm nào trong danh mục này.</p>
-          </div>
-        </div>
+      <!-- Pagination -->
+      <div *ngIf="!loading && !error && totalPages > 1" class="pagination">
+        <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+          <span>&laquo;</span>
+        </button>
+        <button class="pagination-btn" *ngFor="let page of getPageNumbers()"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+        <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+          <span>&raquo;</span>
+        </button>
+      </div>
+
+      <div *ngIf="!loading && !error && products.length === 0" class="no-products">
+        <p>Không có sản phẩm nào trong danh mục này.</p>
       </div>
     </div>
   </div>

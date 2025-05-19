@@ -9,6 +9,7 @@ import { ProductsComponent } from './pages/products/products.component';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { PropertyConsignmentComponent } from './pages/property-consignment/property-consignment.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'products/:id', component: DetailComponent},
   {path: 'search', component: SearchResultsComponent},
   {path: 'contact', component: ContactFormComponent},
+  {path: 'property-consignment', component: PropertyConsignmentComponent},
 ];
 
 @NgModule({

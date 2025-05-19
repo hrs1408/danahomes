@@ -1,19 +1,19 @@
 <div class="project-by-city">
   <div class="container">
     <h2 class="title">
-      Các dự án <span class="highlight">đã triển khai tại một số thành phố</span>
+      Các dự án <span class="highlight">tại Đà Nẵng</span>
     </h2>
 
     <div class="cities-grid">
-      <div class="city-card" *ngFor="let city of cities" (click)="searchByCity(city.name)">
+      <div class="city-card" *ngFor="let district of districts" (click)="searchByDistrict(district.name)">
         <div class="city-image">
-          <img [src]="city.image" [alt]="city.name">
+          <img [src]="district.image" [alt]="district.name">
           <div class="city-overlay">
             <div class="hover-content">
-              <div class="project-label">Xem dự án tại {{city.name}}</div>
+              <div class="project-label">Xem các BĐS tại {{district.name}}</div>
             </div>
             <div class="default-content">
-              <h3 class="city-name">{{city.name}}</h3>
+              <h3 class="city-name">{{district.name}}</h3>
             </div>
           </div>
         </div>

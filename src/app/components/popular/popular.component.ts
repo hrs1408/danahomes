@@ -72,7 +72,7 @@ export class PopularComponent implements OnInit, AfterViewInit {
         spaceBetween: 10,
         loop: true,
         autoplay: {
-          delay: 3000,
+          delay: 4000,
           disableOnInteraction: false,
         },
         pagination: {
@@ -95,12 +95,8 @@ export class PopularComponent implements OnInit, AfterViewInit {
   }
 
   formatPrice(price: number): string {
-    if (price >= 1000000000) {
-      return (price / 1000000000).toFixed(2) + ' tỷ';
-    } else if (price >= 1000000) {
-      return (price / 1000000).toFixed(0) + ' triệu';
-    }
-    return price.toString();
+    const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formattedPrice + ' VNĐ';
   }
 
   viewDetails(productId: number) {
