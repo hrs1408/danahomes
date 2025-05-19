@@ -1,0 +1,146 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'sale'" (click)="activeTab = 'sale'">Ký gửi mua bán</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'rent'" (click)="activeTab = 'rent'">Ký gửi cho thuê</a>
+        </li>
+      </ul>
+
+      <div *ngIf="!isLoggedIn" class="text-center mb-4">
+        <p>Vui lòng đăng nhập để tiếp tục</p>
+        <asl-google-signin-button type="standard" size="large"></asl-google-signin-button>
+      </div>
+
+      <form [formGroup]="saleForm" (ngSubmit)="onSubmit()" *ngIf="isLoggedIn && activeTab === 'sale'">
+        <!-- Thông tin chủ sở hữu -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Thông tin chủ sở hữu</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" formControlName="fullName">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Số điện thoại</label>
+                <input type="tel" class="form-control" formControlName="phone">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">CMND/CCCD</label>
+                <input type="text" class="form-control" formControlName="idNumber">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin bất động sản -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Thông tin bất động sản</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Loại bất động sản</label>
+                <select class="form-select" formControlName="type">
+                  <option value="">Chọn loại</option>
+                  <option value="house">Nhà riêng</option>
+                  <option value="apartment">Căn hộ</option>
+                  <option value="land">Đất nền</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" formControlName="address">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Diện tích (m²)</label>
+                <input type="number" class="form-control" formControlName="area">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Hướng</label>
+                <select class="form-select" formControlName="direction">
+                  <option value="">Chọn hướng</option>
+                  <option value="north">Bắc</option>
+                  <option value="south">Nam</option>
+                  <option value="east">Đông</option>
+                  <option value="west">Tây</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Tình trạng</label>
+                <select class="form-select" formControlName="status">
+                  <option value="">Chọn tình trạng</option>
+                  <option value="ready">Sẵn sàng</option>
+                  <option value="under-construction">Đang xây dựng</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin pháp lý và hình ảnh -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Thông tin pháp lý và hình ảnh</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="form-label">Thông tin pháp lý</label>
+                <textarea class="form-control" rows="3" formControlName="legalInfo"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Ảnh sổ đỏ (Tối đa 1 ảnh, 10MB)</label>
+                <input type="file" class="form-control" accept="image/*" (change)="onRedBookImageChange($event)">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Ảnh bất động sản (Tối đa 10 ảnh, 1MB/ảnh)</label>
+                <input type="file" class="form-control" accept="image/*" multiple (change)="onPropertyImagesChange($event)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin giá -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Thông tin giá</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Giá (VNĐ)</label>
+                <input type="number" class="form-control" formControlName="price">
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" formControlName="negotiable" id="negotiable">
+                  <label class="form-check-label" for="negotiable">Giá có thể thương lượng</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" formControlName="includeTax" id="includeTax">
+                  <label class="form-check-label" for="includeTax">Đã bao gồm thuế</label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" formControlName="bankSupport" id="bankSupport">
+                  <label class="form-check-label" for="bankSupport">Hỗ trợ vay ngân hàng</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" [disabled]="!saleForm.valid">Gửi thông tin</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

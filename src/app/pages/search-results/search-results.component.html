@@ -22,7 +22,7 @@
             </span>
             <span class="filter-tag" *ngIf="searchParams.price" (click)="removeFilter('price')">
               <i class="fas fa-tag"></i>
-              {{ formatPrice(+searchParams.price) }}
+              {{ formatPrice(searchParams.price ?? 0) }}
               <i class="fas fa-times"></i>
             </span>
             <span class="filter-tag" *ngIf="searchParams.address" (click)="removeFilter('address')">

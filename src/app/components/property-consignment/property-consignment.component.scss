@@ -1,0 +1,72 @@
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+  .nav-item {
+    margin-bottom: -2px;
+  }
+  .nav-link {
+    border: none;
+    color: #6c757d;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    &.active {
+      color: #0d6efd;
+      border-bottom: 2px solid #0d6efd;
+    }
+    &:hover {
+      border-color: transparent;
+      color: #0d6efd;
+    }
+  }
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  .card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    h5 {
+      color: #333;
+      font-weight: 500;
+    }
+  }
+}
+
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-control, .form-select {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  &:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+}
+
+.btn-primary {
+  padding: 0.5rem 2rem;
+  font-weight: 500;
+  &:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+  }
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .col-md-4, .col-md-6 {
+    margin-bottom: 1rem;
+  }
+}
