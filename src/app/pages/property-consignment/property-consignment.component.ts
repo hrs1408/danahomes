@@ -231,45 +231,39 @@ export class PropertyConsignmentComponent implements OnInit {
             this.consignmentForm.value.ownerInfo.idNumber || ''
           );
 
-          // Thông tin bất động sản
-          formRental.append(
-            'entry.924791401',
-            this.consignmentForm.value.propertyInfo.type
-          );
           formRental.append(
             'entry.1423023952',
             this.consignmentForm.value.propertyInfo.address
           );
+
           formRental.append(
             'entry.1924185432',
             this.consignmentForm.value.propertyInfo.area?.toString() || ''
           );
+
           formRental.append(
             'entry.276637145',
             this.consignmentForm.value.propertyInfo.direction || ''
           );
 
-          // Thông tin giá và điều kiện
           formRental.append(
             'entry.1283114364',
             this.consignmentForm.value.rentalInfo.price?.toString() || ''
           );
+
           formRental.append(
             'entry.1339050242',
             this.consignmentForm.value.rentalInfo.deposit?.toString() || ''
           );
+
           formRental.append(
             'entry.481922095',
             this.consignmentForm.value.rentalInfo.paymentTerm?.toString() || ''
           );
+
           formRental.append(
             'entry.915905266',
             this.consignmentForm.value.rentalInfo.minContract?.toString() || ''
-          );
-
-          formRental.append(
-            'entry.494766771',
-            this.consignmentForm.value.rentalInfo.negotiable ? 'Có' : 'Không'
           );
 
           // Ngày bàn giao
@@ -285,13 +279,21 @@ export class PropertyConsignmentComponent implements OnInit {
             formRental.append('entry.527403809_day', '');
           }
 
-          // Trạng thái
+          formRental.append(
+            'entry.924791401',
+            this.consignmentForm.value.propertyInfo.type
+          );
+
           formRental.append(
             'entry.1526042079',
             this.consignmentForm.value.propertyInfo.status
           );
 
-          // Dịch vụ bao gồm
+          formRental.append(
+            'entry.494766771',
+            this.consignmentForm.value.rentalInfo.negotiable ? 'Có' : 'Không'
+          );
+
           const includedServices = this.consignmentForm.value.rentalInfo.includedServices;
           if (includedServices) {
             if (includedServices.managementFee) {

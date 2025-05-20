@@ -47,7 +47,10 @@ export interface ProductDetail {
   eletric_price?: number;
   water_price?: number;
   internet_price?: number;
-
+  legal_documents?: string;
+  form_of_ownership?: string;
+  management_and_operation_unit?: string;
+  project_scale?: string;
 }
 
 export interface Product {

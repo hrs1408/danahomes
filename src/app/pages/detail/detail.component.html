@@ -252,6 +252,34 @@
               </div>
               <div class="value">{{ product.product_detail.investor }}</div>
             </div>
+            <div class="info-item" *ngIf="product.product_detail.project_scale">
+              <div class="label">
+                <i class="fas fa-ruler"></i>
+                Quy mô dự án
+              </div>
+              <div class="value">{{ product.product_detail.project_scale }}</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.legal_documents">
+              <div class="label">
+                <i class="fas fa-file-contract"></i>
+                Pháp lý
+              </div>
+              <div class="value">{{ product.product_detail.legal_documents }}</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.form_of_ownership">
+              <div class="label">
+                <i class="fas fa-key"></i>
+                Hình thức sở hữu
+              </div>
+              <div class="value">{{ product.product_detail.form_of_ownership }}</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.management_and_operation_unit">
+              <div class="label">
+                <i class="fas fa-tasks"></i>
+                Đơn vị quản lý và vận hành
+              </div>
+              <div class="value">{{ product.product_detail.management_and_operation_unit }}</div>
+            </div>
           </div>
         </div>
 
