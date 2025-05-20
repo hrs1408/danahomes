@@ -477,28 +477,3 @@
     color: white;
   }
 }
-
-// Google Sign In Button styles
-::ng-deep {
-  .google-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-  }
-
-  asl-google-signin-button {
-    display: block;
-    margin: 0 auto;
-  }
-
-  .nsm7Bb-HzV7m-LgbsSe {
-    border-radius: 8px !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    transition: all 0.3s ease !important;
-
-    &:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-      transform: translateY(-1px);
-    }
-  }
-}
