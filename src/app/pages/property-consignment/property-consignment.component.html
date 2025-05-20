@@ -67,31 +67,31 @@
               <label class="form-label required">Loại bất động sản</label>
               <div class="d-flex flex-wrap gap-3">
                 <div class="form-check" *ngIf="activeTab === 'sale'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="apartment" id="type-apartment-sale">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Căn hộ" id="type-apartment-sale">
                   <label class="form-check-label" for="type-apartment-sale">Căn hộ</label>
                 </div>
                 <div class="form-check" *ngIf="activeTab === 'sale'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="house" id="type-house-sale">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Nhà đất" id="type-house-sale">
                   <label class="form-check-label" for="type-house-sale">Nhà đất</label>
                 </div>
                 <div class="form-check" *ngIf="activeTab === 'sale'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="land" id="type-land-sale">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Đất nền" id="type-land-sale">
                   <label class="form-check-label" for="type-land-sale">Đất nền</label>
                 </div>
                 <div class="form-check" *ngIf="activeTab === 'rent'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="apartment" id="type-apartment-rent">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Căn hộ" id="type-apartment-rent">
                   <label class="form-check-label" for="type-apartment-rent">Căn hộ</label>
                 </div>
                 <div class="form-check" *ngIf="activeTab === 'rent'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="house" id="type-house-rent">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Nhà nguyên căn" id="type-house-rent">
                   <label class="form-check-label" for="type-house-rent">Nhà nguyên căn</label>
                 </div>
                 <div class="form-check" *ngIf="activeTab === 'rent'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="commercial" id="type-commercial-rent">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Mặt bằng" id="type-commercial-rent">
                   <label class="form-check-label" for="type-commercial-rent">Mặt bằng</label>
                 </div>
                 <div class="form-check" *ngIf="activeTab === 'rent'">
-                  <input class="form-check-input" type="radio" formControlName="type" value="room" id="type-room-rent">
+                  <input class="form-check-input" type="radio" formControlName="type" value="Phòng trọ" id="type-room-rent">
                   <label class="form-check-label" for="type-room-rent">Phòng trọ</label>
                 </div>
                 <div class="form-check">
@@ -120,14 +120,14 @@
               <label class="form-label">Hướng</label>
               <select class="form-select" formControlName="direction">
                 <option value="">Chọn hướng</option>
-                <option value="east">Đông</option>
-                <option value="west">Tây</option>
-                <option value="south">Nam</option>
-                <option value="north">Bắc</option>
-                <option value="northeast">Đông Bắc</option>
-                <option value="northwest">Tây Bắc</option>
-                <option value="southeast">Đông Nam</option>
-                <option value="southwest">Tây Nam</option>
+                <option value="Đông">Đông</option>
+                <option value="Tây">Tây</option>
+                <option value="Nam">Nam</option>
+                <option value="Bắc">Bắc</option>
+                <option value="Đông Bắc">Đông Bắc</option>
+                <option value="Tây Bắc">Tây Bắc</option>
+                <option value="Đông Nam">Đông Nam</option>
+                <option value="Tây Nam">Tây Nam</option>
               </select>
             </div>
           </div>
@@ -181,28 +181,22 @@
           </h3>
           <div class="d-flex flex-wrap gap-3">
             <div class="form-check">
-              <input class="form-check-input" type="radio" formControlName="legalStatus" value="hasRedBook" id="legal-redbook">
+              <input class="form-check-input" type="radio" formControlName="legalStatus" value="Đã có sổ đỏ/ sổ hồng" id="legal-redbook">
               <label class="form-check-label" for="legal-redbook">Đã có sổ đỏ/sổ hồng</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" formControlName="legalStatus" value="noRedBook" id="legal-no-redbook">
+              <input class="form-check-input" type="radio" formControlName="legalStatus" value="Chưa có sổ" id="legal-no-redbook">
               <label class="form-check-label" for="legal-no-redbook">Chưa có sổ</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" formControlName="legalStatus" value="mortgaged" id="legal-mortgaged">
+              <input class="form-check-input" type="radio" formControlName="legalStatus" value="Đang thế chấp" id="legal-mortgaged">
               <label class="form-check-label" for="legal-mortgaged">Đang thế chấp</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" formControlName="legalStatus" value="coOwnership" id="legal-co-ownership">
+              <input class="form-check-input" type="radio" formControlName="legalStatus" value="Có đồng sở hữu" id="legal-co-ownership">
               <label class="form-check-label" for="legal-co-ownership">Có đồng sở hữu</label>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" formControlName="legalStatus" value="other" id="legal-other">
-              <label class="form-check-label" for="legal-other">Khác</label>
-            </div>
           </div>
-          <input *ngIf="consignmentForm.get('legalInfo.legalStatus')?.value === 'other'"
-            type="text" class="form-control mt-2" formControlName="otherLegalStatus" placeholder="Nhập tình trạng pháp lý khác">
         </div>
 
         <!-- Thông tin giá bán (chỉ hiển thị khi tab là mua bán) -->
