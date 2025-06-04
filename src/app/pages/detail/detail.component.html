@@ -26,11 +26,18 @@
       <div class="product-header" [class.project-header]="isProject">
         <div class="header-content">
           <h1>
-            <span class="product-type">{{ isProject ? 'Dự án bất động sản:' : 'Sản phẩm:' }}</span>
+            <span class="product-type">{{
+              isProject ? "Dự án bất động sản:" : "Sản phẩm:"
+            }}</span>
             {{ product.name }}
           </h1>
           <div class="product-tags">
-            <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+            <span
+              *ngFor="let tag of product.tag"
+              class="tag"
+              [style.background-color]="tag.color + '20'"
+              [style.color]="tag.color"
+            >
               {{ tag.name }}
             </span>
           </div>
@@ -41,32 +48,52 @@
             </div>
             <div class="meta-item">
               <i class="fas fa-map-marked-alt"></i>
-              <span>{{ product.address_detail.district }}, {{ product.address_detail.province }}</span>
+              <span
+                >{{ product.address_detail.district }},
+                {{ product.address_detail.province }}</span
+              >
             </div>
             <div class="meta-item">
               <i class="fas fa-chart-line"></i>
-              <span>{{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}</span>
+              <span>{{
+                getProjectStatusInfo(
+                  product.product_detail.project_status ?? ""
+                ).text
+              }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Price Section -->
-      <div class="price-banner">
+      <div class="price-banner" *ngIf="!isProject">
         <div class="container">
           <div class="price-content">
             <div class="price-label">
               <i class="fas fa-tag"></i>
-              <span *ngIf="product.product_detail.type_product === 'rent'">Giá cho thuê:</span>
-              <span *ngIf="product.product_detail.type_product === 'sale'">Giá bán:</span>
-              <span *ngIf="product.product_detail.type_product === 'project'">Giá dự án:</span>
+              <span *ngIf="product.product_detail.type_product === 'rent'"
+                >Giá cho thuê:</span
+              >
+              <span *ngIf="product.product_detail.type_product === 'sale'"
+                >Giá bán:</span
+              >
+              <span *ngIf="product.product_detail.type_product === 'project'"
+                >Giá dự án:</span
+              >
             </div>
             <div class="price-value">
-              <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+              <span *ngIf="!product.product_detail.price_to">{{
+                formatPrice(product.product_detail.price)
+              }}</span>
               <span *ngIf="product.product_detail.price_to">
-                {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                {{ formatPrice(product.product_detail.price) }} -
+                {{ formatPrice(product.product_detail.price_to) }}
               </span>
-              <span class="price-unit" *ngIf="product.product_detail.type_product === 'rent'">/tháng</span>
+              <span
+                class="price-unit"
+                *ngIf="product.product_detail.type_product === 'rent'"
+                >/tháng</span
+              >
             </div>
           </div>
         </div>
@@ -75,35 +102,63 @@
       <!-- Product Gallery -->
       <div class="product-gallery" [class.project-gallery]="isProject">
         <div class="main-image">
-          <button class="nav-btn prev" (click)="prevImage()" *ngIf="product.images.length > 1">
+          <button
+            class="nav-btn prev"
+            (click)="prevImage()"
+            *ngIf="product.images.length > 1"
+          >
             <i class="fas fa-chevron-left"></i>
           </button>
-          <img [src]="'https://lh3.googleusercontent.com/d/' + getCurrentImage()" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
-          <button class="nav-btn next" (click)="nextImage()" *ngIf="product.images.length > 1">
+          <img
+            [src]="'https://lh3.googleusercontent.com/d/' + getCurrentImage()"
+            [alt]="product.name"
+            onerror="this.src='assets/images/default_property.jpeg'"
+          />
+          <button
+            class="nav-btn next"
+            (click)="nextImage()"
+            *ngIf="product.images.length > 1"
+          >
             <i class="fas fa-chevron-right"></i>
           </button>
           <div *ngIf="isProject" class="project-overlay">
-            <div class="project-status" [ngClass]="product.product_detail.project_status">
-              {{ getProjectStatusInfo(product.product_detail.project_status ?? '').text }}
+            <div
+              class="project-status"
+              [ngClass]="product.product_detail.project_status"
+            >
+              {{
+                getProjectStatusInfo(
+                  product.product_detail.project_status ?? ""
+                ).text
+              }}
             </div>
             <div class="project-type">
-              {{ getProjectTypeInfo(product.product_detail.project_type ?? '').text }}
+              {{
+                getProjectTypeInfo(product.product_detail.project_type ?? "")
+                  .text
+              }}
             </div>
           </div>
         </div>
         <div class="thumbnail-list" *ngIf="product.images.length > 1">
-          <div *ngFor="let image of product.images; let i = index"
-               class="thumbnail"
-               [class.active]="i === currentImageIndex"
-               (click)="selectImage(i)">
-            <img [src]="'https://lh3.googleusercontent.com/d/' + image.drive_id" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
+          <div
+            *ngFor="let image of product.images; let i = index"
+            class="thumbnail"
+            [class.active]="i === currentImageIndex"
+            (click)="selectImage(i)"
+          >
+            <img
+              [src]="'https://lh3.googleusercontent.com/d/' + image.drive_id"
+              [alt]="product.name"
+              onerror="this.src='assets/images/default_property.jpeg'"
+            />
           </div>
         </div>
       </div>
 
       <!-- Product Info -->
       <div class="product-info" [class.project-info]="isProject">
-        <div class="info-section overview-section" *ngIf="isProject">
+        <!-- <div class="info-section overview-section" *ngIf="isProject">
           <h2><i class="fas fa-info-circle"></i> Tổng quan dự án</h2>
           <div class="project-overview">
             <div class="overview-item">
@@ -137,28 +192,144 @@
               </div>
             </div>
           </div>
+        </div> -->
+        <!-- Thông tin dự án -->
+        <div class="info-section project-info" *ngIf="isProject">
+          <h2><i class="fas fa-building"></i> Thông tin dự án</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="product.product_detail.project_type">
+              <div class="label">
+                <i class="fas fa-city"></i>
+                Loại dự án
+              </div>
+              <div class="value">
+                {{
+                  getProjectTypeInfo(product.product_detail.project_type).text
+                }}
+              </div>
+            </div>
+            <div
+              class="info-item"
+              *ngIf="product.product_detail.project_status"
+            >
+              <div class="label">
+                <i class="fas fa-info-circle"></i>
+                Trạng thái dự án
+              </div>
+              <div
+                class="value"
+                [ngClass]="product.product_detail.project_status"
+                [style.background-color]="
+                  getProjectStatusInfo(product.product_detail.project_status)
+                    .color + '20'
+                "
+              >
+                {{
+                  getProjectStatusInfo(product.product_detail.project_status)
+                    .text
+                }}
+              </div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.investor">
+              <div class="label">
+                <i class="fas fa-user-tie"></i>
+                Chủ đầu tư
+              </div>
+              <div class="value">{{ product.product_detail.investor }}</div>
+            </div>
+            <div class="info-item" *ngIf="product.product_detail.project_scale">
+              <div class="label">
+                <i class="fas fa-ruler"></i>
+                Quy mô dự án
+              </div>
+              <div class="value">
+                {{ product.product_detail.project_scale }}
+              </div>
+            </div>
+            <div
+              class="info-item"
+              *ngIf="product.product_detail.legal_documents"
+            >
+              <div class="label">
+                <i class="fas fa-file-contract"></i>
+                Pháp lý
+              </div>
+              <div class="value">
+                {{ product.product_detail.legal_documents }}
+              </div>
+            </div>
+            <div
+              class="info-item"
+              *ngIf="product.product_detail.form_of_ownership"
+            >
+              <div class="label">
+                <i class="fas fa-key"></i>
+                Hình thức sở hữu
+              </div>
+              <div class="value">
+                {{ product.product_detail.form_of_ownership }}
+              </div>
+            </div>
+            <div
+              class="info-item"
+              *ngIf="product.product_detail.management_and_operation_unit"
+            >
+              <div class="label">
+                <i class="fas fa-tasks"></i>
+                Đơn vị quản lý và vận hành
+              </div>
+              <div class="value">
+                {{ product.product_detail.management_and_operation_unit }}
+              </div>
+            </div>
+            <div
+              class="info-item"
+              *ngIf="product.product_detail.area"
+            >
+              <div class="label">
+                <i class="fas fa-map-marker-alt"></i>
+                Diện tích dự án
+              </div>
+              <div class="value">
+                {{ formatNumber(product.product_detail.area) }} m²
+              </div>
+            </div>
+          </div>
         </div>
-
         <!-- Địa chỉ -->
         <div class="info-section location-section">
           <h2><i class="fas fa-map-marked-alt"></i> Vị trí dự án</h2>
           <div class="location-content">
             <p class="address">
               <i class="fas fa-map-marker-alt"></i>
-              {{ product.address_detail.address }}, {{ product.address_detail.ward }},
-              {{ product.address_detail.district }}, {{ product.address_detail.province }}
+              {{ product.address_detail.address }},
+              {{ product.address_detail.ward }},
+              {{ product.address_detail.district }},
+              {{ product.address_detail.province }}
             </p>
             <div class="map-container">
               <div id="map"></div>
             </div>
-            <a [href]="product.address_detail.google_address_link" target="_blank" class="map-link">
+            <a
+              [href]="product.address_detail.google_address_link"
+              target="_blank"
+              class="map-link"
+            >
               <i class="fas fa-directions"></i> Xem chỉ đường trên Maps
             </a>
           </div>
         </div>
 
         <!-- Chi phí -->
-        <div class="info-section utility-costs" *ngIf="product.product_detail.type_product === 'rent' && (product.product_detail.eletric_price || product.product_detail.water_price || product.product_detail.internet_price)">
+        <div
+          class="info-section utility-costs"
+          *ngIf="
+            product.product_detail.type_product === 'rent' &&
+            (product.product_detail.eletric_price ||
+              product.product_detail.water_price ||
+              product.product_detail.internet_price)
+          "
+        >
           <h2><i class="fas fa-money-bill-wave"></i> Chi phí dịch vụ</h2>
           <div class="info-grid">
             <div class="info-item" *ngIf="product.product_detail.eletric_price">
@@ -166,27 +337,36 @@
                 <i class="fas fa-bolt"></i>
                 Giá điện
               </div>
-              <div class="value">{{ formatPrice(product.product_detail.eletric_price) }}/kWh</div>
+              <div class="value">
+                {{ formatPrice(product.product_detail.eletric_price) }}/kWh
+              </div>
             </div>
             <div class="info-item" *ngIf="product.product_detail.water_price">
               <div class="label">
                 <i class="fas fa-water"></i>
                 Giá nước
               </div>
-              <div class="value">{{ formatPrice(product.product_detail.water_price) }}/m³</div>
+              <div class="value">
+                {{ formatPrice(product.product_detail.water_price) }}/m³
+              </div>
             </div>
-            <div class="info-item" *ngIf="product.product_detail.internet_price">
+            <div
+              class="info-item"
+              *ngIf="product.product_detail.internet_price"
+            >
               <div class="label">
                 <i class="fas fa-wifi"></i>
                 Giá Internet
               </div>
-              <div class="value">{{ formatPrice(product.product_detail.internet_price) }}/tháng</div>
+              <div class="value">
+                {{ formatPrice(product.product_detail.internet_price) }}/tháng
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Thông tin cơ bản -->
-        <div class="info-section basic-info">
+        <div class="info-section basic-info" *ngIf="!isProject">
           <h2><i class="fas fa-info-circle"></i> Thông tin cơ bản</h2>
           <div class="info-grid">
             <div class="info-item" *ngIf="product.product_detail.area">
@@ -194,7 +374,7 @@
                 <i class="fas fa-vector-square"></i>
                 Diện tích
               </div>
-              <div class="value">{{ product.product_detail.area }} m²</div>
+              <div class="value">{{ formatNumber(product.product_detail.area) }} m²</div>
             </div>
             <div class="info-item" *ngIf="product.product_detail.bedroom">
               <div class="label">
@@ -216,76 +396,25 @@
                 Giá
               </div>
               <div class="value price-range">
-                <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                <span *ngIf="!product.product_detail.price_to">{{
+                  formatPrice(product.product_detail.price)
+                }}</span>
                 <span *ngIf="product.product_detail.price_to">
-                  {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                  {{ formatPrice(product.product_detail.price) }} -
+                  {{ formatPrice(product.product_detail.price_to) }}
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Thông tin dự án -->
-        <div class="info-section project-info" *ngIf="isProject">
-          <h2><i class="fas fa-building"></i> Thông tin dự án</h2>
-          <div class="info-grid">
-            <div class="info-item" *ngIf="product.product_detail.project_type">
-              <div class="label">
-                <i class="fas fa-city"></i>
-                Loại dự án
-              </div>
-              <div class="value">{{ getProjectTypeInfo(product.product_detail.project_type).text }}</div>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.project_status">
-              <div class="label">
-                <i class="fas fa-info-circle"></i>
-                Trạng thái dự án
-              </div>
-              <div class="value " [ngClass]="product.product_detail.project_status" [style.background-color]="getProjectStatusInfo(product.product_detail.project_status).color + '20'" >
-                {{ getProjectStatusInfo(product.product_detail.project_status).text }}
-              </div>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.investor">
-              <div class="label">
-                <i class="fas fa-user-tie"></i>
-                Chủ đầu tư
-              </div>
-              <div class="value">{{ product.product_detail.investor }}</div>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.project_scale">
-              <div class="label">
-                <i class="fas fa-ruler"></i>
-                Quy mô dự án
-              </div>
-              <div class="value">{{ product.product_detail.project_scale }}</div>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.legal_documents">
-              <div class="label">
-                <i class="fas fa-file-contract"></i>
-                Pháp lý
-              </div>
-              <div class="value">{{ product.product_detail.legal_documents }}</div>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.form_of_ownership">
-              <div class="label">
-                <i class="fas fa-key"></i>
-                Hình thức sở hữu
-              </div>
-              <div class="value">{{ product.product_detail.form_of_ownership }}</div>
-            </div>
-            <div class="info-item" *ngIf="product.product_detail.management_and_operation_unit">
-              <div class="label">
-                <i class="fas fa-tasks"></i>
-                Đơn vị quản lý và vận hành
-              </div>
-              <div class="value">{{ product.product_detail.management_and_operation_unit }}</div>
-            </div>
-          </div>
-        </div>
-
         <!-- Nội dung chi tiết -->
-        <div class="info-section description-section" *ngIf="product.product_detail.content">
-          <h2><i class="fas fa-file-alt"></i>
+        <div
+          class="info-section description-section"
+          *ngIf="product.product_detail.content"
+        >
+          <h2>
+            <i class="fas fa-file-alt"></i>
             <span *ngIf="isProject"> Chi tiết dự án</span>
             <span *ngIf="!isProject"> Mô tả sản phẩm</span>
           </h2>
@@ -295,149 +424,347 @@
                 <div class="preview-content">
                   <ng-container *ngFor="let block of pageContent.blocks">
                     <!-- Layout Section -->
-                    <div *ngIf="isLayoutSection(block)" class="preview-block layout-section">
-                      <div class="layout-grid" [style.--columns]="block.columns" [style.--gap]="block.columnGap + 'px'">
-                        <ng-container *ngFor="let columnIndex of [].constructor(block.columns); let i = index">
+                    <div
+                      *ngIf="isLayoutSection(block)"
+                      class="preview-block layout-section"
+                    >
+                      <div
+                        class="layout-grid"
+                        [style.--columns]="block.columns"
+                        [style.--gap]="block.columnGap + 'px'"
+                      >
+                        <ng-container
+                          *ngFor="
+                            let columnIndex of [].constructor(block.columns);
+                            let i = index
+                          "
+                        >
                           <div class="layout-column">
-                            <ng-container *ngFor="let layoutBlock of getColumnBlocks(block, i)">
+                            <ng-container
+                              *ngFor="
+                                let layoutBlock of getColumnBlocks(block, i)
+                              "
+                            >
                               <!-- Heading Block -->
-                              <div *ngIf="isHeadingBlock(layoutBlock)" class="preview-block heading-block">
+                              <div
+                                *ngIf="isHeadingBlock(layoutBlock)"
+                                class="preview-block heading-block"
+                              >
                                 <ng-container [ngSwitch]="layoutBlock.level">
-                                  <h1 *ngSwitchCase="'h1'" [style.color]="layoutBlock.color" [style.fontSize.px]="layoutBlock.fontSize" [style.textAlign]="layoutBlock.alignment">{{layoutBlock.content}}</h1>
-                                  <h2 *ngSwitchCase="'h2'" [style.color]="layoutBlock.color" [style.fontSize.px]="layoutBlock.fontSize" [style.textAlign]="layoutBlock.alignment">{{layoutBlock.content}}</h2>
-                                  <h3 *ngSwitchCase="'h3'" [style.color]="layoutBlock.color" [style.fontSize.px]="layoutBlock.fontSize" [style.textAlign]="layoutBlock.alignment">{{layoutBlock.content}}</h3>
-                                  <h4 *ngSwitchCase="'h4'" [style.color]="layoutBlock.color" [style.fontSize.px]="layoutBlock.fontSize" [style.textAlign]="layoutBlock.alignment">{{layoutBlock.content}}</h4>
-                                  <h5 *ngSwitchCase="'h5'" [style.color]="layoutBlock.color" [style.fontSize.px]="layoutBlock.fontSize" [style.textAlign]="layoutBlock.alignment">{{layoutBlock.content}}</h5>
-                                  <h6 *ngSwitchCase="'h6'" [style.color]="layoutBlock.color" [style.fontSize.px]="layoutBlock.fontSize" [style.textAlign]="layoutBlock.alignment">{{layoutBlock.content}}</h6>
+                                  <h1
+                                    *ngSwitchCase="'h1'"
+                                    [style.color]="layoutBlock.color"
+                                    [style.fontSize.px]="layoutBlock.fontSize"
+                                    [style.textAlign]="layoutBlock.alignment"
+                                  >
+                                    {{ layoutBlock.content }}
+                                  </h1>
+                                  <h2
+                                    *ngSwitchCase="'h2'"
+                                    [style.color]="layoutBlock.color"
+                                    [style.fontSize.px]="layoutBlock.fontSize"
+                                    [style.textAlign]="layoutBlock.alignment"
+                                  >
+                                    {{ layoutBlock.content }}
+                                  </h2>
+                                  <h3
+                                    *ngSwitchCase="'h3'"
+                                    [style.color]="layoutBlock.color"
+                                    [style.fontSize.px]="layoutBlock.fontSize"
+                                    [style.textAlign]="layoutBlock.alignment"
+                                  >
+                                    {{ layoutBlock.content }}
+                                  </h3>
+                                  <h4
+                                    *ngSwitchCase="'h4'"
+                                    [style.color]="layoutBlock.color"
+                                    [style.fontSize.px]="layoutBlock.fontSize"
+                                    [style.textAlign]="layoutBlock.alignment"
+                                  >
+                                    {{ layoutBlock.content }}
+                                  </h4>
+                                  <h5
+                                    *ngSwitchCase="'h5'"
+                                    [style.color]="layoutBlock.color"
+                                    [style.fontSize.px]="layoutBlock.fontSize"
+                                    [style.textAlign]="layoutBlock.alignment"
+                                  >
+                                    {{ layoutBlock.content }}
+                                  </h5>
+                                  <h6
+                                    *ngSwitchCase="'h6'"
+                                    [style.color]="layoutBlock.color"
+                                    [style.fontSize.px]="layoutBlock.fontSize"
+                                    [style.textAlign]="layoutBlock.alignment"
+                                  >
+                                    {{ layoutBlock.content }}
+                                  </h6>
                                 </ng-container>
                               </div>
 
                               <!-- Button Block -->
-                              <div *ngIf="isButtonBlock(layoutBlock)" class="preview-block button-block" [style.textAlign]="layoutBlock.alignment">
-                                <a [href]="layoutBlock.url"
-                                   [target]="layoutBlock.target"
-                                   class="btn btn-{{layoutBlock.style}}"
-                                   [class.btn-{{layoutBlock.size}}]="layoutBlock.size"
-                                   [class.btn-block]="layoutBlock.fullWidth">
-                                  {{layoutBlock.text}}
+                              <div
+                                *ngIf="isButtonBlock(layoutBlock)"
+                                class="preview-block button-block"
+                                [style.textAlign]="layoutBlock.alignment"
+                              >
+                                <a
+                                  [href]="layoutBlock.url"
+                                  [target]="layoutBlock.target"
+                                  class="btn btn-{{ layoutBlock.style }}"
+                                  [class.btn-{{layoutBlock.size}}]="
+                                    layoutBlock.size
+                                  "
+                                  [class.btn-block]="layoutBlock.fullWidth"
+                                >
+                                  {{ layoutBlock.text }}
                                 </a>
                               </div>
 
                               <!-- Paragraph Block -->
-                              <div *ngIf="isParagraphBlock(layoutBlock)" class="preview-block paragraph-block">
-                                <h2 *ngIf="layoutBlock.title">{{layoutBlock.title}}</h2>
-                                <div class="content" [innerHTML]="layoutBlock.content"></div>
+                              <div
+                                *ngIf="isParagraphBlock(layoutBlock)"
+                                class="preview-block paragraph-block"
+                              >
+                                <h2 *ngIf="layoutBlock.title">
+                                  {{ layoutBlock.title }}
+                                </h2>
+                                <div
+                                  class="content"
+                                  [innerHTML]="layoutBlock.content"
+                                ></div>
                               </div>
 
                               <!-- List Block -->
-                              <div *ngIf="isListBlock(layoutBlock)" class="preview-block list-block">
+                              <div
+                                *ngIf="isListBlock(layoutBlock)"
+                                class="preview-block list-block"
+                              >
                                 <ul [class]="layoutBlock.style">
                                   <li *ngFor="let item of layoutBlock.items">
-                                    <i *ngIf="layoutBlock.style === 'icon' && item.icon" class="{{item.icon}}"></i>
+                                    <i
+                                      *ngIf="
+                                        layoutBlock.style === 'icon' &&
+                                        item.icon
+                                      "
+                                      class="{{ item.icon }}"
+                                    ></i>
                                     <div class="item-content">
-                                      <h4>{{item.title}}</h4>
-                                      <p *ngIf="item.description">{{item.description}}</p>
+                                      <h4>{{ item.title }}</h4>
+                                      <p *ngIf="item.description">
+                                        {{ item.description }}
+                                      </p>
                                     </div>
                                   </li>
                                 </ul>
                               </div>
 
                               <!-- Image List Block -->
-                              <div *ngIf="isImageListBlock(layoutBlock)" class="preview-block image-list-block">
-                                <div class="image-grid" [class.carousel]="layoutBlock.layout === 'carousel'" [style.--columns]="layoutBlock.columns">
-                                  <div *ngFor="let item of layoutBlock.items" class="image-item">
-                                    <img [src]="item.image" [alt]="item.title">
-                                    <div class="caption" *ngIf="item.title || item.description">
-                                      <h4 *ngIf="item.title">{{item.title}}</h4>
-                                      <p *ngIf="item.description">{{item.description}}</p>
+                              <div
+                                *ngIf="isImageListBlock(layoutBlock)"
+                                class="preview-block image-list-block"
+                              >
+                                <div
+                                  class="image-grid"
+                                  [class.carousel]="
+                                    layoutBlock.layout === 'carousel'
+                                  "
+                                  [style.--columns]="layoutBlock.columns"
+                                >
+                                  <div
+                                    *ngFor="let item of layoutBlock.items"
+                                    class="image-item"
+                                  >
+                                    <img
+                                      [src]="item.image"
+                                      [alt]="item.title"
+                                    />
+                                    <div
+                                      class="caption"
+                                      *ngIf="item.title || item.description"
+                                    >
+                                      <h4 *ngIf="item.title">
+                                        {{ item.title }}
+                                      </h4>
+                                      <p *ngIf="item.description">
+                                        {{ item.description }}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
                               </div>
 
                               <!-- Video Block -->
-                              <div *ngIf="isVideoBlock(layoutBlock)" class="preview-block video-block">
-                                <h3 *ngIf="layoutBlock.title">{{layoutBlock.title}}</h3>
-                                <p *ngIf="layoutBlock.description">{{layoutBlock.description}}</p>
+                              <div
+                                *ngIf="isVideoBlock(layoutBlock)"
+                                class="preview-block video-block"
+                              >
+                                <h3 *ngIf="layoutBlock.title">
+                                  {{ layoutBlock.title }}
+                                </h3>
+                                <p *ngIf="layoutBlock.description">
+                                  {{ layoutBlock.description }}
+                                </p>
                                 <div class="video-container">
                                   <video
                                     [src]="layoutBlock.url"
                                     [poster]="layoutBlock.poster"
                                     [controls]="layoutBlock.controls"
-                                    [autoplay]="layoutBlock.autoplay">
-                                  </video>
+                                    [autoplay]="layoutBlock.autoplay"
+                                  ></video>
                                 </div>
                               </div>
 
                               <!-- Gallery Block -->
-                              <div *ngIf="isGalleryBlock(layoutBlock)" class="preview-block gallery-block">
-                                <div class="gallery-grid"
-                                     [class]="layoutBlock.layout + '-layout'"
-                                     [style.--columns]="layoutBlock.columns"
-                                     [style.--spacing]="layoutBlock.spacing + 'px'">
-                                  <div *ngFor="let image of layoutBlock.images" class="gallery-item">
-                                    <img [src]="image.url" [alt]="image.title">
-                                    <div class="caption" *ngIf="image.title || image.description">
-                                      <h4 *ngIf="image.title">{{image.title}}</h4>
-                                      <p *ngIf="image.description">{{image.description}}</p>
+                              <div
+                                *ngIf="isGalleryBlock(layoutBlock)"
+                                class="preview-block gallery-block"
+                              >
+                                <div
+                                  class="gallery-grid"
+                                  [class]="layoutBlock.layout + '-layout'"
+                                  [style.--columns]="layoutBlock.columns"
+                                  [style.--spacing]="layoutBlock.spacing + 'px'"
+                                >
+                                  <div
+                                    *ngFor="let image of layoutBlock.images"
+                                    class="gallery-item"
+                                  >
+                                    <img
+                                      [src]="image.url"
+                                      [alt]="image.title"
+                                    />
+                                    <div
+                                      class="caption"
+                                      *ngIf="image.title || image.description"
+                                    >
+                                      <h4 *ngIf="image.title">
+                                        {{ image.title }}
+                                      </h4>
+                                      <p *ngIf="image.description">
+                                        {{ image.description }}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
                               </div>
 
                               <!-- Image Box Block -->
-                              <div *ngIf="isImageBoxBlock(layoutBlock)" class="preview-block image-box-block">
-                                <div class="image-box"
-                                     [class]="'layout-' + layoutBlock.layout"
-                                     [style.backgroundColor]="layoutBlock.backgroundColor"
-                                     [style.color]="layoutBlock.textColor"
-                                     [style.padding.px]="layoutBlock.padding">
-                                  <div class="image-wrapper"
-                                       [class.rounded]="layoutBlock.imageRounded"
-                                       [class.shadow]="layoutBlock.imageShadow">
-                                    <img [src]="layoutBlock.image.url"
-                                         [alt]="layoutBlock.image.alt"
-                                         [style.width.px]="layoutBlock.image.width"
-                                         [style.height.px]="layoutBlock.image.height"
-                                         (error)="onImageError($event)">
+                              <div
+                                *ngIf="isImageBoxBlock(layoutBlock)"
+                                class="preview-block image-box-block"
+                              >
+                                <div
+                                  class="image-box"
+                                  [class]="'layout-' + layoutBlock.layout"
+                                  [style.backgroundColor]="
+                                    layoutBlock.backgroundColor
+                                  "
+                                  [style.color]="layoutBlock.textColor"
+                                  [style.padding.px]="layoutBlock.padding"
+                                >
+                                  <div
+                                    class="image-wrapper"
+                                    [class.rounded]="layoutBlock.imageRounded"
+                                    [class.shadow]="layoutBlock.imageShadow"
+                                  >
+                                    <img
+                                      [src]="layoutBlock.image.url"
+                                      [alt]="layoutBlock.image.alt"
+                                      [style.width.px]="layoutBlock.image.width"
+                                      [style.height.px]="
+                                        layoutBlock.image.height
+                                      "
+                                      (error)="onImageError($event)"
+                                    />
                                   </div>
                                   <div class="content">
-                                    <ng-container [ngSwitch]="layoutBlock.titleTag">
-                                      <h2 *ngSwitchCase="'h2'">{{layoutBlock.title}}</h2>
-                                      <h3 *ngSwitchCase="'h3'">{{layoutBlock.title}}</h3>
-                                      <h4 *ngSwitchCase="'h4'">{{layoutBlock.title}}</h4>
-                                      <h5 *ngSwitchCase="'h5'">{{layoutBlock.title}}</h5>
-                                      <h6 *ngSwitchCase="'h6'">{{layoutBlock.title}}</h6>
+                                    <ng-container
+                                      [ngSwitch]="layoutBlock.titleTag"
+                                    >
+                                      <h2 *ngSwitchCase="'h2'">
+                                        {{ layoutBlock.title }}
+                                      </h2>
+                                      <h3 *ngSwitchCase="'h3'">
+                                        {{ layoutBlock.title }}
+                                      </h3>
+                                      <h4 *ngSwitchCase="'h4'">
+                                        {{ layoutBlock.title }}
+                                      </h4>
+                                      <h5 *ngSwitchCase="'h5'">
+                                        {{ layoutBlock.title }}
+                                      </h5>
+                                      <h6 *ngSwitchCase="'h6'">
+                                        {{ layoutBlock.title }}
+                                      </h6>
                                     </ng-container>
-                                    <p>{{layoutBlock.description}}</p>
+                                    <p>{{ layoutBlock.description }}</p>
                                   </div>
                                 </div>
                               </div>
 
                               <!-- Slider Block -->
-                              <div *ngIf="isSliderBlock(layoutBlock)" class="preview-block slider-block">
+                              <div
+                                *ngIf="isSliderBlock(layoutBlock)"
+                                class="preview-block slider-block"
+                              >
                                 <div class="slider-container">
                                   <div class="slider-wrapper">
-                                    <div class="slider-item" *ngFor="let image of layoutBlock.images; let i = index" [class.active]="i === currentSlideIndex">
-                                      <img [src]="image.url" [alt]="image.title || ''" (error)="onImageError($event)">
-                                      <div class="slider-caption" *ngIf="image.title || image.description">
-                                        <h4 *ngIf="image.title">{{image.title}}</h4>
-                                        <p *ngIf="image.description">{{image.description}}</p>
+                                    <div
+                                      class="slider-item"
+                                      *ngFor="
+                                        let image of layoutBlock.images;
+                                        let i = index
+                                      "
+                                      [class.active]="
+                                        i === getSlideIndex(layoutBlock)
+                                      "
+                                    >
+                                      <img
+                                        [src]="image.url"
+                                        [alt]="image.title || ''"
+                                        (error)="onImageError($event)"
+                                      />
+                                      <div
+                                        class="slider-caption"
+                                        *ngIf="image.title || image.description"
+                                      >
+                                        <h4 *ngIf="image.title">
+                                          {{ image.title }}
+                                        </h4>
+                                        <p *ngIf="image.description">
+                                          {{ image.description }}
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
-                                  <button class="slider-nav prev" (click)="prevSlide(layoutBlock)">
+                                  <button
+                                    class="slider-nav prev"
+                                    (click)="prevSlide(layoutBlock)"
+                                  >
                                     <i class="fas fa-chevron-left"></i>
                                   </button>
-                                  <button class="slider-nav next" (click)="nextSlide(layoutBlock)">
+                                  <button
+                                    class="slider-nav next"
+                                    (click)="nextSlide(layoutBlock)"
+                                  >
                                     <i class="fas fa-chevron-right"></i>
                                   </button>
-                                  <div class="slider-dots" *ngIf="layoutBlock.images.length > 1">
-                                    <button *ngFor="let image of layoutBlock.images; let i = index"
-                                            class="dot"
-                                            [class.active]="i === currentSlideIndex"
-                                            (click)="goToSlide(i, layoutBlock)">
-                                    </button>
+                                  <div
+                                    class="slider-dots"
+                                    *ngIf="layoutBlock.images.length > 1"
+                                  >
+                                    <button
+                                      *ngFor="
+                                        let image of layoutBlock.images;
+                                        let i = index
+                                      "
+                                      class="dot"
+                                      [class.active]="
+                                        i === getSlideIndex(layoutBlock)
+                                      "
+                                      (click)="goToSlide(i, layoutBlock)"
+                                    ></button>
                                   </div>
                                 </div>
                               </div>
@@ -450,115 +777,217 @@
                     <!-- Regular Blocks -->
                     <ng-container *ngIf="!isLayoutSection(block)">
                       <!-- Heading Block -->
-                      <div *ngIf="isHeadingBlock(block)" class="preview-block heading-block">
+                      <div
+                        *ngIf="isHeadingBlock(block)"
+                        class="preview-block heading-block"
+                      >
                         <ng-container [ngSwitch]="block.level">
-                          <h1 *ngSwitchCase="'h1'" [style.color]="block.color" [style.fontSize.px]="block.fontSize" [style.textAlign]="block.alignment">{{block.content}}</h1>
-                          <h2 *ngSwitchCase="'h2'" [style.color]="block.color" [style.fontSize.px]="block.fontSize" [style.textAlign]="block.alignment">{{block.content}}</h2>
-                          <h3 *ngSwitchCase="'h3'" [style.color]="block.color" [style.fontSize.px]="block.fontSize" [style.textAlign]="block.alignment">{{block.content}}</h3>
-                          <h4 *ngSwitchCase="'h4'" [style.color]="block.color" [style.fontSize.px]="block.fontSize" [style.textAlign]="block.alignment">{{block.content}}</h4>
-                          <h5 *ngSwitchCase="'h5'" [style.color]="block.color" [style.fontSize.px]="block.fontSize" [style.textAlign]="block.alignment">{{block.content}}</h5>
-                          <h6 *ngSwitchCase="'h6'" [style.color]="block.color" [style.fontSize.px]="block.fontSize" [style.textAlign]="block.alignment">{{block.content}}</h6>
+                          <h1
+                            *ngSwitchCase="'h1'"
+                            [style.color]="block.color"
+                            [style.fontSize.px]="block.fontSize"
+                            [style.textAlign]="block.alignment"
+                          >
+                            {{ block.content }}
+                          </h1>
+                          <h2
+                            *ngSwitchCase="'h2'"
+                            [style.color]="block.color"
+                            [style.fontSize.px]="block.fontSize"
+                            [style.textAlign]="block.alignment"
+                          >
+                            {{ block.content }}
+                          </h2>
+                          <h3
+                            *ngSwitchCase="'h3'"
+                            [style.color]="block.color"
+                            [style.fontSize.px]="block.fontSize"
+                            [style.textAlign]="block.alignment"
+                          >
+                            {{ block.content }}
+                          </h3>
+                          <h4
+                            *ngSwitchCase="'h4'"
+                            [style.color]="block.color"
+                            [style.fontSize.px]="block.fontSize"
+                            [style.textAlign]="block.alignment"
+                          >
+                            {{ block.content }}
+                          </h4>
+                          <h5
+                            *ngSwitchCase="'h5'"
+                            [style.color]="block.color"
+                            [style.fontSize.px]="block.fontSize"
+                            [style.textAlign]="block.alignment"
+                          >
+                            {{ block.content }}
+                          </h5>
+                          <h6
+                            *ngSwitchCase="'h6'"
+                            [style.color]="block.color"
+                            [style.fontSize.px]="block.fontSize"
+                            [style.textAlign]="block.alignment"
+                          >
+                            {{ block.content }}
+                          </h6>
                         </ng-container>
                       </div>
 
                       <!-- Button Block -->
-                      <div *ngIf="isButtonBlock(block)" class="preview-block button-block" [style.textAlign]="block.alignment">
-                        <a [href]="block.url"
-                           [target]="block.target"
-                           class="btn btn-{{block.style}}"
-                           [class.btn-{{block.size}}]="block.size"
-                           [class.btn-block]="block.fullWidth">
-                          {{block.text}}
+                      <div
+                        *ngIf="isButtonBlock(block)"
+                        class="preview-block button-block"
+                        [style.textAlign]="block.alignment"
+                      >
+                        <a
+                          [href]="block.url"
+                          [target]="block.target"
+                          class="btn btn-{{ block.style }}"
+                          [class.btn-{{block.size}}]="block.size"
+                          [class.btn-block]="block.fullWidth"
+                        >
+                          {{ block.text }}
                         </a>
                       </div>
 
                       <!-- Paragraph Block -->
-                      <div *ngIf="isParagraphBlock(block)" class="preview-block paragraph-block">
-                        <h2 *ngIf="block.title">{{block.title}}</h2>
+                      <div
+                        *ngIf="isParagraphBlock(block)"
+                        class="preview-block paragraph-block"
+                      >
+                        <h2 *ngIf="block.title">{{ block.title }}</h2>
                         <div class="content" [innerHTML]="block.content"></div>
                       </div>
 
                       <!-- List Block -->
-                      <div *ngIf="isListBlock(block)" class="preview-block list-block">
+                      <div
+                        *ngIf="isListBlock(block)"
+                        class="preview-block list-block"
+                      >
                         <ul [class]="block.style">
                           <li *ngFor="let item of block.items">
-                            <i *ngIf="block.style === 'icon' && item.icon" class="{{item.icon}}"></i>
+                            <i
+                              *ngIf="block.style === 'icon' && item.icon"
+                              class="{{ item.icon }}"
+                            ></i>
                             <div class="item-content">
-                              <h4>{{item.title}}</h4>
-                              <p *ngIf="item.description">{{item.description}}</p>
+                              <h4>{{ item.title }}</h4>
+                              <p *ngIf="item.description">
+                                {{ item.description }}
+                              </p>
                             </div>
                           </li>
                         </ul>
                       </div>
 
                       <!-- Image List Block -->
-                      <div *ngIf="isImageListBlock(block)" class="preview-block image-list-block">
-                        <div class="image-grid" [class.carousel]="block.layout === 'carousel'" [style.--columns]="block.columns">
-                          <div *ngFor="let item of block.items" class="image-item">
-                            <img [src]="item.image" [alt]="item.title">
-                            <div class="caption" *ngIf="item.title || item.description">
-                              <h4 *ngIf="item.title">{{item.title}}</h4>
-                              <p *ngIf="item.description">{{item.description}}</p>
+                      <div
+                        *ngIf="isImageListBlock(block)"
+                        class="preview-block image-list-block"
+                      >
+                        <div
+                          class="image-grid"
+                          [class.carousel]="block.layout === 'carousel'"
+                          [style.--columns]="block.columns"
+                        >
+                          <div
+                            *ngFor="let item of block.items"
+                            class="image-item"
+                          >
+                            <img [src]="item.image" [alt]="item.title" />
+                            <div
+                              class="caption"
+                              *ngIf="item.title || item.description"
+                            >
+                              <h4 *ngIf="item.title">{{ item.title }}</h4>
+                              <p *ngIf="item.description">
+                                {{ item.description }}
+                              </p>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <!-- Video Block -->
-                      <div *ngIf="isVideoBlock(block)" class="preview-block video-block">
-                        <h3 *ngIf="block.title">{{block.title}}</h3>
-                        <p *ngIf="block.description">{{block.description}}</p>
+                      <div
+                        *ngIf="isVideoBlock(block)"
+                        class="preview-block video-block"
+                      >
+                        <h3 *ngIf="block.title">{{ block.title }}</h3>
+                        <p *ngIf="block.description">{{ block.description }}</p>
                         <div class="video-container">
                           <video
                             [src]="block.url"
                             [poster]="block.poster"
                             [controls]="block.controls"
-                            [autoplay]="block.autoplay">
-                          </video>
+                            [autoplay]="block.autoplay"
+                          ></video>
                         </div>
                       </div>
 
                       <!-- Gallery Block -->
-                      <div *ngIf="isGalleryBlock(block)" class="preview-block gallery-block">
-                        <div class="gallery-grid"
-                             [class]="block.layout + '-layout'"
-                             [style.--columns]="block.columns"
-                             [style.--spacing]="block.spacing + 'px'">
-                          <div *ngFor="let image of block.images" class="gallery-item">
-                            <img [src]="image.url" [alt]="image.title">
-                            <div class="caption" *ngIf="image.title || image.description">
-                              <h4 *ngIf="image.title">{{image.title}}</h4>
-                              <p *ngIf="image.description">{{image.description}}</p>
+                      <div
+                        *ngIf="isGalleryBlock(block)"
+                        class="preview-block gallery-block"
+                      >
+                        <div
+                          class="gallery-grid"
+                          [class]="block.layout + '-layout'"
+                          [style.--columns]="block.columns"
+                          [style.--spacing]="block.spacing + 'px'"
+                        >
+                          <div
+                            *ngFor="let image of block.images"
+                            class="gallery-item"
+                          >
+                            <img [src]="image.url" [alt]="image.title" />
+                            <div
+                              class="caption"
+                              *ngIf="image.title || image.description"
+                            >
+                              <h4 *ngIf="image.title">{{ image.title }}</h4>
+                              <p *ngIf="image.description">
+                                {{ image.description }}
+                              </p>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <!-- Image Box Block -->
-                      <div *ngIf="isImageBoxBlock(block)" class="preview-block image-box-block">
-                        <div class="image-box"
-                             [class]="'layout-' + block.layout"
-                             [style.backgroundColor]="block.backgroundColor"
-                             [style.color]="block.textColor"
-                             [style.padding.px]="block.padding">
-                          <div class="image-wrapper"
-                               [class.rounded]="block.imageRounded"
-                               [class.shadow]="block.imageShadow">
-                            <img [src]="block.image.url"
-                                 [alt]="block.image.alt"
-                                 [style.width.px]="block.image.width"
-                                 [style.height.px]="block.image.height"
-                                 (error)="onImageError($event)">
+                      <div
+                        *ngIf="isImageBoxBlock(block)"
+                        class="preview-block image-box-block"
+                      >
+                        <div
+                          class="image-box"
+                          [class]="'layout-' + block.layout"
+                          [style.backgroundColor]="block.backgroundColor"
+                          [style.color]="block.textColor"
+                          [style.padding.px]="block.padding"
+                        >
+                          <div
+                            class="image-wrapper"
+                            [class.rounded]="block.imageRounded"
+                            [class.shadow]="block.imageShadow"
+                          >
+                            <img
+                              [src]="block.image.url"
+                              [alt]="block.image.alt"
+                              [style.width.px]="block.image.width"
+                              [style.height.px]="block.image.height"
+                              (error)="onImageError($event)"
+                            />
                           </div>
                           <div class="content">
                             <ng-container [ngSwitch]="block.titleTag">
-                              <h2 *ngSwitchCase="'h2'">{{block.title}}</h2>
-                              <h3 *ngSwitchCase="'h3'">{{block.title}}</h3>
-                              <h4 *ngSwitchCase="'h4'">{{block.title}}</h4>
-                              <h5 *ngSwitchCase="'h5'">{{block.title}}</h5>
-                              <h6 *ngSwitchCase="'h6'">{{block.title}}</h6>
+                              <h2 *ngSwitchCase="'h2'">{{ block.title }}</h2>
+                              <h3 *ngSwitchCase="'h3'">{{ block.title }}</h3>
+                              <h4 *ngSwitchCase="'h4'">{{ block.title }}</h4>
+                              <h5 *ngSwitchCase="'h5'">{{ block.title }}</h5>
+                              <h6 *ngSwitchCase="'h6'">{{ block.title }}</h6>
                             </ng-container>
-                            <p>{{block.description}}</p>
+                            <p>{{ block.description }}</p>
                           </div>
                         </div>
                       </div>
@@ -567,29 +996,47 @@
                 </div>
               </div>
             </ng-container>
-            <div *ngIf="!isProject" [innerHTML]="getSafeHtml(product.product_detail.content)"></div>
+            <div
+              *ngIf="!isProject"
+              [innerHTML]="getSafeHtml(product.product_detail.content)"
+            ></div>
           </div>
         </div>
 
         <!-- Tiện ích -->
-        <div class="info-section utilities-section" *ngIf="product.product_detail.utilities">
+        <div
+          class="info-section utilities-section"
+          *ngIf="product.product_detail.utilities"
+        >
           <h2><i class="fas fa-star"></i> Tiện ích</h2>
-          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.utilities)"></div>
+          <div
+            class="content"
+            [innerHTML]="getSafeHtml(product.product_detail.utilities)"
+          ></div>
         </div>
 
         <!-- Nội thất -->
-        <div class="info-section interior-section" *ngIf="product.product_detail.interior">
+        <div
+          class="info-section interior-section"
+          *ngIf="product.product_detail.interior"
+        >
           <h2><i class="fas fa-couch"></i> Nội thất</h2>
-          <div class="content" [innerHTML]="getSafeHtml(product.product_detail.interior)"></div>
+          <div
+            class="content"
+            [innerHTML]="getSafeHtml(product.product_detail.interior)"
+          ></div>
         </div>
 
         <!-- Công cụ tính lãi suất -->
-        <div class="info-section" *ngIf="product.product_detail.type_product !== 'rent'">
+        <div
+          class="info-section"
+          *ngIf="product.product_detail.type_product !== 'rent'"
+        >
           <h2>
             <i class="fas fa-calculator"></i>
             Công cụ tính lãi suất vay
           </h2>
-          <app-loan-calculator></app-loan-calculator>
+          <app-loan-calculator [price]="product.product_detail.price"></app-loan-calculator>
         </div>
 
         <!-- Social Share -->
@@ -605,7 +1052,7 @@
               Twitter
             </button>
             <button class="share-btn zalo" (click)="shareOnZalo()">
-              <img src="https://deliverbit.com/images/7982070.png" alt="Zalo">
+              <img src="https://deliverbit.com/images/7982070.png" alt="Zalo" />
               Zalo
             </button>
             <button class="share-btn copy" (click)="copyLink()">
@@ -618,44 +1065,91 @@
         <!-- Quick Contact Form -->
         <div class="info-section">
           <h2>Liên hệ tư vấn</h2>
-          <form class="contact-form" (ngSubmit)="onSubmitContact()" [formGroup]="contactForm">
+          <form
+            class="contact-form"
+            (ngSubmit)="onSubmitContact()"
+            [formGroup]="contactForm"
+          >
             <div class="form-group">
-              <input type="text" formControlName="name" placeholder="Họ và tên *">
-              <div class="error-message" *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Họ và tên *"
+              />
+              <div
+                class="error-message"
+                *ngIf="
+                  contactForm.get('name')?.invalid &&
+                  contactForm.get('name')?.touched
+                "
+              >
                 Vui lòng nhập họ tên
               </div>
             </div>
             <div class="form-group">
-              <input type="tel" formControlName="phone" placeholder="Số điện thoại *">
-              <div class="error-message" *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+              <input
+                type="tel"
+                formControlName="phone"
+                placeholder="Số điện thoại *"
+              />
+              <div
+                class="error-message"
+                *ngIf="
+                  contactForm.get('phone')?.invalid &&
+                  contactForm.get('phone')?.touched
+                "
+              >
                 Vui lòng nhập số điện thoại hợp lệ
               </div>
             </div>
             <div class="form-group">
-              <input type="email" formControlName="email" placeholder="Email">
+              <input type="email" formControlName="email" placeholder="Email" />
             </div>
             <div class="form-group">
-              <textarea formControlName="message" placeholder="Nội dung tin nhắn" rows="4"></textarea>
+              <textarea
+                formControlName="message"
+                placeholder="Nội dung tin nhắn"
+                rows="4"
+              ></textarea>
             </div>
-            <button type="submit" [disabled]="contactForm.invalid || submitting">
+            <button
+              type="submit"
+              [disabled]="contactForm.invalid || submitting"
+            >
               <i class="fas fa-paper-plane"></i>
-              {{ submitting ? 'Đang gửi...' : 'Gửi tin nhắn' }}
+              {{ submitting ? "Đang gửi..." : "Gửi tin nhắn" }}
             </button>
           </form>
         </div>
 
         <!-- Danh sách sản phẩm trong dự án -->
-        <div class="info-section" *ngIf="isProject && projectProducts.length > 0">
+        <div
+          class="info-section"
+          *ngIf="isProject && projectProducts.length > 0"
+        >
           <h2>
             <i class="fas fa-building"></i>
             Danh sách căn hộ trong dự án
           </h2>
           <div class="project-products">
-            <div class="project-product-card" *ngFor="let item of projectProducts">
+            <div
+              class="project-product-card"
+              *ngFor="let item of projectProducts"
+            >
               <div class="product-image">
-                <img [src]="'https://lh3.googleusercontent.com/d/' + item.images[0].drive_id" [alt]="item.name" onerror="this.src='assets/images/default_property.jpeg'">
+                <img
+                  [src]="
+                    'https://lh3.googleusercontent.com/d/' +
+                    item.images[0].drive_id
+                  "
+                  [alt]="item.name"
+                  onerror="this.src='assets/images/default_property.jpeg'"
+                />
                 <div class="product-overlay">
-                  <div class="product-status" [ngClass]="item.product_detail.project_status">
+                  <div
+                    class="product-status"
+                    [ngClass]="item.product_detail.project_status"
+                  >
                     {{ item.product_detail.project_status }}
                   </div>
                 </div>
@@ -685,13 +1179,21 @@
                   </div>
                 </div>
                 <div class="product-price">
-                  <span *ngIf="!item.product_detail.price_to">{{ formatPrice(item.product_detail.price) }}</span>
+                  <span *ngIf="!item.product_detail.price_to">{{
+                    formatPrice(item.product_detail.price)
+                  }}</span>
                   <span *ngIf="item.product_detail.price_to">
-                    {{ formatPrice(item.product_detail.price) }} - {{ formatPrice(item.product_detail.price_to) }}
+                    {{ formatPrice(item.product_detail.price) }} -
+                    {{ formatPrice(item.product_detail.price_to) }}
                   </span>
                 </div>
                 <div class="product-tags">
-                  <span *ngFor="let tag of item.tag" class="tag" [style.background-color]="tag.color + '20'" [style.color]="tag.color">
+                  <span
+                    *ngFor="let tag of item.tag"
+                    class="tag"
+                    [style.background-color]="tag.color + '20'"
+                    [style.color]="tag.color"
+                  >
                     {{ tag.name }}
                   </span>
                 </div>
@@ -708,10 +1210,27 @@
         <div class="info-section" *ngIf="!isProject">
           <h2>Sản phẩm tương tự</h2>
           <div class="related-products">
-            <div class="product-card" *ngFor="let relatedProduct of relatedProducts">
+            <div
+              class="product-card"
+              *ngFor="let relatedProduct of relatedProducts"
+            >
               <div class="product-image">
-                <img [src]="'https://lh3.googleusercontent.com/d/' + relatedProduct.images[0].drive_id" [alt]="relatedProduct.name" onerror="this.src='assets/images/default_property.jpeg'">
-                <div class="product-badge" *ngIf="relatedProduct.product_detail.type_product === 'project'">Dự án</div>
+                <img
+                  [src]="
+                    'https://lh3.googleusercontent.com/d/' +
+                    relatedProduct.images[0].drive_id
+                  "
+                  [alt]="relatedProduct.name"
+                  onerror="this.src='assets/images/default_property.jpeg'"
+                />
+                <div
+                  class="product-badge"
+                  *ngIf="
+                    relatedProduct.product_detail.type_product === 'project'
+                  "
+                >
+                  Dự án
+                </div>
               </div>
               <div class="product-content">
                 <h3>{{ relatedProduct.name }}</h3>
@@ -720,19 +1239,37 @@
                   {{ relatedProduct.address_detail.address }}
                 </p>
                 <div class="details">
-                  <span><i class="fas fa-bed"></i> {{ relatedProduct.product_detail.bedroom }}</span>
-                  <span><i class="fas fa-bath"></i> {{ relatedProduct.product_detail.bathroom }}</span>
-                  <span><i class="fas fa-vector-square"></i> {{ relatedProduct.product_detail.area }}m²</span>
+                  <span
+                    ><i class="fas fa-bed"></i>
+                    {{ relatedProduct.product_detail.bedroom }}</span
+                  >
+                  <span
+                    ><i class="fas fa-bath"></i>
+                    {{ relatedProduct.product_detail.bathroom }}</span
+                  >
+                  <span
+                    ><i class="fas fa-vector-square"></i>
+                    {{ formatNumber(relatedProduct.product_detail.area) }}m²</span
+                  >
                 </div>
-                <div class="price">{{ formatPrice(relatedProduct.product_detail.price) }}</div>
-                <a [routerLink]="['/detail', relatedProduct.id]" class="view-more">Xem chi tiết</a>
+                <div class="price">
+                  {{ formatPrice(relatedProduct.product_detail.price) }}
+                </div>
+                <a
+                  [routerLink]="['/detail', relatedProduct.id]"
+                  class="view-more"
+                  >Xem chi tiết</a
+                >
               </div>
             </div>
           </div>
         </div>
 
         <!-- Investment Type -->
-        <div class="info-section investment-type" *ngIf="product.product_detail.type_of_investment">
+        <div
+          class="info-section investment-type"
+          *ngIf="product.product_detail.type_of_investment"
+        >
           <i class="fas fa-chart-line"></i>
           <span>{{ product.product_detail.type_of_investment }}</span>
         </div>

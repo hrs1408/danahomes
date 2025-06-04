@@ -6,10 +6,10 @@
         Số tiền vay
       </label>
       <input
-        type="number"
+        type="text"
         formControlName="loanAmount"
         placeholder="Nhập số tiền vay"
-        (input)="calculateLoan()"
+        (input)="onLoanAmountInput($event)"
       >
       <div class="error-message" *ngIf="loanForm.get('loanAmount')?.invalid && loanForm.get('loanAmount')?.touched">
         Số tiền vay tối thiểu là 1.000.000 VNĐ
@@ -38,10 +38,10 @@
         Lãi suất (%/năm)
       </label>
       <input
-        type="number"
+        type="text"
         formControlName="interestRate"
         placeholder="Nhập lãi suất"
-        (input)="calculateLoan()"
+        (input)="onInterestRateInput($event)"
       >
       <div class="error-message" *ngIf="loanForm.get('interestRate')?.invalid && loanForm.get('interestRate')?.touched">
         Lãi suất từ 0.1% đến 20%

@@ -47,20 +47,6 @@
               <!-- Thông tin cơ bản -->
               <div class="basic-info">
                 <div class="info-item">
-                  <i class="fas fa-bed"></i>
-                  <div class="info-content">
-                    <span class="info-label">Phòng ngủ: </span>
-                    <span class="info-value">{{product.product_detail.bedroom}}</span>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <i class="fas fa-bath"></i>
-                  <div class="info-content">
-                    <span class="info-label">Phòng tắm: </span>
-                    <span class="info-value">{{product.product_detail.bathroom}}</span>
-                  </div>
-                </div>
-                <div class="info-item">
                   <i class="fas fa-vector-square"></i>
                   <div class="info-content">
                     <span class="info-label">Diện tích: </span>
@@ -103,21 +89,6 @@
 
               <!-- Giá và nút xem chi tiết -->
               <div class="price-action">
-                <div class="price-info">
-                  <span class="price-label">
-                    {{product.product_detail.type_product === 'rent' ? 'Giá thuê' :
-                      product.product_detail.type_product === 'sale' ? 'Giá bán' : 'Giá dự án'}}
-                  </span>
-                  <div class="price-value">
-                    <ng-container *ngIf="product.product_detail.price_to; else singlePrice">
-                      {{formatPrice(product.product_detail.price)}} - {{formatPrice(product.product_detail.price_to)}}
-                    </ng-container>
-                    <ng-template #singlePrice>
-                      {{formatPrice(product.product_detail.price)}}
-                      <span *ngIf="product.product_detail.type_product === 'rent'">/tháng</span>
-                    </ng-template>
-                  </div>
-                </div>
                 <button class="view-details" (click)="viewDetails(product.id)">
                   <span>Xem chi tiết</span>
                   <i class="fas fa-arrow-right"></i>

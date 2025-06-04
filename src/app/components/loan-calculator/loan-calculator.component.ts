@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface LoanResult {
@@ -21,6 +21,7 @@ interface LoanResult {
   styleUrls: ['./loan-calculator.component.scss']
 })
 export class LoanCalculatorComponent implements OnInit {
+  @Input() price: number = 1000000000; // Giá trị mặc định
   loanForm: FormGroup;
   result: LoanResult | null = null;
   showSchedule = false;
@@ -36,10 +37,24 @@ export class LoanCalculatorComponent implements OnInit {
   ngOnInit(): void {
     // Giá trị mặc định
     this.loanForm.patchValue({
-      loanAmount: 1000000000,
+      loanAmount: this.price,
       loanTerm: 240,
       interestRate: 8.5
     });
+
+    // Format giá trị hiển thị ban đầu
+    setTimeout(() => {
+      const loanAmountInput = document.querySelector('input[formControlName="loanAmount"]') as HTMLInputElement;
+      const interestRateInput = document.querySelector('input[formControlName="interestRate"]') as HTMLInputElement;
+
+      if (loanAmountInput) {
+        loanAmountInput.value = this.formatNumber(this.price);
+      }
+      if (interestRateInput) {
+        interestRateInput.value = '8.5';
+      }
+    });
+
     this.calculateLoan();
   }
 
@@ -119,11 +134,44 @@ export class LoanCalculatorComponent implements OnInit {
     }).format(amount);
   }
 
+  formatNumber(value: number): string {
+    if (!value) return '';
+    return new Intl.NumberFormat('vi-VN').format(value);
+  }
+
   formatPercent(value: number): string {
     return new Intl.NumberFormat('vi-VN', {
       style: 'percent',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(value / 100);
+  }
+
+  onLoanAmountInput(event: any): void {
+    const value = event.target.value.replace(/\D/g, ''); // Chỉ giữ lại số
+    const numericValue = parseInt(value) || 0;
+
+    // Cập nhật form control với giá trị số
+    this.loanForm.patchValue({
+      loanAmount: numericValue
+    }, { emitEvent: false });
+
+    // Hiển thị giá trị đã format trong input
+    event.target.value = this.formatNumber(numericValue);
+
+    // Tính toán lại kết quả
+    this.calculateLoan();
+  }
+
+  onInterestRateInput(event: any): void {
+    const value = event.target.value.replace(/[^0-9.]/g, ''); // Chỉ giữ lại số và dấu chấm
+    const numericValue = parseFloat(value) || 0;
+
+    this.loanForm.patchValue({
+      interestRate: numericValue
+    }, { emitEvent: false });
+
+    event.target.value = value;
+    this.calculateLoan();
   }
 }

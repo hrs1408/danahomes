@@ -199,7 +199,17 @@ export class SearchResultsComponent implements OnInit {
 
     this.productService.search(cleanParams).subscribe({
       next: (response) => {
-        if (response.data) {
+        // Kiểm tra nếu data là string (lỗi) hoặc array (kết quả hợp lệ)
+        if (typeof response.data === 'string') {
+          // Data là string, có nghĩa là có lỗi
+          this.error = response.data;
+          this.products = [];
+          this.rentProducts = [];
+          this.saleProducts = [];
+          this.projectProducts = [];
+          this.totalResults = 0;
+          this.totalPages = 0;
+        } else if (Array.isArray(response.data) && response.data.length > 0) {
           const allProducts = response.data;
           this.totalResults = allProducts.length;
           this.totalPages = Math.ceil(this.totalResults / this.pageSize);
@@ -247,6 +257,13 @@ export class SearchResultsComponent implements OnInit {
     return formattedPrice + ' VNĐ';
   }
 
+  formatNumber(value: number | string): string {
+    if (!value) return '0';
+    const num = typeof value === 'string' ? parseFloat(value) : value;
+    if (isNaN(num)) return '0';
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
   getMainImage(product: Product): string {
     return product.images && product.images.length > 0 ? product.images[0].drive_id : '';
   }
@@ -289,28 +306,45 @@ export class SearchResultsComponent implements OnInit {
         return acc;
       }, {} as SearchParams);
 
-    this.productService.search(cleanParams).subscribe(
-      (response) => {
-        if (response.data) {
+    this.productService.search(cleanParams).subscribe({
+      next: (response) => {
+        // Kiểm tra nếu data là string (lỗi) hoặc array (kết quả hợp lệ)
+        if (typeof response.data === 'string') {
+          // Data là string, có nghĩa là có lỗi
+          this.error = response.data;
+          this.products = [];
+          this.rentProducts = [];
+          this.saleProducts = [];
+          this.projectProducts = [];
+          this.totalResults = 0;
+          this.totalPages = 0;
+        } else if (Array.isArray(response.data)) {
           this.products = response.data;
           this.totalResults = response.data.length;
           this.totalPages = Math.ceil(this.totalResults / this.pageSize);
+          this.categorizeProducts(response.data);
         } else {
           this.products = [];
+          this.rentProducts = [];
+          this.saleProducts = [];
+          this.projectProducts = [];
           this.totalResults = 0;
           this.totalPages = 0;
         }
         this.loading = false;
       },
-      (error) => {
+      error: (error) => {
         console.error('Lỗi khi tìm kiếm:', error);
         this.error = 'Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại.';
         this.loading = false;
         this.products = [];
+        this.rentProducts = [];
+        this.saleProducts = [];
+        this.projectProducts = [];
         this.totalResults = 0;
         this.totalPages = 0;
       }
-    );
+    });
   }
 
   // Thêm các phương thức getter để lấy số lượng sản phẩm theo từng loại

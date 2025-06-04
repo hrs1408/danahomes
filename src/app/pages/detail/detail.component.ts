@@ -8,7 +8,6 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { SafeHtmlComponent } from '../../components/safe-html/safe-html.component';
-import type { Map, Marker } from 'leaflet';
 
 // Khai báo biến L để tránh lỗi khi chạy SSR
 
@@ -155,8 +154,8 @@ export class DetailComponent implements OnInit, AfterViewInit {
   loading = true;
   error: string | null = null;
   currentImageIndex = 0;
-  map: Map | null = null;
-  marker: Marker | null = null;
+  map: any = null;
+  marker: any = null;
   pageContent: PageContent | null = null;
 
   contactForm!: FormGroup;
@@ -166,6 +165,8 @@ export class DetailComponent implements OnInit, AfterViewInit {
   isProject = false;
 
   currentSlideIndex = 0;
+  // Map để lưu trữ slide index cho từng slider block
+  private sliderIndices = new Map<SliderBlock, number>();
 
   constructor(
     private route: ActivatedRoute,
@@ -263,7 +264,41 @@ export class DetailComponent implements OnInit, AfterViewInit {
         this.map.remove();
       }
 
-      this.map = L.map('map').setView([lat, lng], 16);
+      // Khởi tạo map với cấu hình scrollWheelZoom: false
+      this.map = L.map('map', {
+        scrollWheelZoom: false
+      }).setView([lat, lng], 16);
+
+      // Bật zoom với Ctrl + scroll
+      this.map.on('focus', () => {
+        this.map.scrollWheelZoom.enable();
+      });
+
+      this.map.on('blur', () => {
+        this.map.scrollWheelZoom.disable();
+      });
+
+      // Thêm thông báo khi hover vào map
+      const mapContainer = this.map.getContainer();
+      if (mapContainer) {
+        mapContainer.addEventListener('mouseenter', () => {
+          if (!this.map.scrollWheelZoom.enabled()) {
+            this.toastr.info('Nhấn Ctrl + lăn chuột để zoom', 'Hướng dẫn', {
+              timeOut: 2000,
+              positionClass: 'toast-top-center'
+            });
+          }
+        });
+
+        // Xử lý sự kiện wheel để kiểm tra Ctrl
+        mapContainer.addEventListener('wheel', (e: WheelEvent): void => {
+          if (e.ctrlKey) {
+            this.map.scrollWheelZoom.enable();
+          } else {
+            this.map.scrollWheelZoom.disable();
+          }
+        });
+      }
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© Danahomes'
@@ -292,6 +327,13 @@ export class DetailComponent implements OnInit, AfterViewInit {
   formatPrice(price: number): string {
     const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return formattedPrice + ' VNĐ';
+  }
+
+  formatNumber(value: number | string): string {
+    if (!value) return '0';
+    const num = typeof value === 'string' ? parseFloat(value) : value;
+    if (isNaN(num)) return '0';
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
   nextImage(): void {
@@ -743,21 +785,33 @@ export class DetailComponent implements OnInit, AfterViewInit {
     event.target.src = 'https://cdn3.iconfinder.com/data/icons/it-and-ui-mixed-filled-outlines/48/default_image-1024.png';
   }
 
-  // Slider methods
+  // Slider methods với hỗ trợ nhiều slider
+  getSlideIndex(layoutBlock: SliderBlock): number {
+    return this.sliderIndices.get(layoutBlock) || 0;
+  }
+
+  setSlideIndex(layoutBlock: SliderBlock, index: number): void {
+    this.sliderIndices.set(layoutBlock, index);
+  }
+
   prevSlide(layoutBlock: SliderBlock): void {
     const totalSlides = layoutBlock.images?.length || 0;
-    this.currentSlideIndex = (this.currentSlideIndex - 1 + totalSlides) % totalSlides;
+    const currentIndex = this.getSlideIndex(layoutBlock);
+    const newIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    this.setSlideIndex(layoutBlock, newIndex);
   }
 
   nextSlide(layoutBlock: SliderBlock): void {
     const totalSlides = layoutBlock.images?.length || 0;
-    this.currentSlideIndex = (this.currentSlideIndex + 1) % totalSlides;
+    const currentIndex = this.getSlideIndex(layoutBlock);
+    const newIndex = (currentIndex + 1) % totalSlides;
+    this.setSlideIndex(layoutBlock, newIndex);
   }
 
   goToSlide(index: number, layoutBlock: SliderBlock): void {
     const totalSlides = layoutBlock.images?.length || 0;
     if (index >= 0 && index < totalSlides) {
-      this.currentSlideIndex = index;
+      this.setSlideIndex(layoutBlock, index);
     }
   }
 }

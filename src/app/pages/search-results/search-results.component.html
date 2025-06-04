@@ -100,9 +100,8 @@
 
               <!-- Thông tin chính -->
               <div class="main-info">
-                <div class="info-item">
-                  <i class="fas fa-ruler-combined"></i>
-                  <span>Diện tích: <strong>{{ product.product_detail.area }} m²</strong></span>
+                <div class="info-item" *ngIf="product.product_detail.area">
+                  <span>Diện tích: <strong>{{ formatNumber(product.product_detail.area) }} m²</strong></span>
                 </div>
                 <div class="info-item" *ngIf="product.product_detail.bedroom">
                   <i class="fas fa-bed"></i>
@@ -212,9 +211,8 @@
 
               <!-- Thông tin chính -->
               <div class="main-info">
-                <div class="info-item">
-                  <i class="fas fa-ruler-combined"></i>
-                  <span>Diện tích: <strong>{{ product.product_detail.area }} m²</strong></span>
+                <div class="info-item" *ngIf="product.product_detail.area">
+                  <span>Diện tích: <strong>{{ formatNumber(product.product_detail.area) }} m²</strong></span>
                 </div>
                 <div class="info-item" *ngIf="product.product_detail.bedroom">
                   <i class="fas fa-bed"></i>
@@ -324,9 +322,8 @@
 
               <!-- Thông tin chính -->
               <div class="main-info">
-                <div class="info-item">
-                  <i class="fas fa-ruler-combined"></i>
-                  <span>Diện tích: <strong>{{ product.product_detail.area }} m²</strong></span>
+                <div class="info-item" *ngIf="product.product_detail.area">
+                  <span>Diện tích: <strong>{{ formatNumber(product.product_detail.area) }} m²</strong></span>
                 </div>
                 <div class="info-item" *ngIf="product.product_detail.bedroom">
                   <i class="fas fa-bed"></i>
