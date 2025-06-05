@@ -13,11 +13,13 @@ export class NewsComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  // Thêm các biến phân trang
+  // Pagination variables
   currentPage = 1;
   pageSize = 5;
-  totalPages = 0;
-  paginatedPosts: Post[] = [];
+  
+  // Filter variables
+  selectedNewsType: string = 'all';
+  filteredPosts: Post[] = [];
 
   constructor(
     private postService: PostService,
@@ -32,9 +34,8 @@ export class NewsComponent implements OnInit {
   private loadPosts(): void {
     this.postService.getAllPosts().subscribe({
       next: (response) => {
-        this.posts = response.data;
-        this.totalPages = Math.ceil(this.posts.length / this.pageSize);
-        this.updatePaginatedPosts();
+        this.posts = response.data.reverse(); // Reverse array to show newest posts first
+        this.filteredPosts = this.posts;
         this.loading = false;
       },
       error: (error) => {
@@ -45,30 +46,47 @@ export class NewsComponent implements OnInit {
     });
   }
 
-  updatePaginatedPosts(): void {
+  filterByType(type: string) {
+    this.selectedNewsType = type;
+    
+    if (type === 'all') {
+      this.filteredPosts = this.posts;
+    } else {
+      this.filteredPosts = this.posts.filter(post => 
+        post.post_type === type
+      );
+    }
+    
+    this.currentPage = 1; // Reset to first page
+  }
+
+  // Getter for paginated posts
+  get paginatedPosts(): Post[] {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.paginatedPosts = this.posts.slice(startIndex, endIndex);
+    return this.filteredPosts.slice(startIndex, endIndex);
+  }
+
+  // Getter for total pages
+  get totalPages(): number {
+    return Math.ceil(this.filteredPosts.length / this.pageSize);
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePaginatedPosts();
     }
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePaginatedPosts();
     }
   }
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.updatePaginatedPosts();
     }
   }
 
@@ -93,9 +111,7 @@ export class NewsComponent implements OnInit {
     return new Date(post.created_at || new Date());
   }
 
-  readMore(postId: any) {
-    {
-      this.router.navigate(['/news', postId]);
-    }
+  readMore(postId: any): void {
+    this.router.navigate(['/news', postId]);
   }
 }

@@ -792,7 +792,6 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       background: #f8f9fa;
-      padding: 0 10px 0 10px;
       border-radius: 8px;
     }
   }
@@ -801,9 +800,10 @@
     display: flex;
     justify-content: space-between;
     margin: 15px 0;
-    padding: 15px;
+    padding: 15px 0;
     background: #f8f9fa;
     border-radius: 8px;
+    font-size: 0.95em;
 
     .info-item {
       display: flex;
@@ -995,6 +995,218 @@
           }
         }
       }
+    }
+  }
+}
+
+.rental-products-grid {
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-image {
+      position: relative;
+      padding-top: 66.67%; // 3:2 aspect ratio
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .product-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+
+        &.rental {
+          background: #28a745;
+          color: white;
+        }
+
+        &.sale {
+          background: #dc3545;
+          color: white;
+        }
+      }
+    }
+
+    .product-content {
+      padding: 1rem;
+
+      .product-title {
+        font-size: 1.15rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        color: #002250;
+        font-weight: 600;
+      }
+
+      .product-address {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: flex-start;
+
+        i {
+          margin-right: 0.75rem;
+          color: #002250;
+          margin-top: 0.25rem;
+        }
+      }
+
+      .product-details {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.25rem;
+
+        .detail-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5rem 0;
+          border-bottom: 1px solid rgba(0, 34, 80, 0.1);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .label {
+            color: #666;
+            font-size: 0.9rem;
+          }
+
+          .value {
+            color: #002250;
+            font-weight: 600;
+            font-size: 0.95rem;
+          }
+        }
+      }
+
+      .product-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+
+        .tags {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+
+          .tag {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+          }
+        }
+
+        .view-btn {
+          background: linear-gradient(135deg, #002250, #0056b3);
+          color: white;
+          border: none;
+          padding: 0.75rem 1.25rem;
+          border-radius: 25px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          letter-spacing: 0.5px;
+
+          &:hover {
+            background: linear-gradient(135deg, #0056b3, #002250);
+            transform: translateY(-2px);
+          }
+        }
+      }
+    }
+
+    &.rental-card {
+      .product-badge.rental {
+        background: #4CAF50;
+        color: white;
+      }
+
+      .utility-costs {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+
+        .cost-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 8px;
+          color: #002250;
+
+          i {
+            color: #002250;
+            width: 20px;
+            text-align: center;
+          }
+        }
+      }
+
+      .property-features {
+        display: flex;
+        justify-content: space-around;
+        gap: 15px;
+        margin: 15px 0;
+
+        .feature-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #666;
+
+          i {
+            color: #002250;
+          }
+        }
+      }
+
+      .furniture-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-style: italic;
+
+        i {
+          color: #002250;
+        }
+      }
+    }
+
+    .view-btn {
+      pointer-events: none; // Ngăn không cho click vào nút (vì đã click vào card)
     }
   }
 }

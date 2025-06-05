@@ -132,7 +132,7 @@
         </ng-container>
 
         <!-- Sale Products -->
-        <ng-container *ngFor="let product of paginatedProducts">
+        <ng-container *ngFor="let product of filterSaleProducts(paginatedProducts)">
           <div class="product-card sale-card cursor-pointer" *ngIf="!isProjectCategory && isSaleProduct(product)" (click)="viewProductDetail(product.id)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
@@ -147,9 +147,17 @@
               <div class="product-details">
                 <div class="detail-item price">
                   <span class="label">Giá:</span>
-                  <span class="value" *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                  <span class="value" *ngIf="!product.product_detail.price_to">{{
+                    formatPrice(product.product_detail.price) }}</span>
                   <span class="value" *ngIf="product.product_detail.price_to">
                     {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                  </span>
+                </div>
+                <div class="detail-item price-per-m2">
+                  <span class="label">Giá/m²:</span>
+                  <span class="value" *ngIf="product.product_detail.price && product.product_detail.area">
+                    {{ calculatePricePerM2(product.product_detail.price, product.product_detail.area,
+                    product.product_detail.price_to) }}/m²
                   </span>
                 </div>
                 <div class="detail-item description" *ngIf="product.product_detail.content">

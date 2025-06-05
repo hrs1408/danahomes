@@ -64,19 +64,20 @@
       <div class="col-md-4">
         <div class="sidebar">
           <div class="sidebar-section">
-            <h3>Danh mục</h3>
-            <ul class="menu-list">
-              <li><a routerLink="/">Trang chủ</a></li>
-              <li><a routerLink="/about">Giới thiệu</a></li>
-              <li><a routerLink="/products">Sản phẩm</a></li>
-              <li><a routerLink="/news" class="active">Tin tức</a></li>
-              <li><a routerLink="/contact">Liên hệ</a></li>
+            <h3>Loại tin tức</h3>
+            <ul class="news-category-menu">
+              <li><a (click)="filterByType('all')" [class.active]="selectedNewsType === 'all'">Tất cả</a></li>
+              <li><a (click)="filterByType('news')" [class.active]="selectedNewsType === 'news'">Tin tức</a></li>
+              <li><a (click)="filterByType('featured')" [class.active]="selectedNewsType === 'featured'">Tin nổi bật</a></li>
+              <li><a (click)="filterByType('fengshui')" [class.active]="selectedNewsType === 'fengshui'">Tư vấn phong thuỷ</a></li>
+              <li><a (click)="filterByType('promotion')" [class.active]="selectedNewsType === 'promotion'">Khuyến mãi</a></li>
+              <li><a (click)="filterByType('event')" [class.active]="selectedNewsType === 'event'">Sự kiện</a></li>
             </ul>
           </div>
           <div class="sidebar-section">
             <h3>Tin nổi bật</h3>
             <div class="featured-posts">
-              <div *ngFor="let post of posts.slice(0, 3)" class="featured-post">
+              <div *ngFor="let post of posts.slice(0, 3)" class="featured-post" (click)="readMore(post.id)">
                 <img [src]="'https://lh3.googleusercontent.com/d/' + post.image.drive_id" [alt]="post.title" onerror="this.src='assets/images/default_property.jpeg'">
                 <div class="featured-content">
                   <h4>{{ post.title }}</h4>

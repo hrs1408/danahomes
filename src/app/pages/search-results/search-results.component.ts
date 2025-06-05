@@ -293,14 +293,18 @@ export class SearchResultsComponent implements OnInit {
   }
 
   calculatePricePerM2(price: number, area: number, priceTo?: number): string {
-    if (!price || !area || area === 0) return '';
-
-    if (priceTo) {
-      const priceM2 = (price / area).toFixed(0);
-      const priceToM2 = (priceTo / area).toFixed(0);
-      return priceM2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' VNĐ' + ' - ' + priceToM2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'VNĐ';
+    if (!price || !area || area === 0) {
+      return '0';
     }
-    return (price / area).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'VNĐ';
+    
+    const pricePerM2 = Math.round(price / area);
+    
+    if (priceTo) {
+      const priceToPerM2 = Math.round(priceTo / area);
+      return `${this.formatPrice(pricePerM2)} - ${this.formatPrice(priceToPerM2)}`;
+    }
+    
+    return this.formatPrice(pricePerM2);
   }
 
   removeFilter(filterName: keyof SearchParams): void {

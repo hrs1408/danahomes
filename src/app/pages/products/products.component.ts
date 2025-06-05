@@ -124,6 +124,21 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  calculatePricePerM2(price: number, area: number, priceTo?: number): string {
+    if (!price || !area || area === 0) {
+      return '0';
+    }
+    
+    const pricePerM2 = Math.round(price / area);
+    
+    if (priceTo) {
+      const priceToPerM2 = Math.round(priceTo / area);
+      return `${this.formatPrice(pricePerM2)} - ${this.formatPrice(priceToPerM2)}`;
+    }
+    
+    return this.formatPrice(pricePerM2);
+  }
+
   getCategoryName(categoryId: number): string {
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.name : '';
@@ -354,5 +369,9 @@ export class ProductsComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.filterProducts();
+  }
+
+  filterSaleProducts(products: Product[]): Product[] {
+    return products.filter(product => product.category_id !== this.PROJECT_CATEGORY_ID && product.product_detail.type_product === 'sale');
   }
 }
