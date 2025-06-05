@@ -48,9 +48,7 @@ export class LeaseComponent implements OnInit {
       return 'assets/images/default-property.jpg';
     }
     return product.images[0].drive_id;
-  }
-
-  viewProductDetail(productId: number) {
-    this.router.navigate(['/detail', productId]);
+  }  viewProductDetail(productSlug: string) {
+    this.router.navigate(['/chi-tiet', productSlug]);
   }
 }

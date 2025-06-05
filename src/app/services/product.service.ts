@@ -110,9 +110,12 @@ export class ProductService {
   getAllProducts(): Observable<ApiResponse<Product[]>> {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-all`);
   }
-
   getProductById(id: number): Observable<ApiResponse<Product>> {
     return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/product/get-by-id/${id}`);
+  }
+
+  getProductBySlug(slug: string): Observable<ApiResponse<Product>> {
+    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/product/get-by-slug/${slug}`);
   }
 
   getProductsByCategory(categoryId: number): Observable<ApiResponse<Product[]>> {

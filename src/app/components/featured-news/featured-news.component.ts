@@ -57,9 +57,8 @@ export class FeaturedNewsComponent implements OnInit {
   getPostDate(post: Post): Date {
     return new Date(post.created_at || new Date());
   }
-
   readMore(postId: number): void {
-    this.router.navigate(['/news', postId]);
+    this.router.navigate(['/tin-tuc', postId]);
   }
 
   getExcerpt(content: string): string {
@@ -75,9 +74,8 @@ export class FeaturedNewsComponent implements OnInit {
     const text = div.textContent || div.innerText || '';
     return text.substring(0, 100) + '...';
   }
-
   viewAllNews(): void {
-    this.router.navigate(['/news'], {
+    this.router.navigate(['/tin-tuc'], {
       queryParams: {
         type: this.activeTab
       }

@@ -194,10 +194,8 @@ export class FilterHomeComponent implements OnInit, AfterViewInit {
     }
 
     // Thêm loại sản phẩm dựa trên tab active
-    searchParams.product_type = this.activeTab === 'sale' ? 'sale' : 'rent';
-
-    // Chuyển hướng đến trang kết quả tìm kiếm với params
-    this.router.navigate(['/search'], {
+    searchParams.product_type = this.activeTab === 'sale' ? 'sale' : 'rent';    // Chuyển hướng đến trang kết quả tìm kiếm với params
+    this.router.navigate(['/tim-kiem'], {
       queryParams: searchParams
     });
   }

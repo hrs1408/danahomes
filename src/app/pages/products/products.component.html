@@ -70,7 +70,7 @@
       <div *ngIf="!loading && !error" class="products-grid" [class.project-grid]="isProjectCategory">
         <!-- Rental Products -->
         <ng-container *ngFor="let product of paginatedProducts">
-          <div class="product-card rental-card cursor-pointer" *ngIf="!isProjectCategory && isRentalProduct(product)" (click)="viewProductDetail(product.id)">
+          <div class="product-card rental-card cursor-pointer" *ngIf="!isProjectCategory && isRentalProduct(product)" (click)="viewProductDetail(product.slug)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
               <div class="product-badge rental">Cho thuê</div>
@@ -131,9 +131,8 @@
           </div>
         </ng-container>
 
-        <!-- Sale Products -->
-        <ng-container *ngFor="let product of filterSaleProducts(paginatedProducts)">
-          <div class="product-card sale-card cursor-pointer" *ngIf="!isProjectCategory && isSaleProduct(product)" (click)="viewProductDetail(product.id)">
+        <!-- Sale Products -->        <ng-container *ngFor="let product of filterSaleProducts(paginatedProducts)">
+          <div class="product-card sale-card cursor-pointer" *ngIf="!isProjectCategory && isSaleProduct(product)" (click)="viewProductDetail(product.slug)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
               <div class="product-badge sale">Mua bán</div>
@@ -190,9 +189,8 @@
           </div>
         </ng-container>
 
-        <!-- Project Products -->
-        <ng-container *ngIf="isProjectCategory">
-          <div *ngFor="let product of paginatedProducts" class="project-card hover-effect cursor-pointer" (click)="viewProductDetail(product.id)">
+        <!-- Project Products -->        <ng-container *ngIf="isProjectCategory">
+          <div *ngFor="let product of paginatedProducts" class="project-card hover-effect cursor-pointer" (click)="viewProductDetail(product.slug)">
             <div class="project-image-wrapper">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
               <div class="project-overlay">

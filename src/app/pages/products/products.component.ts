@@ -143,25 +143,21 @@ export class ProductsComponent implements OnInit {
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.name : '';
   }
-
   viewCategory(categoryId: number): void {
-    this.router.navigate(['/products'], { queryParams: { category: categoryId } });
+    this.router.navigate(['/san-pham'], { queryParams: { category: categoryId } });
   }
-
   viewAllProducts(): void {
     this.selectedCategory = null;
     this.selectedProductType = null;
     this.isProjectCategory = false;
     this.currentPage = 1;
-    this.router.navigate(['/products'], {
+    this.router.navigate(['/san-pham'], {
       queryParams: {}
     }).then(() => {
       this.loadAllProducts();
     });
-  }
-
-  viewProductDetail(productId: number): void {
-    this.router.navigate(['/products', productId]);
+  }  viewProductDetail(productSlug: string): void {
+    this.router.navigate(['/san-pham', productSlug]);
   }
 
   updatePaginatedProducts(): void {

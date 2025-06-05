@@ -286,10 +286,8 @@ export class SearchResultsComponent implements OnInit {
 
   getMainImage(product: Product): string {
     return product.images && product.images.length > 0 ? product.images[0].drive_id : '';
-  }
-
-  viewProductDetail(productId: number): void {
-    this.router.navigate(['/detail', productId]);
+  }  viewProductDetail(productSlug: string): void {
+    this.router.navigate(['/chi-tiet', productSlug]);
   }
 
   calculatePricePerM2(price: number, area: number, priceTo?: number): string {

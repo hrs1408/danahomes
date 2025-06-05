@@ -191,18 +191,58 @@ export class DetailComponent implements OnInit, AfterViewInit {
       message: ['']
     });
   }
-
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const productId = params['id'];
-      if (productId) {
-        this.loadProductDetail(Number(productId));
+      const productSlug = params['slug'];
+      if (productSlug) {
+        this.loadProductDetailBySlug(productSlug);
       }
     });
   }
 
   ngAfterViewInit(): void {
     // Map sẽ được khởi tạo sau khi có dữ liệu sản phẩm
+  }
+  private loadProductDetailBySlug(slug: string): void {
+    this.loading = true;
+    this.error = null;
+    this.productService.getProductBySlug(slug).subscribe({
+      next: (response) => {
+        if (!response.meta.error) {
+          this.product = response.data;
+          this.isProject = this.product.category_id === this.PROJECT_CATEGORY_ID;
+          this.updateMetaTags();
+
+          if (this.isProject) {
+            this.loadProjectProducts();
+            // Parse page builder content if exists
+            if (this.product.product_detail.content) {
+              try {
+                this.pageContent = JSON.parse(this.product.product_detail.content);
+              } catch (e) {
+                console.error('Lỗi khi parse page builder content:', e);
+              }
+            }
+          } else {
+            this.loadRelatedProducts();
+          }
+
+          if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => {
+              this.initMap();
+            }, 500);
+          }
+        } else {
+          this.error = response.meta.message;
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Lỗi khi tải chi tiết sản phẩm:', error);
+        this.error = 'Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.';
+        this.loading = false;
+      }
+    });
   }
 
   private loadProductDetail(productId: number): void {
