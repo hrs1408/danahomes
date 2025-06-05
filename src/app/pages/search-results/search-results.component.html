@@ -61,18 +61,18 @@
           <div *ngFor="let product of projectProducts" class="product-card" (click)="viewProductDetail(product.id)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name"
-                   onerror="this.src='assets/images/default_property.jpeg'">
+                onerror="this.src='assets/images/default_property.jpeg'">
               <div class="product-overlay">
                 <div class="product-badges">
                   <span class="badge type-badge" *ngIf="product.product_detail.type_product === 'project'">
                     <i class="fas fa-building"></i> Dự án
                   </span>
                   <span class="badge status-badge" *ngIf="product.product_detail.project_status"
-                        [style.color]="getProjectStatusInfo(product.product_detail.project_status).color"
-                        [style.backgroundColor]="getProjectStatusInfo(product.product_detail.project_status).backgroundColor"
-                        [class]="getProjectStatusInfo(product.product_detail.project_status).animationClass">
+                    [style.color]="getProjectStatusInfo(product.product_detail.project_status).color"
+                    [style.backgroundColor]="getProjectStatusInfo(product.product_detail.project_status).backgroundColor"
+                    [class]="getProjectStatusInfo(product.product_detail.project_status).animationClass">
                     <i class="fas fa-{{getProjectStatusInfo(product.product_detail.project_status).icon}}"
-                       *ngIf="getProjectStatusInfo(product.product_detail.project_status).icon"></i>
+                      *ngIf="getProjectStatusInfo(product.product_detail.project_status).icon"></i>
                     {{ getProjectStatusInfo(product.product_detail.project_status).text }}
                   </span>
                 </div>
@@ -82,34 +82,21 @@
             <div class="product-content">
               <!-- Tiêu đề và giá -->
               <div class="product-header">
-                <h3 class="product-title" [title]="product.name">{{ product.name }}</h3>
-                <div class="product-price" [class.negotiable]="!product.product_detail.price_to">
-                  <div class="price-main">
-                    <i class="fas fa-tags"></i>
-                    <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
-                    <span *ngIf="product.product_detail.price_to">
-                      {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
-                    </span>
-                  </div>
-                  <span class="price-per-m2" *ngIf="product.product_detail.price && product.product_detail.area">
-                    <i class="fas fa-calculator"></i>
-                    {{ calculatePricePerM2(product.product_detail.price, product.product_detail.area, product.product_detail.price_to) }}/m²
-                  </span>
-                </div>
+                <h3 class="product-title" [title]="product.name" style="margin-bottom: 0">{{ product.name }}</h3>
               </div>
 
               <!-- Thông tin chính -->
               <div class="main-info">
                 <div class="info-item" *ngIf="product.product_detail.area">
+                  <i class="fas fa-ruler-combined"></i>
                   <span>Diện tích: <strong>{{ formatNumber(product.product_detail.area) }} m²</strong></span>
                 </div>
-                <div class="info-item" *ngIf="product.product_detail.bedroom">
-                  <i class="fas fa-bed"></i>
-                  <span>Phòng ngủ: <strong>{{ product.product_detail.bedroom }}</strong></span>
-                </div>
-                <div class="info-item" *ngIf="product.product_detail.bathroom">
-                  <i class="fas fa-bath"></i>
-                  <span>Phòng tắm: <strong>{{ product.product_detail.bathroom }}</strong></span>
+              </div>
+              <div class="main-info" style="margin-bottom: 0px;">
+                <div class="info-item" *ngIf="product.product_detail.management_and_operation_unit">
+                  <i class="fas fa-building"></i>
+                  <span>Đơn vị vận hành: <strong>{{ product.product_detail.management_and_operation_unit
+                      }}</strong></span>
                 </div>
               </div>
 
@@ -118,9 +105,6 @@
                 <i class="fas fa-map-marker-alt"></i>
                 <div class="address-details">
                   <p class="main-address">{{ product.address_detail.address }}</p>
-                  <p class="sub-address" *ngIf="product.address_detail.ward || product.address_detail.district">
-                    {{ product.address_detail.ward }}, {{ product.address_detail.district }}, {{ product.address_detail.province }}
-                  </p>
                 </div>
               </div>
 
@@ -138,10 +122,8 @@
 
               <!-- Tags -->
               <div class="product-tags">
-                <span *ngFor="let tag of product.tag" class="tag"
-                      [style.background-color]="tag.color + '15'"
-                      [style.color]="tag.color"
-                      [style.border-color]="tag.color + '30'">
+                <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '15'"
+                  [style.color]="tag.color" [style.border-color]="tag.color + '30'">
                   <i class="fas fa-tag"></i>
                   {{ tag.name }}
                 </span>
@@ -168,105 +150,55 @@
           <i class="fas fa-home"></i>
           Nhà bán ({{ saleProductsCount }})
         </h2>
-        <div class="results-grid">
-          <div *ngFor="let product of saleProducts" class="product-card" (click)="viewProductDetail(product.id)">
+        <div class="results-grid" class="sale-products-grid">
+          <div *ngFor="let product of saleProducts" class="product-card sale-card cursor-pointer"
+            (click)="viewProductDetail(product.id)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name"
-                   onerror="this.src='assets/images/default_property.jpeg'">
-              <div class="product-overlay">
-                <div class="product-badges">
-                  <span class="badge type-badge" *ngIf="product.product_detail.type_product === 'project'">
-                    <i class="fas fa-building"></i> Dự án
-                  </span>
-                  <span class="badge status-badge" *ngIf="product.product_detail.project_status"
-                        [style.color]="getProjectStatusInfo(product.product_detail.project_status).color"
-                        [style.backgroundColor]="getProjectStatusInfo(product.product_detail.project_status).backgroundColor"
-                        [class]="getProjectStatusInfo(product.product_detail.project_status).animationClass">
-                    <i class="fas fa-{{getProjectStatusInfo(product.product_detail.project_status).icon}}"
-                       *ngIf="getProjectStatusInfo(product.product_detail.project_status).icon"></i>
-                    {{ getProjectStatusInfo(product.product_detail.project_status).text }}
-                  </span>
-                </div>
-              </div>
+                onerror="this.src='assets/images/default_property.jpeg'">
+              <div class="product-badge sale">Mua bán</div>
             </div>
-
             <div class="product-content">
-              <!-- Tiêu đề và giá -->
-              <div class="product-header">
-                <h3 class="product-title" [title]="product.name">{{ product.name }}</h3>
-                <div class="product-price" [class.negotiable]="!product.product_detail.price_to">
-                  <div class="price-main">
-                    <i class="fas fa-tags"></i>
-                    <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
-                    <span *ngIf="product.product_detail.price_to">
-                      {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
-                    </span>
-                  </div>
-                  <span class="price-per-m2" *ngIf="product.product_detail.price && product.product_detail.area">
-                    <i class="fas fa-calculator"></i>
-                    {{ calculatePricePerM2(product.product_detail.price, product.product_detail.area, product.product_detail.price_to) }}/m²
+              <h3 class="product-title" style="line-height: 1.4;">{{ product.name }}</h3>
+              <p class="product-address" style="line-height: 1.4;">
+                <i class="fa fa-map-marker"></i>
+                {{ product.address_detail.address }}
+              </p>
+              <div class="product-details">
+                <div class="detail-item price">
+                  <span class="label">Giá:</span>
+                  <span class="value" *ngIf="!product.product_detail.price_to">{{
+                    formatPrice(product.product_detail.price) }}</span>
+                  <span class="value" *ngIf="product.product_detail.price_to">
+                    {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
                   </span>
                 </div>
-              </div>
-
-              <!-- Thông tin chính -->
-              <div class="main-info">
-                <div class="info-item" *ngIf="product.product_detail.area">
-                  <span>Diện tích: <strong>{{ formatNumber(product.product_detail.area) }} m²</strong></span>
+                <div class="detail-item description" *ngIf="product.product_detail.content">
+                  <div class="content-preview" [innerHTML]="truncateHTML(product.product_detail.content)"></div>
                 </div>
-                <div class="info-item" *ngIf="product.product_detail.bedroom">
-                  <i class="fas fa-bed"></i>
-                  <span>Phòng ngủ: <strong>{{ product.product_detail.bedroom }}</strong></span>
-                </div>
-                <div class="info-item" *ngIf="product.product_detail.bathroom">
-                  <i class="fas fa-bath"></i>
-                  <span>Phòng tắm: <strong>{{ product.product_detail.bathroom }}</strong></span>
-                </div>
-              </div>
-
-              <!-- Địa chỉ -->
-              <div class="location-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <div class="address-details">
-                  <p class="main-address">{{ product.address_detail.address }}</p>
-                  <p class="sub-address" *ngIf="product.address_detail.ward || product.address_detail.district">
-                    {{ product.address_detail.ward }}, {{ product.address_detail.district }}, {{ product.address_detail.province }}
-                  </p>
+                <div class="property-info">
+                  <div class="info-item">
+                    <i class="fas fa-chart-area"></i>
+                    <span>{{ product.product_detail.area }} m²</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-bed"></i>
+                    <span>{{ product.product_detail.bedroom }} phòng ngủ</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-bath"></i>
+                    <span>{{ product.product_detail.bathroom }} phòng tắm</span>
+                  </div>
                 </div>
               </div>
-
-              <!-- Tiện ích và nội thất -->
-              <div class="features" *ngIf="product.product_detail.utilities || product.product_detail.interior">
-                <div class="feature" *ngIf="product.product_detail.utilities">
-                  <i class="fas fa-star"></i>
-                  <span>Tiện ích: <strong>{{ product.product_detail.utilities }}</strong></span>
+              <div class="product-meta">
+                <div class="tags">
+                  <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '20'"
+                    [style.color]="tag.color">
+                    {{ tag.name }}
+                  </span>
                 </div>
-                <div class="feature" *ngIf="product.product_detail.interior">
-                  <i class="fas fa-couch"></i>
-                  <span>Nội thất: <strong>{{ product.product_detail.interior }}</strong></span>
-                </div>
-              </div>
-
-              <!-- Tags -->
-              <div class="product-tags">
-                <span *ngFor="let tag of product.tag" class="tag"
-                      [style.background-color]="tag.color + '15'"
-                      [style.color]="tag.color"
-                      [style.border-color]="tag.color + '30'">
-                  <i class="fas fa-tag"></i>
-                  {{ tag.name }}
-                </span>
-              </div>
-
-              <!-- Footer -->
-              <div class="card-footer">
-                <div class="investor" *ngIf="product.product_detail.investor">
-                  <i class="fas fa-building"></i>
-                  <span>Chủ đầu tư: <strong>{{ product.product_detail.investor }}</strong></span>
-                </div>
-                <button class="view-detail">
-                  Xem chi tiết <i class="fas fa-arrow-right"></i>
-                </button>
+                <button class="view-btn">Xem chi tiết</button>
               </div>
             </div>
           </div>
@@ -283,18 +215,18 @@
           <div *ngFor="let product of rentProducts" class="product-card" (click)="viewProductDetail(product.id)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name"
-                   onerror="this.src='assets/images/default_property.jpeg'">
+                onerror="this.src='assets/images/default_property.jpeg'">
               <div class="product-overlay">
                 <div class="product-badges">
                   <span class="badge type-badge" *ngIf="product.product_detail.type_product === 'project'">
                     <i class="fas fa-building"></i> Dự án
                   </span>
                   <span class="badge status-badge" *ngIf="product.product_detail.project_status"
-                        [style.color]="getProjectStatusInfo(product.product_detail.project_status).color"
-                        [style.backgroundColor]="getProjectStatusInfo(product.product_detail.project_status).backgroundColor"
-                        [class]="getProjectStatusInfo(product.product_detail.project_status).animationClass">
+                    [style.color]="getProjectStatusInfo(product.product_detail.project_status).color"
+                    [style.backgroundColor]="getProjectStatusInfo(product.product_detail.project_status).backgroundColor"
+                    [class]="getProjectStatusInfo(product.product_detail.project_status).animationClass">
                     <i class="fas fa-{{getProjectStatusInfo(product.product_detail.project_status).icon}}"
-                       *ngIf="getProjectStatusInfo(product.product_detail.project_status).icon"></i>
+                      *ngIf="getProjectStatusInfo(product.product_detail.project_status).icon"></i>
                     {{ getProjectStatusInfo(product.product_detail.project_status).text }}
                   </span>
                 </div>
@@ -308,14 +240,17 @@
                 <div class="product-price" [class.negotiable]="!product.product_detail.price_to">
                   <div class="price-main">
                     <i class="fas fa-tags"></i>
-                    <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price) }}</span>
+                    <span *ngIf="!product.product_detail.price_to">{{ formatPrice(product.product_detail.price)
+                      }}</span>
                     <span *ngIf="product.product_detail.price_to">
-                      {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to) }}
+                      {{ formatPrice(product.product_detail.price) }} - {{ formatPrice(product.product_detail.price_to)
+                      }}
                     </span>
                   </div>
                   <span class="price-per-m2" *ngIf="product.product_detail.price && product.product_detail.area">
                     <i class="fas fa-calculator"></i>
-                    {{ calculatePricePerM2(product.product_detail.price, product.product_detail.area, product.product_detail.price_to) }}/m²
+                    {{ calculatePricePerM2(product.product_detail.price, product.product_detail.area,
+                    product.product_detail.price_to) }}/m²
                   </span>
                 </div>
               </div>
@@ -341,7 +276,8 @@
                 <div class="address-details">
                   <p class="main-address">{{ product.address_detail.address }}</p>
                   <p class="sub-address" *ngIf="product.address_detail.ward || product.address_detail.district">
-                    {{ product.address_detail.ward }}, {{ product.address_detail.district }}, {{ product.address_detail.province }}
+                    {{ product.address_detail.ward }}, {{ product.address_detail.district }}, {{
+                    product.address_detail.province }}
                   </p>
                 </div>
               </div>
@@ -360,10 +296,8 @@
 
               <!-- Tags -->
               <div class="product-tags">
-                <span *ngFor="let tag of product.tag" class="tag"
-                      [style.background-color]="tag.color + '15'"
-                      [style.color]="tag.color"
-                      [style.border-color]="tag.color + '30'">
+                <span *ngFor="let tag of product.tag" class="tag" [style.background-color]="tag.color + '15'"
+                  [style.color]="tag.color" [style.border-color]="tag.color + '30'">
                   <i class="fas fa-tag"></i>
                   {{ tag.name }}
                 </span>
@@ -398,8 +332,7 @@
         <i class="fas fa-chevron-left"></i>
       </button>
       <button class="page-btn" *ngFor="let page of [].constructor(totalPages); let i = index"
-              [class.active]="currentPage === i + 1"
-              (click)="onPageChange(i + 1)">
+        [class.active]="currentPage === i + 1" (click)="onPageChange(i + 1)">
         {{ i + 1 }}
       </button>
       <button class="page-btn" [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">

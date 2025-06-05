@@ -30,7 +30,7 @@ export class SaleComponent implements OnInit {
 
     this.productService.search({ product_type: 'sale' }).subscribe({
       next: (response) => {
-        this.saleProducts = response.data;
+        this.saleProducts = response.data.filter(product => product.category_id !== 7);
         this.updateDisplayedProducts();
         this.loading = false;
       },

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Product } from '../../services/product.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface ProjectStatusInfo {
   text: string;
@@ -52,7 +53,8 @@ export class SearchResultsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -100,6 +102,24 @@ export class SearchResultsComponent implements OnInit {
       this.search();
     });
   }
+
+   truncateHTML(html: string, maxLength: number = 150): SafeHtml {
+      if (!html) return '';
+  
+      // Tạo một div tạm thời để parse HTML
+      const div = document.createElement('div');
+      div.innerHTML = html;
+  
+      // Lấy text content
+      let text = div.textContent || div.innerText || '';
+  
+      // Truncate text
+      if (text.length > maxLength) {
+        text = text.substring(0, maxLength) + '...';
+      }
+  
+      return this.sanitizer.bypassSecurityTrustHtml(text);
+    }
 
   getProjectStatusInfo(slug: string): ProjectStatusInfo {
     switch (slug) {
