@@ -32,9 +32,9 @@ export class ProductsComponent implements OnInit {
   pageSize = 9;
   totalPages = 0;
   paginatedProducts: Product[] = [];
-
   // Lọc
   selectedCategory: number | null = null;
+  selectedCategorySlug: string | null = null;
   selectedProductType: string | null = null;
   isProjectCategory = false;
 
@@ -43,26 +43,29 @@ export class ProductsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {}  ngOnInit(): void {
+    this.loadCategories().then(() => {      // Sau khi load xong categories, mới xử lý query params
+      this.route.queryParams.subscribe(params => {
+        if (params['danh-muc']) {
+          this.selectedCategorySlug = params['danh-muc'];
+          // Tìm category ID từ slug để kiểm tra PROJECT_CATEGORY_ID
+          const category = this.categories.find(c => c.slug === this.selectedCategorySlug);
+          if (category) {
+            this.selectedCategory = category.id;
+            this.isProjectCategory = this.selectedCategory === this.PROJECT_CATEGORY_ID;
+          }
+        }
 
-  ngOnInit(): void {
-    this.loadCategories();
+        if (params['loai']) {
+          this.selectedProductType = params['loai'];
+        }
 
-    this.route.queryParams.subscribe(params => {
-      if (params['category']) {
-        this.selectedCategory = Number(params['category']);
-        this.isProjectCategory = this.selectedCategory === this.PROJECT_CATEGORY_ID;
-      }
-
-      if (params['type']) {
-        this.selectedProductType = params['type'];
-      }
-
-      if (this.selectedCategory) {
-        this.loadProductsByCategory(this.selectedCategory);
-      } else {
-        this.loadAllProducts();
-      }
+        if (this.selectedCategorySlug) {
+          this.loadProductsByCategorySlug(this.selectedCategorySlug);
+        } else {
+          this.loadAllProducts();
+        }
+      });
     });
   }
 
@@ -86,7 +89,6 @@ export class ProductsComponent implements OnInit {
       }
     });
   }
-
   private loadProductsByCategory(categoryId: number): void {
     this.loading = true;
     this.error = null;
@@ -111,16 +113,43 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  private loadCategories(): void {
-    this.productService.getAllCategories().subscribe({
+  private loadProductsByCategorySlug(categorySlug: string): void {
+    this.loading = true;
+    this.error = null;
+    this.productService.getProductsByCategorySlug(categorySlug).subscribe({
       next: (response) => {
         if (!response.meta.error) {
-          this.categories = response.data;
+          this.products = response.data;
+          if (this.isProjectCategory) {
+            this.selectedProductType = null;
+          }
+          this.filterProducts();
+        } else {
+          this.error = response.meta.message;
         }
+        this.loading = false;
       },
       error: (error) => {
-        console.error('Lỗi khi tải danh mục:', error);
+        console.error('Lỗi khi tải sản phẩm theo danh mục:', error);
+        this.error = 'Không thể tải danh sách sản phẩm. Vui lòng thử lại sau.';
+        this.loading = false;
       }
+    });
+  }
+  private loadCategories(): Promise<void> {
+    return new Promise((resolve) => {
+      this.productService.getAllCategories().subscribe({
+        next: (response) => {
+          if (!response.meta.error) {
+            this.categories = response.data;
+          }
+          resolve();
+        },
+        error: (error) => {
+          console.error('Lỗi khi tải danh mục:', error);
+          resolve();
+        }
+      });
     });
   }
 
@@ -138,16 +167,25 @@ export class ProductsComponent implements OnInit {
     
     return this.formatPrice(pricePerM2);
   }
-
   getCategoryName(categoryId: number): string {
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.name : '';
   }
-  viewCategory(categoryId: number): void {
-    this.router.navigate(['/san-pham'], { queryParams: { category: categoryId } });
+  
+  getCategoryNameBySlug(categorySlug: string): string {
+    const category = this.categories.find(c => c.slug === categorySlug);
+    return category ? category.name : '';
   }
-  viewAllProducts(): void {
+  
+  getCategorySlug(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.slug : '';
+  }  viewCategory(categoryId: number): void {
+    const categorySlug = this.getCategorySlug(categoryId);
+    this.router.navigate(['/san-pham'], { queryParams: { 'danh-muc': categorySlug } });
+  }viewAllProducts(): void {
     this.selectedCategory = null;
+    this.selectedCategorySlug = null;
     this.selectedProductType = null;
     this.isProjectCategory = false;
     this.currentPage = 1;
@@ -156,7 +194,7 @@ export class ProductsComponent implements OnInit {
     }).then(() => {
       this.loadAllProducts();
     });
-  }  viewProductDetail(productSlug: string): void {
+  }viewProductDetail(productSlug: string): void {
     this.router.navigate(['/san-pham', productSlug]);
   }
 
@@ -351,16 +389,14 @@ export class ProductsComponent implements OnInit {
     if (this.currentPage > this.totalPages) {
       this.currentPage = 1;
     }
-  }
-
-  changeProductType(type: string | null): void {
+  }  changeProductType(type: string | null): void {
     this.selectedProductType = type;
     this.currentPage = 1; // Reset về trang 1
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        ...this.selectedCategory ? { category: this.selectedCategory } : {},
-        ...(type ? { type } : {})
+        ...this.selectedCategorySlug ? { 'danh-muc': this.selectedCategorySlug } : {},
+        ...(type ? { 'loai': type } : {})
       },
       queryParamsHandling: 'merge'
     });

@@ -287,6 +287,24 @@ export class DetailComponent implements OnInit, AfterViewInit {
     });
   }
 
+   truncateHTML(html: string, maxLength: number = 150): SafeHtml {
+      if (!html) return '';
+  
+      // Tạo một div tạm thời để parse HTML
+      const div = document.createElement('div');
+      div.innerHTML = html;
+  
+      // Lấy text content
+      let text = div.textContent || div.innerText || '';
+  
+      // Truncate text
+      if (text.length > maxLength) {
+        text = text.substring(0, maxLength) + '...';
+      }
+  
+      return this.sanitizer.bypassSecurityTrustHtml(text);
+    }
+
   private async initMap(): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) return;
     if (!this.product?.address_detail?.google_address_link) return;

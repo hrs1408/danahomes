@@ -1,11 +1,10 @@
 <div class="products-page">
   <div class="container">
     <div class="products-header">
-      <h1>Sản phẩm bất động sản</h1>
-      <div class="breadcrumb">
+      <h1>Sản phẩm bất động sản</h1>      <div class="breadcrumb">
         <a routerLink="/">Trang chủ</a> <span>/</span>
-        <span *ngIf="!selectedCategory">Tất cả sản phẩm</span>
-        <span *ngIf="selectedCategory">{{ getCategoryName(selectedCategory) }}</span>
+        <span *ngIf="!selectedCategorySlug">Tất cả sản phẩm</span>
+        <span *ngIf="selectedCategorySlug">{{ getCategoryNameBySlug(selectedCategorySlug) }}</span>
       </div>
     </div>
 
@@ -13,14 +12,13 @@
     <div class="filters-section">
       <div class="categories-filter">
         <h3>Danh mục sản phẩm</h3>
-        <ul class="category-list">
-          <li>
-            <a [class.active]="!selectedCategory" (click)="viewAllProducts()">
+        <ul class="category-list">          <li>
+            <a [class.active]="!selectedCategorySlug" (click)="viewAllProducts()">
               <i class="fas fa-home"></i> Tất cả sản phẩm
             </a>
           </li>
           <li *ngFor="let category of categories">
-            <a [class.active]="selectedCategory === category.id" (click)="viewCategory(category.id)">
+            <a [class.active]="selectedCategorySlug === category.slug" (click)="viewCategory(category.id)">
               <i [class]="getIconClass(category.icon)">
                 <ng-container *ngIf="getIconContent(category.icon)">
                   {{ getIconContent(category.icon) }}

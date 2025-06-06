@@ -18,20 +18,16 @@
           <li><a routerLink="/gioi-thieu">Giới thiệu</a></li>
           <li>
             <a routerLink="/san-pham">Sản phẩm</a>
-            <div class="dropdown-menu">
-              <ul>
-                <li>
-                  <a [routerLink]="['/san-pham']" [queryParams]="{type: 'sale', category: 0}" (click)="$event.stopPropagation()">
+            <div class="dropdown-menu">              <ul>                <li>                  <a [routerLink]="['/san-pham']" [queryParams]="{'loai': 'sale'}" (click)="$event.stopPropagation()">
                     <i class="fas fa-home"></i> Mua bán
                   </a>
                 </li>
-                <li>
-                  <a [routerLink]="['/san-pham']" [queryParams]="{type: 'rent', category: 0}" (click)="$event.stopPropagation()">
+                <li>                  <a [routerLink]="['/san-pham']" [queryParams]="{'loai': 'rent'}" (click)="$event.stopPropagation()">
                     <i class="fas fa-key"></i> Cho thuê
                   </a>
                 </li>
                 <li>
-                  <a [routerLink]="['/san-pham']" [queryParams]="{category: 7}" (click)="$event.stopPropagation()">
+                  <a [routerLink]="['/san-pham']" [queryParams]="{'danh-muc': getProjectCategorySlug()}" (click)="$event.stopPropagation()">
                     <i class="fas fa-building"></i> Dự án
                   </a>
                 </li>
@@ -78,12 +74,15 @@
         <li class="mobile-dropdown" [class.active]="activeDropdown === 'products'">
           <a [routerLink]="['/san-pham']" (click)="toggleDropdown('products', $event)">
             Sản phẩm <i class="fa-solid fa-chevron-down"></i>
-          </a>
-          <div class="mobile-dropdown-menu" [class.active]="activeDropdown === 'products'">
-            <ul>
-              <li><a [routerLink]="['/san-pham']" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
+          </a>          <div class="mobile-dropdown-menu" [class.active]="activeDropdown === 'products'">            <ul>              <li><a [routerLink]="['/san-pham']" (click)="toggleMobileMenu()">Tất cả sản phẩm</a></li>
+              <li><a [routerLink]="['/san-pham']" [queryParams]="{'loai': 'sale'}" (click)="toggleMobileMenu()">
+                <i class="fas fa-home"></i> Mua bán
+              </a></li>
+              <li><a [routerLink]="['/san-pham']" [queryParams]="{'loai': 'rent'}" (click)="toggleMobileMenu()">
+                <i class="fas fa-key"></i> Cho thuê
+              </a></li>
               <li *ngFor="let category of categories">
-                <a [routerLink]="['/san-pham']" [queryParams]="{category: category.id}" (click)="toggleMobileMenu()">
+                <a [routerLink]="['/san-pham']" [queryParams]="{'danh-muc': category.slug}" (click)="toggleMobileMenu()">
                   <i [class]="getIconClass(category.icon)" [innerHTML]="getIconContent(category.icon)"></i> {{ category.name }}
                 </a>
               </li>

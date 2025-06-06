@@ -189,11 +189,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
     return iconName; // Trả về nguyên gốc nếu không phải ant hoặc material
   }
-
   getIconContent(iconName: string): string | null {
     if (iconName.endsWith('-mat')) {
       return iconName.replace('-mat', '');
     }
     return null;
+  }
+
+  getProjectCategorySlug(): string {
+    const projectCategory = this.categories.find(c => c.id === 7);
+    return projectCategory ? projectCategory.slug : '';
   }
 }

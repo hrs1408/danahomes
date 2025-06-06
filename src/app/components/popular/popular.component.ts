@@ -32,7 +32,7 @@ export class PopularComponent implements OnInit {
 
     this.productService.getHotProducts().subscribe({
       next: (response) => {
-        this.popularProducts = response.data;
+        this.popularProducts = response.data.filter(product => product.category_id == 7);
         this.loading = false;
         this.cdr.detectChanges();
       },

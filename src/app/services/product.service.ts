@@ -122,6 +122,10 @@ export class ProductService {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-by-category/${categoryId}`);
   }
 
+  getProductsByCategorySlug(categorySlug: string): Observable<ApiResponse<Product[]>> {
+    return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-by-category-slug/${categorySlug}`);
+  }
+
   getAllCategories(): Observable<ApiResponse<ProductCategory[]>> {
     return this.http.get<ApiResponse<ProductCategory[]>>(`${this.apiUrl}/category/get-all`);
   }
@@ -151,5 +155,9 @@ export class ProductService {
 
   getHotProducts(): Observable<ApiResponse<Product[]>> {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-hot-product`);
+  }
+
+  getProductsAddress(): Observable<ApiResponse<Product[]>> {
+    return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-all-product-address`);
   }
 }

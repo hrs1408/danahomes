@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Product } from '../../services/product.service';
+import { CategoryService, Category } from '../../services/category.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface ProjectStatusInfo {
@@ -17,7 +18,7 @@ interface SearchParams {
   price?: number;
   price_to?: number;
   address?: string;
-  category_id?: number;
+  category?: string;
   name?: string;
   [key: string]: string | number | undefined;
 }
@@ -28,19 +29,20 @@ interface SearchParams {
   styleUrls: ['./search-results.component.scss']
 })
 export class SearchResultsComponent implements OnInit {
+  readonly PROJECT_CATEGORY_ID = 7;
   products: Product[] = [];
   rentProducts: Product[] = [];
   saleProducts: Product[] = [];
   projectProducts: Product[] = [];
+  categories: Category[] = [];
   loading = true;
-  error: string | null = null;
-  searchParams: SearchParams = {
+  error: string | null = null;searchParams: SearchParams = {
     product_type: undefined,
     area: undefined,
     price: undefined,
     price_to: undefined,
     address: undefined,
-    category_id: undefined,
+    category: undefined,
     name: undefined
   };
   totalResults = 0;
@@ -49,57 +51,51 @@ export class SearchResultsComponent implements OnInit {
   currentPage = 1;
   pageSize = 12;
   totalPages = 0;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
+    private categoryService: CategoryService,
     private sanitizer: DomSanitizer
   ) {}
-
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const searchParams: SearchParams = {};
-
-      if (params['product_type']) {
-        searchParams['product_type'] = params['product_type'];
-      }
-
-      if (params['name']) {
-        searchParams['name'] = params['name'];
-      }
-
-      if (params['area']) {
-        searchParams['area'] = params['area'];
-      }
-
-      if (params['category_id']) {
-        const categoryId = Number(params['category_id']);
-        if (!isNaN(categoryId)) {
-          searchParams['category_id'] = categoryId;
+    this.loadCategories().then(() => {
+      this.route.queryParams.subscribe(params => {
+        const searchParams: SearchParams = {};        if (params['loai']) {
+          searchParams['product_type'] = params['loai'];
         }
-      }
 
-      if (params['address']) {
-        searchParams['address'] = params['address'];
-      }
-
-      if (params['price']) {
-        const price = Number(params['price']);
-        if (!isNaN(price)) {
-          searchParams['price'] = price;
+        if (params['name']) {
+          searchParams['name'] = params['name'];
         }
-      }
 
-      if (params['price_to']) {
-        const priceTo = Number(params['price_to']);
-        if (!isNaN(priceTo)) {
-          searchParams['price_to'] = priceTo;
+        if (params['area']) {
+          searchParams['area'] = params['area'];
+        }        if (params['danh-muc']) {
+          searchParams['category'] = params['danh-muc'];
         }
-      }
 
-      this.searchParams = searchParams;
-      this.search();
+        if (params['address']) {
+          searchParams['address'] = params['address'];
+        }
+
+        if (params['price']) {
+          const price = Number(params['price']);
+          if (!isNaN(price)) {
+            searchParams['price'] = price;
+          }
+        }
+
+        if (params['price_to']) {
+          const priceTo = Number(params['price_to']);
+          if (!isNaN(priceTo)) {
+            searchParams['price_to'] = priceTo;
+          }
+        }
+
+        this.searchParams = searchParams;
+        this.search();
+      });
     });
   }
 
@@ -179,7 +175,6 @@ export class SearchResultsComponent implements OnInit {
         };
     }
   }
-
   private categorizeProducts(products: Product[]): void {
     if (!products) {
       this.rentProducts = [];
@@ -188,9 +183,19 @@ export class SearchResultsComponent implements OnInit {
       return;
     }
 
-    this.rentProducts = products.filter(p => p?.product_detail?.type_product === 'rent' && p?.category_id !== 7);
-    this.saleProducts = products.filter(p => p?.product_detail?.type_product === 'sale' && p?.category_id !== 7);
-    this.projectProducts = products.filter(p => p?.category_id === 7);
+    const projectCategorySlug = this.getProjectCategorySlug();
+    this.rentProducts = products.filter(p => {
+      const categorySlug = this.getCategorySlugById(p?.category_id);
+      return p?.product_detail?.type_product === 'rent' && categorySlug !== projectCategorySlug;
+    });
+    this.saleProducts = products.filter(p => {
+      const categorySlug = this.getCategorySlugById(p?.category_id);
+      return p?.product_detail?.type_product === 'sale' && categorySlug !== projectCategorySlug;
+    });
+    this.projectProducts = products.filter(p => {
+      const categorySlug = this.getCategorySlugById(p?.category_id);
+      return categorySlug === projectCategorySlug;
+    });
   }
 
   private search(): void {
@@ -367,6 +372,41 @@ export class SearchResultsComponent implements OnInit {
         this.totalPages = 0;
       }
     });
+  }
+
+  private async loadCategories(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.categoryService.getCategories().subscribe({
+        next: (response) => {
+          if (!response.meta.error) {
+            this.categories = response.data;
+            resolve();
+          } else {
+            reject(response.meta.message);
+          }
+        },
+        error: (error) => {
+          console.error('Error loading categories:', error);
+          reject(error);
+        }
+      });
+    });
+  }
+
+  private getProjectCategorySlug(): string {
+    const projectCategory = this.categories.find(c => c.id === this.PROJECT_CATEGORY_ID);
+    return projectCategory ? projectCategory.slug : '';
+  }
+
+  private isProjectCategory(categorySlug: string): boolean {
+    const projectCategorySlug = this.getProjectCategorySlug();
+    return categorySlug === projectCategorySlug;
+  }
+
+  private getCategorySlugById(categoryId: number | undefined): string {
+    if (!categoryId) return '';
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.slug : '';
   }
 
   // Thêm các phương thức getter để lấy số lượng sản phẩm theo từng loại
