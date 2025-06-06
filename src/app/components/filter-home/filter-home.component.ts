@@ -31,13 +31,12 @@ export class FilterHomeComponent implements OnInit, AfterViewInit {
   categories: Category[] = [];
   loading = false;
   error: string | null = null;
-
   // Data cho form search
   searchForm = {
     product_type: '',
     name: '',
     area: '',
-    category_id: null as number | null,
+    category: null as string | null,
     address: '',
     price: null as number | null,
     price_to: null as number | null
@@ -159,14 +158,13 @@ export class FilterHomeComponent implements OnInit, AfterViewInit {
       this.searchForm.address = `${selectedDistrict.name}, ${provinceName}`;
     }
   }
-
   onSearch() {
     // Xử lý dữ liệu tìm kiếm
-    const searchParams: Partial<typeof this.searchForm> = {};
+    const searchParams: any = {};
 
     // Chỉ thêm các tham số có giá trị
     if (this.searchForm.product_type) {
-      searchParams.product_type = this.searchForm.product_type;
+      searchParams['loai'] = this.searchForm.product_type;
     }
 
     if (this.searchForm.name?.trim()) {
@@ -175,10 +173,8 @@ export class FilterHomeComponent implements OnInit, AfterViewInit {
 
     if (this.searchForm.area) {
       searchParams.area = this.searchForm.area;
-    }
-
-    if (this.searchForm.category_id) {
-      searchParams.category_id = this.searchForm.category_id;
+    }    if (this.searchForm.category) {
+      searchParams['danh-muc'] = this.searchForm.category;
     }
 
     if (this.searchForm.address?.trim()) {
@@ -191,19 +187,14 @@ export class FilterHomeComponent implements OnInit, AfterViewInit {
 
     if (this.searchForm.price_to) {
       searchParams.price_to = this.searchForm.price_to;
-    }
-
-    // Thêm loại sản phẩm dựa trên tab active
-    searchParams.product_type = this.activeTab === 'sale' ? 'sale' : 'rent';
-
-    // Chuyển hướng đến trang kết quả tìm kiếm với params
-    this.router.navigate(['/search'], {
+    }    // Thêm loại sản phẩm dựa trên tab active
+    searchParams['loai'] = this.activeTab === 'sale' ? 'sale' : 'rent';// Chuyển hướng đến trang kết quả tìm kiếm với params
+    this.router.navigate(['/tim-kiem'], {
       queryParams: searchParams
     });
   }
-
   onCategoryClick(category: Category) {
-    this.searchForm.category_id = category.id;
+    this.searchForm.category = category.slug;
     this.onSearch();
   }
 

@@ -201,7 +201,8 @@
           flex-shrink: 0;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-          &:hover, &.active {
+          &:hover,
+          &.active {
             opacity: 1;
             transform: translateY(-2px);
           }
@@ -307,6 +308,7 @@
                 border-radius: 20px;
                 font-size: 14px;
                 color: #002250;
+
                 &.available {
                   background: #2ecc71;
                 }
@@ -383,13 +385,19 @@
               margin-bottom: 20px;
             }
 
-            h1, h2, h3, h4, h5, h6 {
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
               color: #002250;
               margin: 30px 0 15px;
               font-weight: 600;
             }
 
-            ul, ol {
+            ul,
+            ol {
               padding-left: 25px;
               margin-bottom: 20px;
 
@@ -403,7 +411,8 @@
               border-collapse: collapse;
               margin: 20px 0;
 
-              th, td {
+              th,
+              td {
                 padding: 12px;
                 border: 1px solid #dee2e6;
               }
@@ -435,19 +444,36 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 // Animation keyframes
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 // Responsive styles
@@ -539,8 +565,13 @@
 }
 
 @keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .skeleton-image {
@@ -579,7 +610,8 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
-    i, img {
+    i,
+    img {
       font-size: 18px;
     }
 
@@ -631,7 +663,8 @@
   .form-group {
     margin-bottom: 20px;
 
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       padding: 12px;
       border: 1px solid #dee2e6;
@@ -1125,7 +1158,7 @@
         left: 0;
         right: 0;
         height: 200px;
-        background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
         border-radius: 0 0 20px 20px;
       }
 
@@ -1139,7 +1172,8 @@
         justify-content: space-between;
         align-items: center;
 
-        .project-status, .project-type {
+        .project-status,
+        .project-type {
           padding: 10px 25px;
           border-radius: 30px;
           color: white;
@@ -1179,7 +1213,7 @@
       .thumbnail {
         border-radius: 15px;
         border: 3px solid white;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
         &.active {
           border-color: #002250;
@@ -1194,7 +1228,7 @@
     .info-section {
       background: white;
       border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
       padding: 40px;
       margin-bottom: 40px;
 
@@ -1233,7 +1267,7 @@
 
           &:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
           }
 
           i {
@@ -1310,7 +1344,7 @@
         .map-container {
           border-radius: 20px;
           overflow: hidden;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
           margin-bottom: 20px;
 
           #map {
@@ -1363,7 +1397,7 @@
               display: flex;
               align-items: center;
               gap: 15px;
-              box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+              box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 
               &::before {
                 content: '\f00c';
@@ -1671,7 +1705,8 @@
   .image-box-block {
     margin-bottom: 2rem;
 
-    &.layout-left, &.layout-right {
+    &.layout-left,
+    &.layout-right {
       display: flex;
       align-items: center;
       gap: var(--spacing);
@@ -1681,7 +1716,8 @@
       flex-direction: row-reverse;
     }
 
-    &.layout-top, &.layout-bottom {
+    &.layout-top,
+    &.layout-bottom {
       display: flex;
       flex-direction: column;
       gap: var(--spacing);
@@ -1722,7 +1758,11 @@
         }
       }
 
-      h2, h3, h4, h5, h6 {
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
         margin: 1rem 0;
         color: inherit;
       }
@@ -1802,7 +1842,7 @@
     margin-bottom: 2rem;
 
     .layout-column {
-      > * {
+      >* {
         margin-bottom: 1rem;
 
         &:last-child {
@@ -1827,7 +1867,13 @@
       }
 
       &.heading-block {
-        h1, h2, h3, h4, h5, h6 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
           margin: 0;
           line-height: 1.3;
         }
@@ -2057,7 +2103,8 @@
           border-radius: 8px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-          video, iframe {
+          video,
+          iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -2165,7 +2212,7 @@
               left: 0;
               right: 0;
               padding: 2rem;
-              background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+              background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
               color: white;
             }
           }
@@ -2192,7 +2239,11 @@
             flex: 1;
             padding: 2rem;
 
-            h2, h3, h4, h5, h6 {
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
               margin: 0 0 1rem;
             }
 
@@ -2237,6 +2288,7 @@
 
         &.image-box-block {
           .image-box {
+
             &.layout-left,
             &.layout-right {
               flex-direction: column;
@@ -2362,5 +2414,43 @@
         transform: scale(1.2);
       }
     }
+  }
+}
+
+.property-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 0.95em;
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+
+    i {
+      color: #002250;
+    }
+  }
+}
+
+.description {
+  margin-bottom: 15px;
+  .content-preview {
+    padding: 10px;
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    background: #f8f9fa;
+    border-radius: 8px;
   }
 }

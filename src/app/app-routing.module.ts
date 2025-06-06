@@ -13,15 +13,25 @@ import { PropertyConsignmentComponent } from './pages/property-consignment/prope
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'detail/:id', component: DetailComponent},
-  {path: 'about', component: AboutComponent},
-  {path: 'news', component: NewsComponent},
-  {path: 'news/:id', component: PostDetailComponent},
-  {path: 'products', component: ProductsComponent},
-  {path: 'products/:id', component: DetailComponent},
-  {path: 'search', component: SearchResultsComponent},
-  {path: 'contact', component: ContactFormComponent},
-  {path: 'property-consignment', component: PropertyConsignmentComponent},
+  {path: 'chi-tiet/:slug', component: DetailComponent},
+  {path: 'gioi-thieu', component: AboutComponent},
+  {path: 'tin-tuc', component: NewsComponent},
+  {path: 'tin-tuc/:id', component: PostDetailComponent},
+  {path: 'san-pham', component: ProductsComponent},
+  {path: 'san-pham/:slug', component: DetailComponent},
+  {path: 'tim-kiem', component: SearchResultsComponent},
+  {path: 'lien-he', component: ContactFormComponent},
+  {path: 'ky-gui-bat-dong-san', component: PropertyConsignmentComponent},
+  // Redirect old routes to new Vietnamese routes for backward compatibility
+  {path: 'detail/:slug', redirectTo: 'chi-tiet/:slug', pathMatch: 'full'},
+  {path: 'about', redirectTo: 'gioi-thieu', pathMatch: 'full'},
+  {path: 'news', redirectTo: 'tin-tuc', pathMatch: 'full'},
+  {path: 'news/:id', redirectTo: 'tin-tuc/:id', pathMatch: 'full'},
+  {path: 'products', redirectTo: 'san-pham', pathMatch: 'full'},
+  {path: 'products/:slug', redirectTo: 'san-pham/:slug', pathMatch: 'full'},
+  {path: 'search', redirectTo: 'tim-kiem', pathMatch: 'full'},
+  {path: 'contact', redirectTo: 'lien-he', pathMatch: 'full'},
+  {path: 'property-consignment', redirectTo: 'ky-gui-bat-dong-san', pathMatch: 'full'},
 ];
 
 @NgModule({

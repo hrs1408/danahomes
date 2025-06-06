@@ -12,10 +12,9 @@
     <div class="projects-grid" 
          [ngClass]="getGridClass()" 
          *ngIf="!loading && !error && popularProducts.length > 0">
-      <div class="project-card" 
-           *ngFor="let product of popularProducts; let i = index" 
+      <div class="project-card"           *ngFor="let product of popularProducts; let i = index" 
            [class.featured]="i === 0 && popularProducts.length === 1"
-           (click)="viewDetails(product.id)">
+           (click)="viewDetails(product.slug)">
         <div class="project-image">
           <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)"
                [alt]="product.name"

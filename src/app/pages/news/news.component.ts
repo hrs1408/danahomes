@@ -110,8 +110,7 @@ export class NewsComponent implements OnInit {
   getPostDate(post: Post): Date {
     return new Date(post.created_at || new Date());
   }
-
   readMore(postId: any): void {
-    this.router.navigate(['/news', postId]);
+    this.router.navigate(['/tin-tuc', postId]);
   }
 }

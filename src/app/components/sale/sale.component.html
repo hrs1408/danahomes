@@ -11,9 +11,8 @@
         </div>
     </div>
 
-    <!-- Property Grid -->
-    <div class="property-grid" *ngIf="!loading && !error && saleProducts.length > 0">
-        <div class="property-card" *ngFor="let product of displayedProducts" (click)="viewProductDetail(product.id)">
+    <!-- Property Grid -->    <div class="property-grid" *ngIf="!loading && !error && saleProducts.length > 0">
+        <div class="property-card" *ngFor="let product of displayedProducts" (click)="viewProductDetail(product.slug)">
             <div class="property-image">
                 <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)"
                      [alt]="product.name"

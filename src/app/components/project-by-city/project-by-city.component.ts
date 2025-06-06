@@ -56,9 +56,8 @@ export class ProjectByCityComponent {
     private router: Router,
     private productService: ProductService
   ) {}
-
   searchByDistrict(districtName: string) {
-    this.router.navigate(['/search'], {
+    this.router.navigate(['/tim-kiem'], {
       queryParams: {
         address: districtName
       }

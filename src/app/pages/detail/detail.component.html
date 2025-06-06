@@ -18,7 +18,7 @@
       <!-- Breadcrumb -->
       <div class="breadcrumb">
         <a routerLink="/">Trang chủ</a> <span>/</span>
-        <a routerLink="/products">Sản phẩm</a> <span>/</span>
+        <a routerLink="/san-pham">Sản phẩm</a> <span>/</span>
         <span>{{ product.name }}</span>
       </div>
 
@@ -1156,27 +1156,22 @@
               </div>
               <div class="product-content">
                 <h3 class="product-title">{{ item.name }}</h3>
-                <div class="product-info">
-                  <div class="info-row">
-                    <div class="info-item">
-                      <i class="fas fa-vector-square"></i>
-                      <span>{{ item.product_detail.area }} m²</span>
-                    </div>
-                    <div class="info-item">
-                      <i class="fas fa-bed"></i>
-                      <span>{{ item.product_detail.bedroom }} phòng ngủ</span>
-                    </div>
+                <div class="property-info">
+                  <div class="info-item">
+                    <i class="fas fa-chart-area"></i>
+                    <span>{{ item.product_detail.area }} m²</span>
                   </div>
-                  <div class="info-row">
-                    <div class="info-item">
-                      <i class="fas fa-bath"></i>
-                      <span>{{ item.product_detail.bathroom }} phòng tắm</span>
-                    </div>
-                    <div class="info-item">
-                      <i class="fas fa-compass"></i>
-                      <span>{{ item.product_detail.type_of_investment }}</span>
-                    </div>
+                  <div class="info-item">
+                    <i class="fas fa-bed"></i>
+                    <span>{{ item.product_detail.bedroom }} phòng ngủ</span>
                   </div>
+                  <div class="info-item">
+                    <i class="fas fa-bath"></i>
+                    <span>{{ item.product_detail.bathroom }} phòng tắm</span>
+                  </div>
+                </div>
+                <div class="detail-item description" *ngIf="item.product_detail.content">
+                  <div class="content-preview" [innerHTML]="truncateHTML(item.product_detail.content)"></div>
                 </div>
                 <div class="product-price">
                   <span *ngIf="!item.product_detail.price_to">{{
@@ -1197,7 +1192,7 @@
                     {{ tag.name }}
                   </span>
                 </div>
-                <a [routerLink]="['/detail', item.id]" class="view-detail-btn">
+                <a [routerLink]="['/chi-tiet', item.slug]" class="view-detail-btn">
                   <span>Xem chi tiết</span>
                   <i class="fas fa-arrow-right"></i>
                 </a>
@@ -1254,9 +1249,8 @@
                 </div>
                 <div class="price">
                   {{ formatPrice(relatedProduct.product_detail.price) }}
-                </div>
-                <a
-                  [routerLink]="['/detail', relatedProduct.id]"
+                </div>                <a
+                  [routerLink]="['/chi-tiet', relatedProduct.slug]"
                   class="view-more"
                   >Xem chi tiết</a
                 >

@@ -110,13 +110,20 @@ export class ProductService {
   getAllProducts(): Observable<ApiResponse<Product[]>> {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-all`);
   }
-
   getProductById(id: number): Observable<ApiResponse<Product>> {
     return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/product/get-by-id/${id}`);
   }
 
+  getProductBySlug(slug: string): Observable<ApiResponse<Product>> {
+    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/product/get-by-slug/${slug}`);
+  }
+
   getProductsByCategory(categoryId: number): Observable<ApiResponse<Product[]>> {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-by-category/${categoryId}`);
+  }
+
+  getProductsByCategorySlug(categorySlug: string): Observable<ApiResponse<Product[]>> {
+    return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-by-category-slug/${categorySlug}`);
   }
 
   getAllCategories(): Observable<ApiResponse<ProductCategory[]>> {
@@ -148,5 +155,9 @@ export class ProductService {
 
   getHotProducts(): Observable<ApiResponse<Product[]>> {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-hot-product`);
+  }
+
+  getProductsAddress(): Observable<ApiResponse<Product[]>> {
+    return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/product/get-all-product-address`);
   }
 }

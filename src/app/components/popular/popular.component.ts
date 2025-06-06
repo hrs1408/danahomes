@@ -32,7 +32,7 @@ export class PopularComponent implements OnInit {
 
     this.productService.getHotProducts().subscribe({
       next: (response) => {
-        this.popularProducts = response.data;
+        this.popularProducts = response.data.filter(product => product.category_id == 7);
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -59,11 +59,8 @@ export class PopularComponent implements OnInit {
 
   formatPrice(price: number): string {
     const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return formattedPrice + ' VNĐ';
-  }
-
-  viewDetails(productId: number) {
-    this.router.navigate(['/products', productId]);
+    return formattedPrice + ' VNĐ';  }  viewDetails(productSlug: string) {
+    this.router.navigate(['/chi-tiet', productSlug]);
   }
 
   getProjectStatusInfo(slug: string): ProjectStatusInfo {

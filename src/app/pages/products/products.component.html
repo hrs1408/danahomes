@@ -1,11 +1,10 @@
 <div class="products-page">
   <div class="container">
     <div class="products-header">
-      <h1>Sản phẩm bất động sản</h1>
-      <div class="breadcrumb">
+      <h1>Sản phẩm bất động sản</h1>      <div class="breadcrumb">
         <a routerLink="/">Trang chủ</a> <span>/</span>
-        <span *ngIf="!selectedCategory">Tất cả sản phẩm</span>
-        <span *ngIf="selectedCategory">{{ getCategoryName(selectedCategory) }}</span>
+        <span *ngIf="!selectedCategorySlug">Tất cả sản phẩm</span>
+        <span *ngIf="selectedCategorySlug">{{ getCategoryNameBySlug(selectedCategorySlug) }}</span>
       </div>
     </div>
 
@@ -13,14 +12,13 @@
     <div class="filters-section">
       <div class="categories-filter">
         <h3>Danh mục sản phẩm</h3>
-        <ul class="category-list">
-          <li>
-            <a [class.active]="!selectedCategory" (click)="viewAllProducts()">
+        <ul class="category-list">          <li>
+            <a [class.active]="!selectedCategorySlug" (click)="viewAllProducts()">
               <i class="fas fa-home"></i> Tất cả sản phẩm
             </a>
           </li>
           <li *ngFor="let category of categories">
-            <a [class.active]="selectedCategory === category.id" (click)="viewCategory(category.id)">
+            <a [class.active]="selectedCategorySlug === category.slug" (click)="viewCategory(category.id)">
               <i [class]="getIconClass(category.icon)">
                 <ng-container *ngIf="getIconContent(category.icon)">
                   {{ getIconContent(category.icon) }}
@@ -70,7 +68,7 @@
       <div *ngIf="!loading && !error" class="products-grid" [class.project-grid]="isProjectCategory">
         <!-- Rental Products -->
         <ng-container *ngFor="let product of paginatedProducts">
-          <div class="product-card rental-card cursor-pointer" *ngIf="!isProjectCategory && isRentalProduct(product)" (click)="viewProductDetail(product.id)">
+          <div class="product-card rental-card cursor-pointer" *ngIf="!isProjectCategory && isRentalProduct(product)" (click)="viewProductDetail(product.slug)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
               <div class="product-badge rental">Cho thuê</div>
@@ -131,9 +129,8 @@
           </div>
         </ng-container>
 
-        <!-- Sale Products -->
-        <ng-container *ngFor="let product of filterSaleProducts(paginatedProducts)">
-          <div class="product-card sale-card cursor-pointer" *ngIf="!isProjectCategory && isSaleProduct(product)" (click)="viewProductDetail(product.id)">
+        <!-- Sale Products -->        <ng-container *ngFor="let product of filterSaleProducts(paginatedProducts)">
+          <div class="product-card sale-card cursor-pointer" *ngIf="!isProjectCategory && isSaleProduct(product)" (click)="viewProductDetail(product.slug)">
             <div class="product-image">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
               <div class="product-badge sale">Mua bán</div>
@@ -190,9 +187,8 @@
           </div>
         </ng-container>
 
-        <!-- Project Products -->
-        <ng-container *ngIf="isProjectCategory">
-          <div *ngFor="let product of paginatedProducts" class="project-card hover-effect cursor-pointer" (click)="viewProductDetail(product.id)">
+        <!-- Project Products -->        <ng-container *ngIf="isProjectCategory">
+          <div *ngFor="let product of paginatedProducts" class="project-card hover-effect cursor-pointer" (click)="viewProductDetail(product.slug)">
             <div class="project-image-wrapper">
               <img [src]="'https://lh3.googleusercontent.com/d/' + getMainImage(product)" [alt]="product.name" onerror="this.src='assets/images/default_property.jpeg'">
               <div class="project-overlay">
